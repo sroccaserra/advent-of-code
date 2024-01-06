@@ -1,0 +1,7 @@
+shiny_gold:2 dark_red
+dark_red:2 dark_orange
+dark_orange:2 dark_yellow
+dark_yellow:2 dark_green
+dark_green:2 dark_blue
+dark_blue:2 dark_violet
+dark_violet:

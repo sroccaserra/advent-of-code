@@ -1,0 +1,594 @@
+striped_green:5 posh_indigo
+light_yellow:3 wavy_turquoise
+bright_lime:2 striped_crimson,3 dull_red
+dull_blue:4 posh_coral,3 mirrored_coral,2 striped_fuchsia
+vibrant_coral:2 shiny_blue,2 muted_gray
+mirrored_gold:2 dotted_maroon
+drab_lavender:4 pale_turquoise,5 faded_lime,2 bright_aqua
+mirrored_red:4 shiny_tan,4 muted_aqua,4 pale_salmon,5 bright_violet
+clear_gray:4 bright_lavender,2 dotted_plum,1 drab_coral,3 faded_aqua
+dull_aqua:2 wavy_coral
+muted_yellow:3 drab_olive,4 pale_lime,2 striped_crimson,3 wavy_blue
+shiny_chartreuse:5 bright_yellow
+posh_turquoise:3 dotted_blue,4 pale_lime,1 mirrored_fuchsia
+faded_maroon:5 striped_indigo,2 light_aqua,3 dim_chartreuse,4 vibrant_tomato
+dotted_lavender:3 pale_crimson,3 wavy_gray,2 plaid_plum,5 mirrored_bronze
+striped_olive:5 dull_lime
+vibrant_aqua:3 drab_tan,5 bright_coral,3 pale_brown
+wavy_aqua:4 dim_lime,4 dotted_bronze,1 bright_gray
+pale_green:1 shiny_purple,4 dim_plum
+vibrant_purple:2 pale_gray,2 dull_crimson
+faded_green:4 dotted_plum,1 light_white
+posh_orange:4 light_blue
+drab_tomato:1 dull_salmon,3 plaid_orange,3 posh_gray
+vibrant_beige:2 dull_fuchsia
+wavy_orange:2 bright_tan,5 light_beige,2 vibrant_turquoise
+light_salmon:1 dark_blue,2 bright_orange
+light_blue:3 clear_chartreuse,5 dull_olive
+dull_crimson:4 dim_gold,5 dark_tan,5 dark_lavender
+dim_teal:3 striped_gray,4 shiny_fuchsia,2 vibrant_chartreuse,2 drab_plum
+striped_crimson:
+dark_brown:1 dim_plum
+dotted_tan:1 striped_fuchsia
+bright_turquoise:3 light_orange,2 wavy_bronze,2 light_beige
+drab_salmon:4 wavy_silver
+light_brown:1 clear_gold
+plaid_aqua:4 shiny_maroon,2 mirrored_gray
+posh_chartreuse:3 clear_maroon,4 wavy_black,3 vibrant_white
+wavy_gray:3 shiny_violet,2 striped_silver,5 pale_lime
+dim_crimson:1 wavy_blue,1 dull_red,1 dotted_plum
+wavy_black:5 dim_crimson,5 dotted_chartreuse
+faded_gray:4 plaid_white,2 mirrored_yellow
+muted_violet:5 vibrant_blue,5 shiny_beige
+dull_white:1 dull_olive,5 clear_chartreuse,1 dull_red,1 wavy_red
+light_bronze:4 bright_gray,3 light_tomato,2 shiny_white,2 clear_silver
+plaid_violet:2 vibrant_indigo,2 dim_turquoise
+posh_purple:5 wavy_purple
+bright_olive:4 muted_bronze,4 mirrored_green,2 dim_plum,5 bright_silver
+vibrant_olive:1 vibrant_beige,4 striped_gold,4 shiny_beige,1 faded_blue
+muted_fuchsia:3 vibrant_red
+plaid_indigo:4 dull_lime,3 faded_violet
+wavy_chartreuse:3 dotted_yellow
+posh_magenta:4 bright_gray,4 dotted_turquoise
+drab_teal:5 dotted_plum,2 light_white,2 dark_plum,4 dim_crimson
+dark_coral:3 wavy_chartreuse,3 plaid_bronze,1 muted_magenta
+posh_white:4 dotted_turquoise,1 mirrored_lime
+mirrored_brown:2 shiny_chartreuse,1 light_bronze,4 bright_bronze,5 dotted_crimson
+faded_cyan:2 dull_crimson,4 light_chartreuse,4 light_salmon
+bright_maroon:3 dotted_yellow,1 bright_gray,2 dim_yellow,5 light_fuchsia
+clear_silver:4 faded_green,4 posh_white,4 dark_plum
+shiny_crimson:4 dark_lavender,3 dotted_gold,3 dark_tan
+wavy_olive:4 dotted_cyan
+wavy_coral:3 dim_gold,4 dim_silver,4 faded_green,2 muted_purple
+striped_chartreuse:4 mirrored_plum,4 dull_tan,5 muted_gold
+bright_blue:5 mirrored_beige,4 muted_bronze,1 dark_tan,5 dark_cyan
+vibrant_red:3 light_chartreuse,2 faded_indigo,3 drab_teal,1 striped_indigo
+dim_cyan:5 faded_silver,3 wavy_coral
+muted_gold:4 pale_coral
+wavy_violet:2 dotted_gray,1 clear_tan,5 plaid_brown
+light_maroon:5 faded_silver
+light_cyan:5 pale_brown,3 pale_black,3 light_tomato,2 faded_violet
+pale_turquoise:1 dull_white,1 muted_tomato,2 clear_gold
+clear_plum:2 dotted_orange,1 bright_olive,3 striped_violet
+plaid_silver:5 muted_olive,1 vibrant_bronze,5 dull_lavender,3 dark_purple
+clear_gold:1 dotted_turquoise,3 dark_indigo
+muted_indigo:1 mirrored_orange,3 dull_beige
+light_plum:3 drab_brown,4 wavy_cyan,3 vibrant_lavender
+dim_maroon:4 dull_tan
+pale_lime:4 dotted_maroon,2 faded_silver,5 shiny_tomato
+shiny_black:2 dull_crimson
+wavy_indigo:1 light_fuchsia
+dull_lime:
+shiny_fuchsia:2 drab_fuchsia,1 shiny_cyan,1 muted_black,2 dull_aqua
+muted_lavender:4 dull_fuchsia,1 dim_chartreuse,1 vibrant_gold,2 shiny_beige
+bright_cyan:5 dark_gold,2 vibrant_cyan,1 pale_coral
+posh_black:3 dull_violet,5 drab_coral
+posh_olive:3 muted_magenta,3 dark_plum,1 shiny_violet
+dull_coral:1 dark_gold,2 striped_silver,5 vibrant_lavender,2 light_red
+clear_bronze:4 striped_cyan,4 dotted_chartreuse,4 shiny_maroon
+bright_red:2 dark_violet,4 pale_brown
+muted_silver:3 bright_blue,1 shiny_blue,5 muted_bronze,1 bright_tan
+dotted_maroon:5 muted_white,4 dull_lime,2 dim_gold,2 faded_fuchsia
+clear_lime:4 striped_gold,2 vibrant_purple,5 dotted_green,2 light_tomato
+shiny_tan:5 dark_lavender,1 dull_red,4 vibrant_turquoise,5 faded_fuchsia
+dark_teal:2 dotted_brown,5 clear_salmon,5 wavy_coral,3 light_fuchsia
+shiny_cyan:1 mirrored_gold,1 mirrored_aqua,1 posh_magenta
+pale_red:1 vibrant_turquoise
+drab_coral:2 faded_tomato,3 plaid_aqua
+clear_white:1 dull_white,5 shiny_tan,1 mirrored_yellow,1 wavy_chartreuse
+clear_crimson:5 muted_white,1 vibrant_yellow
+posh_lavender:2 mirrored_aqua,4 faded_aqua,2 light_red
+dim_violet:4 dull_orange,5 dull_turquoise,5 dark_purple
+pale_beige:3 wavy_indigo,5 dark_plum,2 dark_purple,2 dim_turquoise
+striped_brown:4 bright_lime,5 wavy_coral
+shiny_blue:2 wavy_coral,2 dotted_plum
+pale_black:5 clear_maroon,4 striped_crimson,4 dark_gold
+drab_plum:3 clear_gold
+posh_beige:3 faded_silver,3 dim_gold,5 shiny_gold
+clear_lavender:1 clear_white
+light_lavender:4 dotted_violet,3 dull_violet,4 dark_maroon,2 striped_violet
+plaid_brown:4 dotted_yellow
+dotted_green:3 dull_red,2 faded_green,3 muted_white,1 dim_turquoise
+muted_olive:4 vibrant_tan,3 dotted_black
+light_turquoise:3 wavy_blue,4 dim_plum,4 dim_chartreuse
+dim_salmon:2 mirrored_yellow
+shiny_white:1 mirrored_violet
+drab_olive:3 striped_crimson,3 dotted_maroon
+drab_silver:5 shiny_cyan,1 dull_teal,4 dark_lime
+vibrant_turquoise:4 striped_crimson,5 dark_plum,3 dark_lavender,5 dark_purple
+shiny_purple:1 posh_beige,1 dark_indigo,4 plaid_fuchsia,5 dotted_green
+bright_brown:1 striped_lavender,5 light_gold,1 dim_maroon
+dotted_violet:3 striped_blue
+bright_crimson:2 muted_gold,3 vibrant_turquoise,3 wavy_green,5 dull_white
+striped_tan:2 wavy_gray,4 bright_gray,1 plaid_cyan,1 vibrant_magenta
+dull_green:1 bright_brown,5 posh_beige,5 mirrored_crimson,1 dark_silver
+mirrored_lime:4 muted_tomato,5 wavy_chartreuse,5 dotted_plum
+striped_beige:2 striped_bronze,2 shiny_yellow,4 pale_gray,2 vibrant_tomato
+vibrant_lime:4 striped_crimson,2 pale_silver,4 clear_purple
+pale_blue:1 bright_cyan,1 shiny_fuchsia,5 wavy_turquoise,5 dotted_silver
+striped_maroon:1 muted_lime
+faded_chartreuse:2 mirrored_white
+mirrored_crimson:2 dotted_gold,5 shiny_red,5 wavy_red
+dull_beige:2 posh_red,1 vibrant_turquoise,5 dark_plum,5 clear_aqua
+wavy_green:3 shiny_crimson
+striped_salmon:2 dim_plum,2 mirrored_indigo
+faded_coral:3 muted_tomato,1 light_chartreuse
+dark_blue:2 shiny_violet
+shiny_gold:1 dull_lime,2 pale_coral,1 wavy_silver,5 muted_black
+clear_turquoise:1 posh_magenta
+dotted_salmon:2 mirrored_lime,1 mirrored_salmon
+pale_gray:3 bright_blue,5 muted_tan
+shiny_teal:5 pale_indigo
+drab_beige:5 faded_indigo,5 vibrant_bronze,4 pale_lime,3 dark_black
+vibrant_white:5 striped_violet,3 bright_blue,2 dim_gold
+posh_aqua:5 plaid_violet,3 drab_chartreuse
+plaid_gray:5 dotted_cyan,2 mirrored_silver
+clear_indigo:1 bright_tan,2 dull_yellow,5 mirrored_lavender,2 mirrored_fuchsia
+mirrored_turquoise:3 faded_chartreuse,2 drab_turquoise
+dark_chartreuse:2 mirrored_silver,3 vibrant_crimson,4 shiny_green,1 pale_brown
+pale_tomato:2 light_gold
+mirrored_purple:1 light_magenta,3 shiny_yellow,4 striped_lavender
+mirrored_blue:3 posh_magenta,4 dark_lavender,5 striped_crimson
+dull_purple:4 mirrored_indigo,2 wavy_bronze,4 muted_white,4 shiny_crimson
+mirrored_teal:5 dim_teal,4 dark_lime,4 mirrored_yellow,3 mirrored_turquoise
+drab_gold:3 dark_maroon,2 plaid_beige
+dotted_gold:2 striped_crimson,3 clear_red
+posh_fuchsia:4 dim_cyan,4 vibrant_turquoise,4 dotted_plum
+dim_lime:4 posh_indigo
+dim_tan:3 pale_indigo,1 striped_turquoise,4 plaid_coral
+plaid_red:5 wavy_gold,1 muted_plum,2 vibrant_plum,1 dim_brown
+light_orange:4 dotted_teal,4 dotted_yellow
+dark_green:1 dull_cyan
+posh_coral:3 shiny_green,3 dotted_red,1 drab_silver
+striped_orange:3 plaid_plum
+pale_purple:1 vibrant_coral,2 shiny_olive,1 clear_orange
+bright_fuchsia:3 bright_yellow
+striped_red:2 bright_orange,3 mirrored_yellow,1 dotted_coral,3 clear_aqua
+faded_plum:2 shiny_tan,4 dull_tan
+striped_gold:1 shiny_crimson
+faded_olive:2 shiny_lavender,5 posh_fuchsia,3 pale_gray
+pale_aqua:3 posh_beige
+dotted_plum:4 clear_red
+dotted_chartreuse:1 light_white,5 drab_turquoise
+striped_tomato:4 dim_plum,1 striped_black,4 drab_black
+shiny_lime:3 drab_coral,1 drab_green,4 muted_salmon
+dim_orange:2 striped_chartreuse
+plaid_tan:5 light_chartreuse,1 dotted_maroon,2 clear_silver
+dull_olive:3 muted_gold,5 dotted_gold,4 muted_white,1 shiny_violet
+dotted_beige:1 clear_tan
+dotted_silver:2 faded_crimson
+muted_black:3 clear_red,3 dotted_maroon
+clear_purple:5 dotted_plum
+striped_indigo:5 mirrored_blue,2 striped_violet,3 striped_yellow
+faded_teal:2 light_black,1 vibrant_maroon
+drab_red:3 dark_tan,4 pale_red,5 faded_salmon,3 dotted_tomato
+muted_aqua:2 striped_purple,3 vibrant_orange,3 bright_cyan
+mirrored_black:4 muted_yellow,5 light_fuchsia
+dark_gold:2 dark_indigo,3 muted_magenta,3 dull_white
+dotted_lime:4 shiny_blue,3 striped_fuchsia
+posh_brown:2 muted_beige
+muted_green:5 bright_white,5 dim_gold
+vibrant_salmon:1 pale_green,5 light_maroon,4 striped_violet
+drab_white:2 drab_fuchsia,4 dull_beige,2 pale_coral,1 shiny_tan
+light_lime:4 dotted_salmon,5 dark_fuchsia,2 vibrant_indigo
+shiny_tomato:5 wavy_green,2 striped_blue,3 faded_green,3 muted_tomato
+mirrored_aqua:2 dark_gold,2 shiny_green
+plaid_cyan:5 shiny_brown,2 pale_aqua,3 striped_turquoise,5 plaid_yellow
+light_crimson:3 bright_silver,2 dark_lime
+dull_cyan:3 pale_gray,5 light_beige,3 striped_blue
+muted_plum:2 muted_turquoise,5 wavy_lavender,3 striped_blue,3 striped_gray
+posh_tan:4 dark_brown,1 drab_crimson
+clear_yellow:3 striped_purple,4 faded_blue
+wavy_fuchsia:2 light_beige,3 faded_fuchsia
+pale_gold:4 faded_green,5 clear_bronze,5 vibrant_aqua,3 muted_cyan
+shiny_gray:3 plaid_chartreuse
+bright_indigo:3 drab_fuchsia
+drab_black:3 shiny_brown,3 posh_blue
+dark_crimson:5 faded_olive,1 mirrored_green
+vibrant_silver:1 dark_black,2 drab_tan
+shiny_green:4 dark_plum,4 drab_fuchsia,3 dim_plum,3 mirrored_gold
+plaid_crimson:1 dim_olive,5 bright_brown,5 dull_lavender
+dark_salmon:2 light_gold,4 shiny_blue
+faded_blue:4 striped_crimson,1 muted_tomato
+wavy_magenta:5 wavy_purple,3 bright_yellow,3 shiny_maroon,1 wavy_orange
+striped_cyan:1 dotted_plum,1 bright_coral
+faded_crimson:5 pale_aqua,3 light_blue
+muted_gray:3 shiny_tomato
+striped_aqua:3 dim_crimson
+wavy_salmon:5 drab_bronze,4 light_maroon
+drab_fuchsia:3 faded_black,4 shiny_crimson,5 shiny_tan
+clear_black:4 dark_crimson,5 pale_lavender
+dotted_orange:1 dotted_coral,1 shiny_gold,3 wavy_coral
+plaid_tomato:4 wavy_orange
+dark_white:3 posh_cyan
+wavy_lime:4 faded_silver,3 vibrant_gold,3 vibrant_coral
+faded_tomato:1 striped_bronze,4 dotted_green
+mirrored_salmon:1 faded_crimson,3 muted_gold,4 clear_aqua
+drab_maroon:5 clear_silver,4 vibrant_cyan,5 faded_gold
+dull_violet:4 shiny_tomato
+bright_orange:4 bright_tan
+plaid_magenta:3 light_fuchsia
+shiny_turquoise:5 muted_bronze,4 bright_lavender,4 dark_tan
+pale_fuchsia:4 dull_crimson,3 wavy_red,5 dark_gold
+plaid_fuchsia:2 dim_cyan,5 bright_coral
+dark_indigo:3 dotted_teal,3 striped_blue
+vibrant_bronze:4 mirrored_plum,5 faded_silver
+light_tomato:3 posh_fuchsia,4 mirrored_magenta,1 muted_gold,3 dim_green
+shiny_silver:2 dim_yellow,1 wavy_coral
+bright_bronze:3 plaid_coral,2 wavy_coral,2 bright_gray
+plaid_turquoise:3 dim_lime
+plaid_teal:1 vibrant_teal,3 dark_indigo,4 plaid_fuchsia
+striped_purple:2 striped_chartreuse,2 clear_chartreuse,4 dark_cyan,5 striped_salmon
+pale_orange:5 muted_green
+light_green:2 plaid_plum
+plaid_purple:4 muted_lime
+dark_cyan:
+wavy_teal:5 dull_black,3 striped_teal,4 dotted_cyan,5 vibrant_olive
+shiny_indigo:3 dull_lavender
+bright_beige:1 bright_bronze
+light_white:
+muted_red:3 light_tan,4 clear_cyan
+light_coral:2 dull_aqua,1 bright_beige,4 wavy_maroon,3 posh_tan
+bright_violet:2 drab_beige,3 shiny_fuchsia,2 shiny_cyan,5 light_gray
+striped_fuchsia:1 striped_black,4 shiny_white,3 dim_plum
+vibrant_teal:1 faded_tomato,3 dim_gray
+striped_turquoise:3 wavy_silver,3 bright_orange,5 plaid_coral,1 clear_red
+mirrored_fuchsia:1 dotted_green,1 plaid_cyan
+dim_green:1 posh_olive,1 dim_silver
+faded_orange:4 drab_beige,1 vibrant_salmon,2 plaid_orange
+bright_tomato:4 dim_aqua,2 posh_beige,4 striped_purple
+faded_lime:1 bright_tan
+mirrored_indigo:4 shiny_tan,3 faded_blue
+vibrant_orange:3 vibrant_olive,2 bright_olive,3 wavy_violet
+plaid_beige:2 shiny_violet,3 faded_violet
+muted_purple:3 light_beige,3 bright_tan
+mirrored_orange:5 plaid_lime,4 dotted_olive
+wavy_purple:3 dim_chartreuse
+wavy_blue:5 striped_blue,5 posh_olive
+dull_black:3 dotted_plum
+drab_bronze:5 dim_olive,3 vibrant_gray,3 pale_green,1 dull_cyan
+pale_coral:5 dim_gold,1 vibrant_bronze
+dull_orange:1 shiny_turquoise
+mirrored_gray:1 mirrored_plum,5 dim_silver
+drab_cyan:1 dark_fuchsia,1 striped_salmon,4 plaid_beige,5 dim_olive
+dark_bronze:2 pale_salmon,5 dull_magenta,5 clear_indigo,3 wavy_plum
+dim_tomato:5 striped_lavender
+faded_white:3 striped_lime,4 dotted_orange
+dull_teal:4 vibrant_yellow
+clear_teal:4 wavy_gold
+muted_tan:3 faded_green
+dim_gold:
+dim_turquoise:3 mirrored_plum,3 bright_orange,1 muted_tan
+striped_silver:4 dull_lime,5 striped_blue
+striped_yellow:2 vibrant_crimson
+striped_violet:1 clear_beige,2 dim_indigo,3 muted_lime
+posh_cyan:4 faded_blue,2 vibrant_magenta,3 dull_lime,3 shiny_blue
+vibrant_brown:5 shiny_violet
+pale_chartreuse:1 wavy_teal,1 muted_maroon,5 clear_turquoise
+vibrant_indigo:5 drab_teal,1 bright_aqua
+bright_green:4 drab_silver,5 shiny_gold
+dim_black:1 faded_violet
+muted_orange:3 dull_yellow,1 vibrant_blue,3 plaid_tan,2 dotted_teal
+muted_crimson:4 muted_silver,5 shiny_lavender,3 posh_beige,2 shiny_purple
+clear_tomato:4 dotted_teal,2 vibrant_olive,5 plaid_magenta,4 bright_chartreuse
+vibrant_fuchsia:5 dim_cyan,4 light_white,1 dull_orange,5 dark_gold
+muted_magenta:
+dim_brown:1 striped_red,4 posh_fuchsia,3 mirrored_gold
+dim_plum:1 vibrant_turquoise,1 clear_chartreuse,3 faded_brown
+plaid_gold:5 drab_tomato
+wavy_tomato:3 dark_gold,1 light_orange,4 muted_salmon,2 muted_olive
+pale_olive:2 plaid_cyan
+wavy_plum:4 faded_aqua,5 dull_olive,3 bright_lavender,2 drab_chartreuse
+posh_tomato:5 drab_blue
+dull_gray:5 dull_olive,3 mirrored_coral,4 striped_lavender
+posh_plum:5 dull_cyan,2 dotted_orange,3 plaid_indigo,5 light_beige
+striped_plum:2 drab_white,2 mirrored_yellow,3 dim_crimson,2 pale_salmon
+light_beige:3 dark_cyan,3 striped_crimson
+dark_maroon:5 light_tan,5 faded_green,3 striped_gold,4 bright_aqua
+faded_brown:5 dotted_gold,3 striped_turquoise,4 bright_tan,3 clear_chartreuse
+striped_lime:4 dim_gold,5 pale_coral,4 mirrored_plum
+light_olive:1 shiny_white,3 dotted_plum,3 clear_orange,3 posh_turquoise
+light_magenta:2 shiny_turquoise
+dotted_turquoise:5 posh_olive
+dark_violet:1 faded_blue,1 shiny_green
+shiny_plum:2 dotted_blue,1 clear_gold
+striped_bronze:5 dim_chartreuse,1 shiny_violet
+vibrant_lavender:1 faded_fuchsia,2 shiny_blue,2 dotted_plum
+dotted_crimson:2 dark_cyan,1 dim_chartreuse,4 light_red
+posh_blue:2 bright_silver,4 drab_beige,2 dim_salmon
+plaid_orange:3 dark_lime
+wavy_gold:1 drab_olive,1 shiny_cyan,3 drab_brown
+muted_lime:2 dull_teal
+vibrant_magenta:3 muted_gray
+posh_silver:4 bright_lavender,5 light_gold,2 posh_beige,2 dull_crimson
+shiny_bronze:5 pale_lavender,3 plaid_bronze,3 mirrored_blue,4 bright_olive
+dotted_tomato:2 drab_yellow
+posh_violet:4 muted_fuchsia,1 dark_blue,1 shiny_indigo
+wavy_turquoise:5 shiny_yellow
+plaid_lavender:3 dim_lavender,3 dotted_salmon
+striped_teal:5 mirrored_crimson,1 mirrored_violet,1 dark_violet,5 dotted_yellow
+faded_black:5 posh_red
+faded_tan:1 mirrored_violet,4 dark_lime,4 dim_green,4 muted_green
+clear_brown:3 pale_coral,1 plaid_coral,4 pale_gray
+light_violet:5 dim_plum,4 muted_violet,3 drab_teal
+dotted_gray:4 mirrored_white,3 vibrant_lavender,4 dark_lime,5 vibrant_coral
+faded_yellow:2 plaid_bronze,1 dark_purple,5 shiny_crimson,3 shiny_tan
+shiny_violet:4 dull_lime,4 muted_white,2 dark_cyan
+faded_gold:5 plaid_aqua
+bright_salmon:2 shiny_lavender,5 plaid_red
+clear_violet:4 posh_turquoise
+light_silver:1 light_salmon,2 clear_aqua,4 mirrored_plum,2 striped_silver
+pale_cyan:4 vibrant_orange,3 light_salmon,4 striped_cyan,4 wavy_gray
+wavy_cyan:3 light_orange,1 bright_yellow,2 pale_fuchsia
+clear_maroon:1 dotted_coral,4 plaid_yellow
+striped_blue:5 light_white,2 dull_lime,1 shiny_maroon
+clear_red:
+pale_tan:5 light_gold,5 dark_brown,1 wavy_black,5 drab_blue
+mirrored_magenta:4 dotted_plum,3 posh_beige
+dull_maroon:1 mirrored_fuchsia
+dim_silver:5 striped_crimson,1 light_beige
+plaid_olive:3 shiny_white,2 bright_lavender
+shiny_magenta:3 dotted_gray,1 shiny_blue,3 faded_silver,2 dark_tomato
+mirrored_green:4 dim_cyan,2 bright_tan
+faded_silver:1 dark_plum,5 dotted_plum,1 dark_cyan,5 dull_red
+vibrant_cyan:5 vibrant_lavender
+shiny_brown:4 striped_blue,1 light_beige,1 muted_tan,5 bright_orange
+wavy_maroon:3 vibrant_white,1 pale_red,5 striped_yellow,4 plaid_bronze
+shiny_aqua:5 dotted_salmon,5 bright_maroon,1 wavy_red
+clear_cyan:2 striped_red,5 plaid_coral,2 dark_fuchsia
+dotted_red:5 dim_orange,4 striped_tan
+vibrant_green:1 dark_plum
+striped_black:5 dull_white
+dotted_indigo:2 vibrant_orange,5 vibrant_lavender,4 shiny_bronze
+dark_tan:1 muted_tan
+dotted_yellow:3 dark_cyan,2 shiny_maroon
+dull_chartreuse:4 vibrant_red,4 dim_salmon,5 drab_salmon
+shiny_beige:3 dotted_yellow,2 muted_tomato,4 wavy_red
+faded_indigo:4 faded_green
+light_chartreuse:1 mirrored_violet,5 striped_lavender
+dark_red:5 dark_green,3 clear_beige,5 wavy_tan,4 striped_cyan
+muted_blue:3 dark_beige,2 bright_lavender,5 dull_teal
+mirrored_olive:5 dark_lavender,1 clear_blue
+pale_yellow:2 dark_chartreuse,4 posh_silver,2 dim_crimson,3 wavy_gold
+dull_brown:1 light_aqua,2 pale_aqua,1 faded_red,1 wavy_white
+clear_chartreuse:2 wavy_coral
+bright_white:4 light_fuchsia,5 drab_turquoise,5 striped_lime
+light_gray:4 mirrored_violet,5 dotted_maroon,3 pale_lime
+mirrored_cyan:4 mirrored_salmon,2 drab_olive
+dark_orange:3 vibrant_lavender
+drab_chartreuse:2 wavy_orange
+muted_white:
+dull_red:1 faded_fuchsia,2 dark_purple,4 clear_red
+shiny_red:2 bright_gray,4 drab_blue,2 bright_aqua
+vibrant_gold:3 shiny_tan,5 mirrored_gold
+wavy_red:1 dark_plum,3 striped_blue,4 light_white,1 wavy_silver
+mirrored_coral:4 dark_indigo
+mirrored_beige:1 muted_white
+faded_bronze:5 bright_aqua,2 dotted_chartreuse,2 faded_tomato
+bright_plum:3 drab_chartreuse
+shiny_coral:2 dark_yellow,5 dark_blue,4 dotted_green
+mirrored_yellow:1 dotted_plum
+faded_fuchsia:
+bright_magenta:4 muted_orange,3 striped_red,5 light_bronze
+drab_aqua:5 dotted_indigo,3 dim_gray
+faded_violet:2 shiny_gold
+dull_lavender:1 drab_chartreuse,2 shiny_plum,4 vibrant_tan,5 dark_tomato
+shiny_lavender:2 light_fuchsia
+dotted_brown:5 shiny_brown,4 light_fuchsia,3 plaid_cyan
+dark_olive:2 wavy_red,5 striped_lavender,4 vibrant_lavender,2 shiny_gold
+dotted_black:1 dark_lime
+faded_aqua:2 dim_turquoise,3 muted_green,5 clear_aqua
+plaid_yellow:1 striped_turquoise,4 striped_lime
+pale_bronze:4 muted_tan,5 dotted_fuchsia
+muted_coral:2 striped_bronze,1 dark_violet
+dim_indigo:1 shiny_red
+drab_gray:3 posh_white,2 plaid_indigo
+pale_silver:1 faded_coral,5 shiny_lavender,5 wavy_lime
+wavy_silver:1 vibrant_bronze
+wavy_crimson:1 mirrored_orange
+dotted_aqua:4 drab_plum,5 faded_indigo,3 dark_violet,3 pale_gray
+mirrored_violet:5 mirrored_white
+dotted_white:3 muted_plum,3 bright_bronze,2 dark_salmon
+bright_coral:5 mirrored_gray
+dim_aqua:3 mirrored_plum,3 plaid_olive,1 light_gold
+drab_crimson:5 faded_purple
+pale_crimson:4 dotted_orange,2 faded_silver
+mirrored_tan:3 posh_gray,2 dark_silver,3 dim_tan
+clear_olive:1 dim_yellow,1 bright_blue,3 bright_tomato
+dim_blue:3 drab_black,1 light_blue,5 light_orange,5 bright_white
+mirrored_chartreuse:4 drab_beige,1 pale_indigo
+dark_turquoise:1 vibrant_black,1 light_turquoise,5 pale_aqua
+posh_yellow:4 dim_teal,2 dark_black
+clear_aqua:2 drab_teal,5 light_gold,4 dim_crimson
+dotted_purple:4 striped_salmon
+light_indigo:3 faded_red,2 shiny_crimson,3 wavy_green,2 striped_coral
+vibrant_yellow:1 dotted_cyan,3 posh_silver
+faded_lavender:5 dull_cyan
+dull_magenta:2 dotted_green
+posh_indigo:1 dull_lime,4 striped_lavender,1 faded_silver
+light_aqua:3 posh_maroon,3 dotted_black,4 muted_tomato,4 mirrored_magenta
+mirrored_maroon:3 light_aqua
+dim_red:2 muted_green,1 vibrant_tan
+wavy_yellow:3 dotted_cyan
+bright_aqua:1 dotted_maroon,1 muted_white,3 striped_turquoise
+clear_fuchsia:2 mirrored_fuchsia,4 bright_white,3 mirrored_white,1 bright_coral
+dotted_olive:3 pale_aqua,4 light_gold,5 dim_yellow
+light_black:4 clear_tan,5 wavy_lime,3 dim_fuchsia,3 pale_indigo
+dark_purple:5 dark_cyan
+dim_purple:2 wavy_crimson,2 dim_chartreuse,3 shiny_yellow,1 light_black
+plaid_salmon:1 faded_lime
+dotted_cyan:2 shiny_tomato,1 mirrored_plum
+posh_maroon:1 light_bronze,4 muted_tan,5 vibrant_plum
+dim_fuchsia:3 dim_plum,5 dark_gray
+bright_tan:1 shiny_maroon,1 light_beige,2 faded_fuchsia
+plaid_green:3 wavy_cyan,5 dark_chartreuse,5 dark_blue
+plaid_black:4 dull_olive,4 mirrored_white,4 plaid_white
+clear_beige:1 dull_tan
+mirrored_tomato:5 drab_tomato,1 plaid_bronze
+dim_yellow:4 dark_indigo,4 bright_silver,3 muted_purple
+clear_tan:4 light_gold,3 bright_lavender,2 mirrored_fuchsia
+dim_lavender:3 vibrant_aqua
+striped_white:3 posh_tomato,3 dark_gold,2 clear_olive,1 dotted_bronze
+wavy_bronze:1 plaid_lime,4 plaid_yellow,1 bright_white
+shiny_orange:3 drab_chartreuse,1 shiny_gold
+dim_coral:2 faded_silver
+bright_gold:5 dim_aqua,2 drab_bronze
+vibrant_black:4 dotted_green,2 light_brown
+bright_teal:1 light_gold,2 bright_aqua
+drab_brown:2 wavy_blue,5 wavy_orange
+dull_yellow:4 striped_green,4 bright_lime,2 faded_tan,5 dotted_green
+vibrant_maroon:4 mirrored_fuchsia
+vibrant_gray:3 faded_turquoise,5 pale_black,3 drab_aqua
+pale_white:3 shiny_beige
+dim_beige:1 pale_fuchsia,1 muted_lime,3 dotted_plum
+drab_blue:4 dim_crimson,4 shiny_beige,2 bright_silver
+dark_black:5 light_beige,5 muted_gold
+plaid_bronze:3 wavy_indigo
+posh_salmon:3 dark_salmon,2 posh_purple,5 dim_yellow
+mirrored_lavender:4 wavy_chartreuse,4 plaid_bronze
+muted_brown:1 drab_magenta,2 vibrant_plum,4 clear_purple,4 dark_blue
+wavy_white:2 striped_red
+dark_gray:5 bright_blue,2 light_brown
+mirrored_silver:2 dotted_chartreuse,1 dotted_fuchsia,4 mirrored_lavender,2 mirrored_white
+wavy_brown:5 posh_teal,4 drab_white,5 shiny_chartreuse,4 light_maroon
+posh_gray:1 striped_turquoise,4 muted_crimson,3 clear_yellow,3 striped_crimson
+dull_tomato:5 drab_purple,4 faded_yellow
+dotted_blue:2 dull_cyan,3 dim_plum
+vibrant_tomato:5 plaid_coral,5 pale_fuchsia
+wavy_beige:3 dull_magenta,3 dotted_beige,3 bright_white,2 striped_fuchsia
+plaid_lime:3 light_blue,3 drab_brown,1 drab_teal
+dim_white:5 wavy_coral,5 vibrant_bronze,2 dark_cyan,2 dark_plum
+bright_yellow:4 pale_aqua,2 dim_turquoise,4 faded_brown
+plaid_maroon:1 dark_teal,4 vibrant_white,5 striped_coral,4 shiny_white
+pale_lavender:2 shiny_violet
+drab_magenta:5 bright_gray
+clear_salmon:4 wavy_purple,1 bright_olive,1 clear_yellow
+dark_yellow:1 bright_bronze,3 striped_plum
+posh_bronze:1 shiny_maroon,4 drab_olive,2 mirrored_green,5 light_silver
+drab_green:3 dim_orange,5 vibrant_chartreuse
+light_fuchsia:2 wavy_silver,4 muted_white,5 muted_black,1 faded_green
+dark_plum:4 bright_tan,4 dull_lime,2 faded_fuchsia,4 shiny_maroon
+light_teal:4 light_lavender
+vibrant_tan:1 vibrant_bronze
+muted_teal:5 wavy_green,5 plaid_turquoise
+bright_chartreuse:2 muted_gold,5 posh_olive,1 vibrant_tan,2 faded_salmon
+dotted_fuchsia:3 pale_lime
+pale_teal:5 plaid_silver,4 shiny_turquoise,3 dim_coral,2 vibrant_bronze
+drab_orange:2 shiny_silver,2 vibrant_indigo,5 mirrored_lavender,5 dark_yellow
+clear_green:4 vibrant_beige,1 bright_crimson,5 muted_gray
+shiny_yellow:4 light_fuchsia,2 mirrored_plum
+plaid_blue:4 mirrored_blue,1 plaid_olive
+mirrored_plum:2 dull_red,3 muted_magenta
+dim_bronze:3 vibrant_olive
+posh_green:3 mirrored_blue,4 vibrant_yellow,5 bright_yellow,2 wavy_fuchsia
+clear_blue:5 mirrored_yellow
+dotted_teal:5 shiny_brown,2 faded_silver,3 plaid_coral
+muted_cyan:4 clear_aqua
+dark_fuchsia:1 shiny_blue,1 dull_fuchsia,2 dull_lime,5 drab_salmon
+dark_silver:2 dim_salmon
+muted_beige:1 shiny_lavender,1 striped_chartreuse
+dull_indigo:1 bright_beige,2 dark_gold,1 mirrored_magenta
+bright_silver:3 faded_violet,4 dim_cyan,5 faded_indigo,1 clear_chartreuse
+dim_olive:1 mirrored_plum,1 clear_indigo,2 striped_crimson
+pale_magenta:5 vibrant_black,3 muted_salmon,1 dotted_fuchsia
+faded_turquoise:2 light_lavender,3 clear_lavender,3 dull_coral
+posh_gold:5 clear_blue
+muted_maroon:5 dark_fuchsia,2 muted_red,5 dim_salmon
+muted_tomato:4 striped_blue,3 dark_plum,5 faded_green,4 bright_tan
+dark_lime:2 posh_white,4 dull_crimson,2 dark_cyan,4 mirrored_plum
+posh_lime:1 wavy_violet,3 dotted_teal,5 shiny_cyan
+light_tan:4 striped_turquoise,4 dim_white,4 shiny_violet
+dull_bronze:2 drab_teal,5 light_red,4 muted_indigo
+plaid_coral:5 dark_purple,5 striped_crimson,4 light_beige
+wavy_lavender:5 muted_white
+drab_indigo:4 dotted_green,1 striped_silver
+dull_silver:1 dark_yellow,2 light_beige,3 striped_indigo,4 wavy_violet
+dark_aqua:1 drab_violet
+muted_bronze:4 clear_chartreuse,4 drab_turquoise,3 pale_coral
+striped_coral:1 shiny_red,1 dark_purple
+faded_beige:2 bright_fuchsia,2 mirrored_turquoise
+dull_plum:5 dull_aqua
+drab_lime:3 clear_aqua,4 shiny_cyan
+pale_plum:5 shiny_silver,5 dull_coral
+pale_violet:1 wavy_purple,1 light_plum,3 striped_silver,3 drab_teal
+clear_magenta:2 dark_plum,2 striped_tan,4 posh_plum,4 dark_turquoise
+vibrant_plum:3 dotted_teal,5 vibrant_gold
+bright_gray:3 muted_white,2 striped_crimson,3 mirrored_gray,4 wavy_silver
+clear_coral:2 vibrant_magenta,2 dim_orange,3 dark_black
+vibrant_chartreuse:3 dark_lime,1 mirrored_turquoise,2 vibrant_indigo,1 dull_gray
+faded_purple:2 mirrored_indigo,3 dark_indigo,2 pale_fuchsia,5 muted_olive
+drab_violet:4 muted_black,1 clear_maroon,1 clear_gold
+dim_magenta:5 wavy_tan
+clear_orange:5 shiny_tomato,1 faded_fuchsia
+mirrored_white:5 dim_plum,3 mirrored_magenta
+plaid_white:1 pale_tomato,2 posh_magenta,5 vibrant_maroon,5 shiny_fuchsia
+shiny_olive:4 striped_salmon,2 mirrored_gray,5 plaid_beige
+plaid_plum:3 bright_bronze
+dull_salmon:3 bright_white,2 muted_cyan
+pale_maroon:3 muted_tan,1 bright_gray
+faded_salmon:1 bright_silver
+striped_magenta:5 dark_plum,5 faded_bronze,4 striped_brown
+vibrant_crimson:2 muted_lime,5 plaid_indigo
+wavy_tan:2 shiny_yellow,3 clear_beige,2 dotted_gold
+posh_teal:4 striped_gold,3 drab_salmon,3 shiny_plum,2 pale_gray
+dotted_coral:2 wavy_chartreuse,3 wavy_blue
+light_purple:1 mirrored_lime
+bright_lavender:5 faded_brown
+muted_turquoise:2 shiny_maroon,3 light_purple,2 striped_tan,4 plaid_cyan
+posh_red:2 striped_lavender,1 dark_black,5 dark_purple,3 drab_olive
+bright_black:3 dark_brown,4 clear_olive,4 plaid_olive
+mirrored_bronze:1 wavy_turquoise
+vibrant_violet:2 plaid_indigo,4 faded_orange
+drab_tan:3 clear_crimson,4 mirrored_turquoise,2 muted_magenta
+dim_gray:5 striped_black,5 muted_silver,1 dotted_blue,3 posh_gray
+dull_tan:1 clear_maroon,4 posh_beige,2 striped_crimson,5 dim_gold
+vibrant_blue:4 bright_beige,5 bright_bronze,2 plaid_salmon
+posh_crimson:2 mirrored_purple,1 striped_silver,2 bright_magenta,5 bright_blue
+dotted_bronze:2 wavy_crimson,5 muted_purple,5 light_gold
+pale_brown:1 drab_coral,2 mirrored_lavender,4 dark_tomato,3 plaid_indigo
+shiny_maroon:5 light_beige,3 light_white
+dark_tomato:5 shiny_gold,5 clear_aqua,2 dotted_gold
+dark_beige:2 bright_gray,3 light_beige,1 dull_lime
+light_red:5 mirrored_magenta,1 mirrored_lime,4 dotted_teal
+faded_magenta:1 dim_maroon,3 mirrored_gray,1 dotted_beige
+drab_turquoise:
+shiny_salmon:5 shiny_tan,2 posh_magenta,4 clear_turquoise
+dark_magenta:1 light_fuchsia,3 muted_yellow,5 dotted_olive,4 dark_crimson
+light_gold:5 clear_red
+faded_red:4 clear_beige,3 dim_silver,4 posh_gray
+pale_salmon:5 mirrored_white
+striped_lavender:2 striped_blue
+dull_fuchsia:1 bright_orange
+dull_turquoise:1 vibrant_tomato,3 clear_tan,3 bright_teal,1 drab_maroon
+dotted_magenta:5 drab_gold,2 muted_beige
+pale_indigo:4 plaid_brown,1 plaid_cyan,1 mirrored_black,5 drab_magenta
+drab_yellow:5 dark_turquoise,2 dotted_beige,5 clear_red,2 muted_lavender
+striped_gray:5 bright_orange,5 muted_white,2 clear_chartreuse
+dark_lavender:5 dim_gold,2 pale_coral
+dull_gold:1 dull_beige
+muted_chartreuse:3 muted_bronze,1 faded_black,4 bright_tan
+plaid_chartreuse:4 dim_indigo,4 mirrored_gold,4 dim_lime
+muted_salmon:4 faded_brown,1 dotted_black,5 muted_black
+bright_purple:5 shiny_red,5 vibrant_cyan,4 plaid_cyan,5 bright_silver
+dim_chartreuse:1 faded_indigo
+drab_purple:4 muted_cyan,3 wavy_lavender,2 dotted_blue
