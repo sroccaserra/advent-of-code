@@ -6,14 +6,6 @@ to take a small break on day 24. I got back on time for day 25 and I'm really
 proud of that. But there is more: then, for what it's worth, I solved the first
 two days in 22 different languages. And took some notes along the way.
 
-See also:
-
-- <https://github.com/sroccaserra/aoc2015#learnings>
-- <https://github.com/sroccaserra/aoc2018#learnings>
-- <https://github.com/sroccaserra/aoc2019#learnings>
-- <https://github.com/sroccaserra/aoc2020#learnings>
-- <https://github.com/sroccaserra/aoc2022#learnings>
-
 Contents:
 
 - [#two-problems-22-languages](#two-problems-22-languages)

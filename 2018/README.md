@@ -17,14 +17,6 @@ $ stack runhaskell src/01.hs - < src/01.txt  # Allows to use stdin
 
 ## Learnings
 
-See also:
-
-- <https://github.com/sroccaserra/aoc2015#learnings>
-- <https://github.com/sroccaserra/aoc2019#learnings>
-- <https://github.com/sroccaserra/aoc2020#learnings>
-- <https://github.com/sroccaserra/aoc2021#learnings>
-- <https://github.com/sroccaserra/aoc2022#learnings>
-
 ### Algorithmes
 
 - Summed-area table ~ <https://en.wikipedia.org/wiki/Summed-area_table>
