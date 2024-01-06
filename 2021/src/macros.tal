@@ -1,0 +1,49 @@
+( Flow )
+
+%RTN { JMP2r }
+
+( Shorthands for logic and arithmetic opcodes )
+
+%+  { ADD }  %-  { SUB }  %*  { MUL }  %/  { DIV }
+%<  { LTH }  %>  { GTH }  %=  { EQU }  %!  { NEQ }
+%++ { ADD2 } %-- { SUB2 } %** { MUL2 } %// { DIV2 }
+%<< { LTH2 } %>> { GTH2 } %== { EQU2 } %!! { NEQ2 }
+
+%10_u16   { #000a }
+%100_u16  { #0064 }
+%1000_u16 { #03e8 }
+%10E4_u16 { #2710 }
+
+%10_u32   { #0000 #000a }
+%100_u32  { #0000 #0064 }
+%1000_u32 { #0000 #03e8 }
+%10E4_u32 { #0000 #2710 }
+%10E5_u32 { #0001 #86a0 }
+%10E6_u32 { #000f #4240 }
+%10E7_u32 { #0098 #9680 }
+%10E8_u32 { #05f5 #e100 }
+%10E9_u32 { #3b9a #ca00 }
+
+%LDZ4 { DUP LDZ2 ROT #02 + LDZ2 }
+%STZ4 { DUP STH #02 + STZ2 STHr STZ2 }
+
+( Parse )
+
+%EOL? { \n EQU }
+
+( Print & Debug )
+
+%\n { #0a }
+%EMIT { .Console/write DEO }
+%LF { \n EMIT }
+%PRINT { ;print-str JSR2 LF }
+
+%HALT { #01 .System/halt DEO }
+%DUMP { #0101 .System/debug DEO2 }
+%DEBUG { ;print-hex/byte JSR2 LF }
+%DEBUG2 { ;print-hex JSR2 LF }
+
+( See: https://github.com/jonathanperret/aoc2021/blob/main/library/string.tal )
+
+%S< { ;inline-str JSR2 } %>S { 00 }
+%P< { S< }               %>P { >S ;print-str JSR2 }

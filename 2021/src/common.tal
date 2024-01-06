@@ -1,0 +1,88 @@
+@print-hex ( value* -- )
+    SWP ,&byte JSR
+    &byte ( byte -- )
+        STHk #04 SFT ,&parse JSR #18 DEO
+        STHr #0f AND ,&parse JSR #18 DEO
+    JMP2r
+    &parse ( byte -- char ) DUP #09 GTH ,&above JCN #30 ADD JMP2r
+    &above #57 ADD JMP2r
+RTN
+
+@print-dec ( value* -- )
+    10E4_u16 DIV2k DUP #30 ADD #18 DEO MUL2 SUB2
+    1000_u16 DIV2k DUP #30 ADD #18 DEO MUL2 SUB2
+    100_u16 DIV2k DUP #30 ADD #18 DEO MUL2 SUB2
+    10_u16 DIV2k DUP #30 ADD #18 DEO MUL2 SUB2
+    #30 ADD #18 DEO POP
+RTN
+
+( requires uxn math32 lib )
+@print-dec-32 ( value** -- )
+    DUP4 10E9_u32 ;div32 JSR2 DUP #30 ADD EMIT 10E9_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 10E8_u32 ;div32 JSR2 DUP #30 ADD EMIT 10E8_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 10E7_u32 ;div32 JSR2 DUP #30 ADD EMIT 10E7_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 10E6_u32 ;div32 JSR2 DUP #30 ADD EMIT 10E6_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 10E5_u32 ;div32 JSR2 DUP #30 ADD EMIT 10E5_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 10E4_u32 ;div32 JSR2 DUP #30 ADD EMIT 10E4_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 1000_u32 ;div32 JSR2 DUP #30 ADD EMIT 1000_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 100_u32 ;div32 JSR2 DUP #30 ADD EMIT 100_u32 ;mul32 JSR2 ;sub32 JSR2
+    DUP4 10_u32 ;div32 JSR2 DUP #30 ADD EMIT 10_u32 ;mul32 JSR2 ;sub32 JSR2
+    #30 ADD #18 DEO POP
+    POP2
+RTN
+
+@print-str ( string* -- )
+    #0001 SUB2
+    &while
+        INC2 LDAk DUP #18 DEO ,&while JCN
+    POP2
+RTN
+
+@print-str-zp ( string* -- )
+    #01 SUB
+    &while
+        INC LDZk DUP .Console/write DEO ,&while JCN
+    POP
+    \n .Console/write DEO
+RTN
+
+@print-zeropage ( -- )
+    #0a #18 DEO
+    #0000
+    &loop
+        LDZk ;print-hex/byte JSR2
+        DUP #01 AND #00 = ,&no-space JCN
+            #2018 DEO
+            &no-space
+        DUP #0f AND #0f ! ,&no-break JCN
+            #0a18 DEO
+            &no-break
+        INC NEQk ,&loop JCN
+    POP2
+    #0a #18 DEO
+RTN
+
+( decimal string to hex number )
+
+@sdec ( addr* -- hex* )
+    ( res ) LIT2r 0000
+    &while
+        LDAk #30 - #00 SWP
+        STH2r #000a ** ++ STH2
+        INC2 LDAk ,&while JCN
+    POP2
+    ( res ) STH2r
+RTN
+
+( See: https://github.com/jonathanperret/aoc2021/blob/main/library/string.tal )
+
+( -- s* )
+@inline-str
+    STH2r ( s* )
+    DUP2 ( s* s'* )
+    &loop
+        LDAk ( s* s'* b )
+        STH INC2 STHr ( s* s'*+1 b )
+        #00 NEQ ,&loop JCN
+    ( s* s'* )
+JMP2

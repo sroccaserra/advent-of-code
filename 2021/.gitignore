@@ -1,0 +1,8 @@
+src/__pycache__
+.stack-work/
+*.hi
+*.o
+*~
+*.swp
+build
+node_modules
