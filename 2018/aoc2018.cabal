@@ -1,0 +1,37 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: d61e295de64c6871e302223432fdf87e43047c7130ec05c520c79fb603289626
+
+name:           aoc2018
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/sroccaserra/aoc2018#readme>
+homepage:       https://github.com/sroccaserra/aoc2018#readme
+bug-reports:    https://github.com/sroccaserra/aoc2018/issues
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/sroccaserra/aoc2018
+
+library
+  exposed-modules:
+      Common
+  other-modules:
+      Paths_aoc2018
+  hs-source-dirs:
+      src
+  ghc-options: -W
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec >=2.7.4 && <3
+  default-language: Haskell2010
