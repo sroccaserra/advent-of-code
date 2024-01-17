@@ -1,37 +1,62 @@
 import re
 
 
-def solve_1(dictionary, parts):
+MIN = 1
+MAX = 4000
+CATEGORIES = 'xmas'
+NO_CATEGORY = 4
+
+
+def solve_1(rules_dict, parts):
     result = 0
-    for (x, m, a, s) in parts:
-        dest = run_workflow(dictionary, x, m, a, s)
+    for part in parts:
+        dest = 'in'
+        while dest in rules_dict:
+            rules = rules_dict[dest]
+            for category_index, value_min, value_max, rule_dest in rules[:-1]:
+                if value_min <= part[category_index] <= value_max:
+                    dest = rule_dest
+                    break
+            else:
+                dest = get_dest(rules[-1])
         if dest == 'A':
-            result += x+m+a+s
+            result += sum(part)
     return result
 
 
-def run_workflow(dictionary, x, m, a, s):
-    dest = 'in'
-    while dest in dictionary:
-        rules = dictionary[dest]
-        for rule in rules:
-            if len(rule) == 1:
-                dest = rule[0]
-                break
-            condition, rule_dest = rule
-            if eval(condition):
-                dest = rule_dest
-                break
-    return dest
+def check_hypothesis(rules_dict):
+    for k, rules in rules_dict.items():
+        # - There are always 2 or more rules
+        assert len(rules) > 1
+        # - The last rule is always the default dest
+        for i in range(len(rules)-1):
+            assert rules[i][0] != NO_CATEGORY
+        assert rules[-1][0] == NO_CATEGORY
 
 
 def parse_rules(lines):
-    dictionary = {}
+    result = {}
     for line in lines:
         name = re.sub('{.*', '', line)
         branches = tuple([tuple(chunk.split(':')) for chunk in re.sub('.*{', '', line[:-1]).split(',')])
-        dictionary[name] = branches
-    return dictionary
+        split_confs = []
+        result[name] = split_confs
+        for rule in branches:
+            if len(rule) == 1:
+                split_confs.append((NO_CATEGORY, MIN, MAX, rule[0]))
+            else:
+                dest = rule[1]
+                cond_str = rule[0]
+                index = CATEGORIES.find(cond_str[0])
+                n = int(cond_str[2:])
+                value_min, value_max = (MIN, n-1) if cond_str[1] == '<' else (n+1, MAX)
+                assert value_min < value_max
+                split_confs.append((index, value_min, value_max, dest))
+    return result
+
+
+def get_dest(rule):
+    return rule[3]
 
 
 def parse_parts(lines):
@@ -42,7 +67,7 @@ def parse_parts(lines):
     return result
 
 
-ex = """px{a<2006:qkq,m>2090:A,rfg}
+ex = '''px{a<2006:qkq,m>2090:A,rfg}
 pv{a>1716:R,A}
 lnx{m>1548:A,A}
 rfg{s<537:gd,x>2440:R,A}
@@ -59,10 +84,11 @@ hdj{m>838:A,pv}
 {x=2036,m=264,a=79,s=2244}
 {x=2461,m=1339,a=466,s=291}
 {x=2127,m=1623,a=2188,s=1013}
-"""
+'''
 text = ex
 # text = open(0).read()
 chunks = text.split('\n\n')
-dictionary = parse_rules(chunks[0].splitlines())
+rules_dict = parse_rules(chunks[0].splitlines())
 parts = parse_parts(chunks[1].splitlines())
-print(solve_1(dictionary, parts))
+check_hypothesis(rules_dict)
+print(solve_1(rules_dict, parts))
