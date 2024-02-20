@@ -1,5 +1,5 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef __COMMON_HPP__
+#define __COMMON_HPP__
 
 #include <vector>
 #include <string>
@@ -18,4 +18,4 @@ std::vector<T> getParsedLines(char* filename, parse_fn<T> parse) {
     return numbers;
 }
 
-#endif // COMMON_H
+#endif // __COMMON_HPP__

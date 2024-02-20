@@ -2,7 +2,7 @@
 #include <sstream>
 #include <vector>
 
-#include "common/common.h"
+#include "common/common.hpp"
 
 struct Command {
     const std::string direction;

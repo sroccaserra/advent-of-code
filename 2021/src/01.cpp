@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include "common/common.h"
+#include "common/common.hpp"
 
 const int HUGE = 99999;
 
