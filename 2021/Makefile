@@ -4,6 +4,8 @@ BUILD=build
 SRC=src
 LIB=lib
 
+CFLAGS=-std=c18 -Wall -Wextra -Wpedantic -Werror
+
 ##
 # Common
 
@@ -38,6 +40,14 @@ $(BUILD)/%_cpp: $(SRC)/%.cpp $(SRC)/common/common.hpp $(BUILD)
 
 .PHONY: %_cpp
 %_cpp: $(BUILD)/%_cpp
+	@$< src/$*.in
+
+.PRECIOUS: $(BUILD)/%_c
+$(BUILD)/%_c: $(SRC)/%.c $(BUILD)
+	gcc $(CFLAGS) -o $@ $<
+
+.PHONY: %_c
+%_c: $(BUILD)/%_c
 	@$< src/$*.in
 
 ##

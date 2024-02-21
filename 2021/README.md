@@ -904,6 +904,12 @@ To run Node.js solutions:
 $ node src/01.{js,in}
 ```
 
+To run C solutions:
+
+```
+$ make 01_c
+```
+
 To run C++ solutions:
 
 ```
