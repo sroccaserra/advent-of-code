@@ -1,38 +1,58 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
-#include "common/IntVector.h"
+typedef struct CommandList CommandList;
+
+struct CommandList {
+    char direction;
+    int value;
+    CommandList* next;
+};
 
 typedef struct {
     int first;
     int second;
 } Results;
 
-Results solve(IntVector* directions, IntVector* values) {
+Results solve(CommandList* commands) {
     int hpos = 0, depth_1 = 0, depth_2 = 0, aim = 0;
 
-    for (size_t i = 0; i < directions->size; ++i) {
-        int direction = getInt(directions, i);
-        int value = getInt(values, i);
-        switch (direction) {
+    while (NULL != commands) {
+        switch (commands->direction) {
             case 'f':
-            hpos += value;
-            depth_2 += aim * value;
+            hpos += commands->value;
+            depth_2 += aim * commands->value;
             break;
         case 'u':
-            depth_1 -= value;
-            aim -= value;
+            depth_1 -= commands->value;
+            aim -= commands->value;
             break;
         case 'd':
-            depth_1 += value;
-            aim += value;
+            depth_1 += commands->value;
+            aim += commands->value;
             break;
         default:
             assert(NULL);
         }
+        commands = commands->next;
     }
 
     return (Results){hpos * depth_1, hpos * depth_2};
+}
+
+void reverse(CommandList** head_p) {
+    CommandList* prev = NULL;
+    CommandList* current = *head_p;
+    CommandList* next;
+    while (current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    *head_p = prev;
 }
 
 int main() {
@@ -42,17 +62,21 @@ int main() {
         return 1;
     }
 
-    IntVector directions = createIntVector();
-    IntVector values = createIntVector();
     char buffer[7];
     int n;
+    CommandList* head = NULL;
     while(EOF != fscanf(file, "%s %d\n", buffer, &n)) {
-        pushInt(&directions, buffer[0]);
-        pushInt(&values, n);
+        CommandList* next = malloc(sizeof(CommandList));
+        assert(next);
+        next->direction = buffer[0];
+        next->value = n;
+        next->next = head;
+        head = next;
     }
     fclose(file);
 
-    Results results = solve(&directions, &values);
+    reverse(&head);
+    Results results = solve(head);
     printf("%d\n%d\n",
         results.first,
         results.second);
