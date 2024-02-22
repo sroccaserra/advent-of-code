@@ -43,7 +43,7 @@ $(BUILD)/%_cpp: $(SRC)/%.cpp $(SRC)/common/common.hpp $(BUILD)
 	@$< src/$*.in
 
 .PRECIOUS: $(BUILD)/%_c
-$(BUILD)/%_c: $(SRC)/%.c $(BUILD)
+$(BUILD)/%_c: $(SRC)/%.c $(BUILD) $(SRC)/common/IntVector.h
 	gcc $(CFLAGS) -o $@ $<
 
 .PHONY: %_c
