@@ -44,10 +44,10 @@ int main() {
 
     IntVector directions = createIntVector();
     IntVector values = createIntVector();
-    char c;
+    char buffer[7];
     int n;
-    while(EOF != fscanf(file, "%c%*s %d\n", &c, &n)) {
-        pushInt(&directions, c);
+    while(EOF != fscanf(file, "%s %d\n", buffer, &n)) {
+        pushInt(&directions, buffer[0]);
         pushInt(&values, n);
     }
     fclose(file);
