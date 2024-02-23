@@ -41,20 +41,6 @@ Results solve(CommandList* commands) {
     return (Results){hpos * depth_1, hpos * depth_2};
 }
 
-void reverse(CommandList** head_p) {
-    CommandList* prev = NULL;
-    CommandList* current = *head_p;
-    CommandList* next;
-    while (current != NULL)
-    {
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
-    }
-    *head_p = prev;
-}
-
 int main() {
     FILE* file = fopen("src/02.in", "r");
     if (NULL == file) {
@@ -65,17 +51,23 @@ int main() {
     char buffer[7];
     int n;
     CommandList* head = NULL;
+    CommandList* last = NULL;
     while(EOF != fscanf(file, "%s %d\n", buffer, &n)) {
         CommandList* next = malloc(sizeof(CommandList));
         assert(next);
         next->direction = buffer[0];
         next->value = n;
-        next->next = head;
-        head = next;
+        next->next = NULL;
+        if (NULL == head) {
+            head = next;
+        }
+        else {
+            last->next = next;
+        }
+        last = next;
     }
     fclose(file);
 
-    reverse(&head);
     Results results = solve(head);
     printf("%d\n%d\n",
         results.first,
