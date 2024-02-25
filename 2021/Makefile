@@ -4,7 +4,7 @@ BUILD=build
 SRC=src
 LIB=lib
 
-CFLAGS=-std=c18 -Wall -Wextra -Wpedantic -Werror
+CFLAGS=-std=c18 -Wall -Wextra -Wpedantic -Werror -D _POSIX_C_SOURCE=200809L
 
 ##
 # Common
@@ -43,7 +43,7 @@ $(BUILD)/%_cpp: $(SRC)/%.cpp $(SRC)/common/common.hpp $(BUILD)
 	@$< src/$*.in
 
 .PRECIOUS: $(BUILD)/%_c
-$(BUILD)/%_c: $(SRC)/%.c $(BUILD) $(SRC)/common/IntVector.h
+$(BUILD)/%_c: $(SRC)/%.c $(BUILD) $(SRC)/common/*.h
 	gcc $(CFLAGS) -o $@ $<
 
 .PHONY: %_c
