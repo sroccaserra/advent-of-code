@@ -2,16 +2,18 @@
 #define COMMON_H
 
 #include <stdio.h>
+#include <errno.h>
 
 #include "PointerVector.h"
 
 int getln(FILE* file, char** linep);
 
-int getlines(char* filename, char*** lines, size_t* size) {
+int getlines(char* filename, char*** linesp, size_t* size) {
+    errno = 0;
     FILE *file = fopen(filename, "r");
     if (NULL == file) {
-        printf("Error: file not found.\n");
-        return 1;
+        perror(filename);
+        return -1;
     }
 
     PointerVector vlines = createPointerVector();
@@ -22,7 +24,7 @@ int getlines(char* filename, char*** lines, size_t* size) {
     fclose(file);
 
     *size = vlines.size;
-    *lines = (char**)vlines.data;
+    *linesp = (char**)vlines.data;
 
     return 0;
 }
@@ -37,28 +39,30 @@ int getlines(char* filename, char*** lines, size_t* size) {
  * And by writing getln() I learn something.
  */
 
-#define GETL_INIT_SIZE 8
-#define GETL_GROW_BY 2
-
-#define GETL_EXTRA_SPACE 2
+#define GETLN_INIT_SIZE 8
+#define GETLN_GROW_BY 2
+#define GETLN_EXTRA_SPACE 1
 
 int getln(FILE* file, char** linep) {
-    char* array = malloc(GETL_INIT_SIZE*sizeof(char));
+    errno = 0;
+    char* array = malloc(GETLN_INIT_SIZE*sizeof(char));
     if (array == NULL) {
+        perror("getln");
         return -1;
     }
 
-    int max = GETL_INIT_SIZE;
+    int max = GETLN_INIT_SIZE;
     int nchars = 0;
     int c;
     while ((c = fgetc(file)) != EOF && c != '\n') {
-        if (nchars + GETL_EXTRA_SPACE >= max) {
-            char* new_array = realloc(array, (GETL_GROW_BY*max)*sizeof(char));
+        if (nchars + GETLN_EXTRA_SPACE >= max) {
+            max *= GETLN_GROW_BY;
+            errno = 0;
+            char* new_array = realloc(array, max*sizeof(char));
             if (NULL == new_array) {
-                fprintf(stderr, "Error: could not allocate mem for line.\n");
+                perror("getln");
                 return -1;
             }
-            max *= GETL_GROW_BY;
             array = new_array;
         }
         array[nchars] = c;
@@ -68,11 +72,7 @@ int getln(FILE* file, char** linep) {
     array[nchars] = '\0';
     *linep = array;
 
-    if (c == EOF) {
-        return -1;
-    }
-
-    return 0;
+    return (c == EOF) ? EOF : 0;
 }
 
 #endif
