@@ -2,13 +2,11 @@
 #include <stdlib.h>
 #include <assert.h>
 
-typedef struct CommandList CommandList;
-
-struct CommandList {
+typedef struct CommandList {
     char direction;
     int value;
-    CommandList* next;
-};
+    struct CommandList* next;
+} CommandList;
 
 typedef struct {
     int first;
