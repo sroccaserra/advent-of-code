@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <assert.h>
 
 typedef struct CommandList {
@@ -40,9 +41,10 @@ Results solve(CommandList* commands) {
 }
 
 int main() {
-    FILE* file = fopen("src/02.in", "r");
+    char* filename = "src/02.in";
+    FILE* file = fopen(filename, "r");
     if (NULL == file) {
-        printf("Error: file not found.\n");
+        perror(filename);
         return 1;
     }
 
