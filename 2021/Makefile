@@ -4,7 +4,7 @@ BUILD=build
 SRC=src
 LIB=lib
 
-CFLAGS=-std=c18 -Wall -Wextra -Wpedantic -Werror -D _POSIX_C_SOURCE=200809L
+CFLAGS=-std=c18 -Wall -Wextra -Wpedantic -Werror
 
 ##
 # Common
