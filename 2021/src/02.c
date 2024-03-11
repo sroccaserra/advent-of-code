@@ -1,47 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <errno.h>
 #include <assert.h>
 
-typedef struct CommandList {
+struct CommandList {
     char direction;
     int value;
     struct CommandList* next;
-} CommandList;
+};
 
-typedef struct {
-    int first;
-    int second;
-} Results;
-
-Results solve(CommandList* commands) {
+void solve(const struct CommandList* commands, int* result_1, int* result_2) {
     int hpos = 0, depth_1 = 0, depth_2 = 0, aim = 0;
 
     while (NULL != commands) {
         switch (commands->direction) {
             case 'f':
-            hpos += commands->value;
-            depth_2 += aim * commands->value;
-            break;
-        case 'u':
-            depth_1 -= commands->value;
-            aim -= commands->value;
-            break;
-        case 'd':
-            depth_1 += commands->value;
-            aim += commands->value;
-            break;
-        default:
-            assert(NULL);
+                hpos += commands->value;
+                depth_2 += aim * commands->value;
+                break;
+            case 'u':
+                depth_1 -= commands->value;
+                aim -= commands->value;
+                break;
+            case 'd':
+                depth_1 += commands->value;
+                aim += commands->value;
+                break;
+            default:
+                assert(false);
         }
         commands = commands->next;
     }
 
-    return (Results){hpos * depth_1, hpos * depth_2};
+    *result_1 = hpos * depth_1;
+    *result_2 = hpos * depth_2;
 }
 
 int main() {
-    char* filename = "src/02.in";
+    const char* const filename = "src/02.in";
     FILE* file = fopen(filename, "r");
     if (NULL == file) {
         perror(filename);
@@ -50,10 +47,10 @@ int main() {
 
     char buffer[7];
     int n;
-    CommandList* head = NULL;
-    CommandList* last = NULL;
+    struct CommandList* head = NULL;
+    struct CommandList* last = NULL;
     while(EOF != fscanf(file, "%s %d\n", buffer, &n)) {
-        CommandList* next = malloc(sizeof(CommandList));
+        struct CommandList* next = malloc(sizeof(struct CommandList));
         assert(next);
         next->direction = buffer[0];
         next->value = n;
@@ -68,8 +65,7 @@ int main() {
     }
     fclose(file);
 
-    Results results = solve(head);
-    printf("%d\n%d\n",
-        results.first,
-        results.second);
+    int result_1, result_2;
+    solve(head, &result_1, &result_2);
+    printf("%d\n%d\n", result_1, result_2);
 }
