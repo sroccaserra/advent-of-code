@@ -162,26 +162,29 @@ void treap_insert(struct treap* t, char* key, double priority) {
         }
     }
     if (new_node->parent == NULL) {
-        printf("new root\n");
         t->root = new_node;
     }
 }
+
+#ifdef TEST
+
+#define A(x,y) (assert(0 == strcmp(x, y)))
 
 struct entry {
     char* name;
     double priority;
 };
 
-void test_treap() {
+static void test_treap() {
     struct entry entries[] = {
-        {"Floor", 10},
-        {"Butter", 76},
         {"Bacon", 77},
-        {"Eggs", 129},
-        {"Water", 32},
-        {"Milk", 55},
+        {"Butter", 76},
         {"Cabbage", 159},
+        {"Eggs", 129},
+        {"Floor", 10},
+        {"Milk", 55},
         {"Pork", 56},
+        {"Water", 32},
     };
 
     struct treap t;
@@ -189,8 +192,43 @@ void test_treap() {
         struct entry e = entries[i];
         treap_insert(&t, e.name, e.priority);
     }
-    treap_print(t.root);
+
+    A("Floor", t.root->key); {
+        A("Butter", t.root->left->key); {
+            A("Bacon", t.root->left->left->key);
+            A("Eggs", t.root->left->right->key); {
+                A("Cabbage", t.root->left->right->left->key);
+            }
+        }
+        A("Water", t.root->right->key); {
+            A("Milk", t.root->right->left->key); {
+                A("Pork", t.root->right->left->right->key);
+            }
+        }
+    }
 
     treap_insert(&t, "Beer", 20);
-    treap_print(t.root);
+
+    A("Floor", t.root->key); {
+        A("Beer", t.root->left->key); {
+            A("Bacon", t.root->left->left->key);
+            A("Butter", t.root->left->right->key); {
+                A("Eggs", t.root->left->right->right->key); {
+                    A("Cabbage", t.root->left->right->right->left->key);
+                }
+            }
+        }
+        A("Water", t.root->right->key); {
+            A("Milk", t.root->right->left->key); {
+                A("Pork", t.root->right->left->right->key);
+            }
+        }
+    }
+
 }
+
+int main() {
+    test_treap();
+}
+
+#endif
