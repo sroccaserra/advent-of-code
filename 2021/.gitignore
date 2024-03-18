@@ -6,3 +6,4 @@ src/__pycache__
 *.swp
 build
 node_modules
+a.out

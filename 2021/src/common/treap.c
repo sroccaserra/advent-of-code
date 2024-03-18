@@ -20,7 +20,7 @@ struct treap {
     struct treap_node* root;
 };
 
-struct treap_node* treap_create_node(char* key, double priority) {
+static struct treap_node* create_node(char* key, double priority) {
     errno = 0;
     struct treap_node* result = malloc(sizeof(struct treap_node));
     if (result == NULL) {
@@ -37,23 +37,27 @@ struct treap_node* treap_create_node(char* key, double priority) {
     return result;
 }
 
-void treap_set_left(struct treap_node* node, struct treap_node* left) {
+static void treap_set_left(struct treap_node* node, struct treap_node* left) {
     node->left = left;
     if (left != NULL) {
         left->parent = node;
     }
 }
 
-void treap_set_right(struct treap_node* node, struct treap_node* right) {
+static void treap_set_right(struct treap_node* node, struct treap_node* right) {
     node->right = right;
     if (right != NULL) {
         right->parent = node;
     }
 }
 
-void treap_print(struct treap_node* x) {
-    if (x->parent == NULL) {
+static void tnprint(struct treap_node* x) {
+    if (x == NULL || x->parent == NULL) {
         printf("Printing treap...\n");
+    }
+    if (x == NULL) {
+        printf("Empty tree.\n");
+        return;
     }
     printf("  treap_node: %s - %f ^ %s < %s > %s\n",
             x->key,
@@ -62,14 +66,18 @@ void treap_print(struct treap_node* x) {
             (x->left == NULL) ? "null" : x->left->key,
             (x->right == NULL) ? "null" : x->right->key);
     if (x->left != NULL) {
-        treap_print(x->left);
+        tnprint(x->left);
     }
     if (x->right != NULL) {
-        treap_print(x->right);
+        tnprint(x->right);
     }
 }
 
-void treap_right_rotate(struct treap* t, struct treap_node* x) {
+void tprint(struct treap* t) {
+    tnprint(t->root);
+}
+
+static void treap_right_rotate(struct treap* t, struct treap_node* x) {
     assert(x != NULL);
     assert(x->parent != NULL);
 
@@ -92,7 +100,7 @@ void treap_right_rotate(struct treap* t, struct treap_node* x) {
     treap_set_right(x, y);
 }
 
-void treap_left_rotate(struct treap* t, struct treap_node* x) {
+static void treap_left_rotate(struct treap* t, struct treap_node* x) {
     assert(x != NULL);
     assert(x->parent != NULL);
 
@@ -132,7 +140,7 @@ struct treap_node* treap_search(struct treap_node* node, char* key) {
 void treap_insert(struct treap* t, char* key, double priority) {
     struct treap_node* node = t->root;
     struct treap_node* parent = NULL;
-    struct treap_node* new_node = treap_create_node(key, priority);
+    struct treap_node* new_node = create_node(key, priority);
     assert(new_node != NULL);
 
     while (node != NULL) {
@@ -168,14 +176,14 @@ void treap_insert(struct treap* t, char* key, double priority) {
 
 #ifdef TEST
 
-#define A(x,y) (assert(0 == strcmp(x, y)))
+#define AES(x,y) (assert(0 == strcmp(x, y)))
 
 struct entry {
     char* name;
     double priority;
 };
 
-static void test_treap() {
+static void test_insert_exemple_from_book() {
     struct entry entries[] = {
         {"Bacon", 77},
         {"Butter", 76},
@@ -186,49 +194,47 @@ static void test_treap() {
         {"Pork", 56},
         {"Water", 32},
     };
-
-    struct treap t;
+    struct treap t = {};
     for (size_t i = 0; i < 8 ; ++i) {
         struct entry e = entries[i];
         treap_insert(&t, e.name, e.priority);
     }
-
-    A("Floor", t.root->key); {
-        A("Butter", t.root->left->key); {
-            A("Bacon", t.root->left->left->key);
-            A("Eggs", t.root->left->right->key); {
-                A("Cabbage", t.root->left->right->left->key);
+    AES("Floor", t.root->key); {
+        AES("Butter", t.root->left->key); {
+            AES("Bacon", t.root->left->left->key);
+            AES("Eggs", t.root->left->right->key); {
+                AES("Cabbage", t.root->left->right->left->key);
             }
         }
-        A("Water", t.root->right->key); {
-            A("Milk", t.root->right->left->key); {
-                A("Pork", t.root->right->left->right->key);
+        AES("Water", t.root->right->key); {
+            AES("Milk", t.root->right->left->key); {
+                AES("Pork", t.root->right->left->right->key);
             }
         }
     }
 
     treap_insert(&t, "Beer", 20);
 
-    A("Floor", t.root->key); {
-        A("Beer", t.root->left->key); {
-            A("Bacon", t.root->left->left->key);
-            A("Butter", t.root->left->right->key); {
-                A("Eggs", t.root->left->right->right->key); {
-                    A("Cabbage", t.root->left->right->right->left->key);
+    AES("Floor", t.root->key); {
+        AES("Beer", t.root->left->key); {
+            AES("Bacon", t.root->left->left->key);
+            AES("Butter", t.root->left->right->key); {
+                AES("Eggs", t.root->left->right->right->key); {
+                    AES("Cabbage", t.root->left->right->right->left->key);
                 }
             }
         }
-        A("Water", t.root->right->key); {
-            A("Milk", t.root->right->left->key); {
-                A("Pork", t.root->right->left->right->key);
+        AES("Water", t.root->right->key); {
+            AES("Milk", t.root->right->left->key); {
+                AES("Pork", t.root->right->left->right->key);
             }
         }
     }
-
 }
 
 int main() {
-    test_treap();
+    test_insert_exemple_from_book();
+    return 0;
 }
 
 #endif
