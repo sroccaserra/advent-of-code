@@ -140,7 +140,7 @@ struct treap_node* treap_search(struct treap_node* node, char* key) {
     if (NULL == node) {
         return NULL;
     }
-    int cmp = strcmp(key, node->key);
+    const int cmp = strcmp(key, node->key);
     if (cmp == 0) {
         return node;
     } else if (cmp < 0) {
@@ -189,7 +189,17 @@ void treap_insert(struct treap* t, char* key, double priority) {
 
 #ifdef TEST
 
-#define AES(x,y) (assert(0 == strcmp(x, y)))
+static void aes(char* expected, char* actual) {
+    if (NULL == expected) {
+        expected = "(NULL)";
+    }
+    if (NULL == actual) {
+        actual = "(NULL)";
+    }
+    if (0 != strcmp(expected, actual)) {
+        fprintf(stderr, "ASSERTION FAILED.\nExpected: %s\nGot: %s\n", expected, actual);
+    }
+}
 
 struct entry {
     char* name;
@@ -212,34 +222,34 @@ static void test_insert_exemple_from_book() {
         struct entry e = entries[i];
         treap_insert(&t, e.name, e.priority);
     }
-    AES("Floor", t.root->key); {
-        AES("Butter", t.root->left->key); {
-            AES("Bacon", t.root->left->left->key);
-            AES("Eggs", t.root->left->right->key); {
-                AES("Cabbage", t.root->left->right->left->key);
+    aes("Floor", t.root->key); {
+        aes("Butter", t.root->left->key); {
+            aes("Bacon", t.root->left->left->key);
+            aes("Eggs", t.root->left->right->key); {
+                aes("Cabbage", t.root->left->right->left->key);
             }
         }
-        AES("Water", t.root->right->key); {
-            AES("Milk", t.root->right->left->key); {
-                AES("Pork", t.root->right->left->right->key);
+        aes("Water", t.root->right->key); {
+            aes("Milk", t.root->right->left->key); {
+                aes("Pork", t.root->right->left->right->key);
             }
         }
     }
 
     treap_insert(&t, "Beer", 20);
 
-    AES("Floor", t.root->key); {
-        AES("Beer", t.root->left->key); {
-            AES("Bacon", t.root->left->left->key);
-            AES("Butter", t.root->left->right->key); {
-                AES("Eggs", t.root->left->right->right->key); {
-                    AES("Cabbage", t.root->left->right->right->left->key);
+    aes("Floor", t.root->key); {
+        aes("Beer", t.root->left->key); {
+            aes("Bacon", t.root->left->left->key);
+            aes("Butter", t.root->left->right->key); {
+                aes("Eggs", t.root->left->right->right->key); {
+                    aes("Cabbage", t.root->left->right->right->left->key);
                 }
             }
         }
-        AES("Water", t.root->right->key); {
-            AES("Milk", t.root->right->left->key); {
-                AES("Pork", t.root->right->left->right->key);
+        aes("Water", t.root->right->key); {
+            aes("Milk", t.root->right->left->key); {
+                aes("Pork", t.root->right->left->right->key);
             }
         }
     }
