@@ -77,6 +77,13 @@ void tprint(struct treap* t) {
     tnprint(t->root);
 }
 
+/**
+ *       y          x
+ *      / \        / \
+ *     x   c  ->  a   y
+ *    / \            / \
+ *   a   b          b   c
+ */
 static void treap_right_rotate(struct treap* t, struct treap_node* x) {
     assert(x != NULL);
     assert(x->parent != NULL);
@@ -85,21 +92,27 @@ static void treap_right_rotate(struct treap* t, struct treap_node* x) {
     assert(y->left == x);
 
     struct treap_node* p = y->parent;
-    if (p != NULL) {
+    if (p == NULL) {
+        t->root = x;
+        x->parent = NULL;
+    } else {
         if (p->left == y) {
             treap_set_left(p, x);
         } else {
             treap_set_right(p, x);
         }
     }
-    else {
-        t->root = x;
-        x->parent = NULL;
-    }
     treap_set_left(y, x->right);
     treap_set_right(x, y);
 }
 
+/**
+ *     y          x
+ *    / \        / \
+ *   a   x  ->  y   c
+ *      / \    / \
+ *     b   c  a   b
+ */
 static void treap_left_rotate(struct treap* t, struct treap_node* x) {
     assert(x != NULL);
     assert(x->parent != NULL);
@@ -108,16 +121,16 @@ static void treap_left_rotate(struct treap* t, struct treap_node* x) {
     assert(y->right == x);
 
     struct treap_node* p = y->parent;
-    if (p != NULL) {
+    if (p == NULL) {
+        t->root = x;
+        x->parent = NULL;
+    }
+    else {
         if (p->left == y) {
             treap_set_left(p, x);
         } else {
             treap_set_right(p, x);
         }
-    }
-    else {
-        t->root = x;
-        x->parent = NULL;
     }
     treap_set_right(y, x->left);
     treap_set_left(x, y);
