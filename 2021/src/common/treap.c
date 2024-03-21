@@ -50,32 +50,6 @@ static void treap_set_right(struct treap_node* node, struct treap_node* right) {
     }
 }
 
-static void tnprint(struct treap_node* x) {
-    if (x == NULL || x->parent == NULL) {
-        printf("Printing treap...\n");
-    }
-    if (x == NULL) {
-        printf("Empty tree.\n");
-        return;
-    }
-    printf("  treap_node: %s - %f ^ %s < %s > %s\n",
-            x->key,
-            x->priority,
-            (x->parent == NULL) ? "null" : x->parent->key,
-            (x->left == NULL) ? "null" : x->left->key,
-            (x->right == NULL) ? "null" : x->right->key);
-    if (x->left != NULL) {
-        tnprint(x->left);
-    }
-    if (x->right != NULL) {
-        tnprint(x->right);
-    }
-}
-
-void tprint(struct treap* t) {
-    tnprint(t->root);
-}
-
 /**
  *       y          x
  *      / \        / \
@@ -184,6 +158,31 @@ void treap_insert(struct treap* t, char* key, double priority) {
     if (new_node->parent == NULL) {
         t->root = new_node;
     }
+}
+
+static void tnfprint(FILE* f, struct treap_node* x, int depth) {
+    if (x == NULL) {
+        fprintf(f, "Empty tree.\n");
+        return;
+    }
+    for (int i = 0; i < depth; ++i) {
+        printf("  ");
+    }
+    fprintf(f, "%s - %.2f\n", x->key, x->priority);
+    if (x->left != NULL) {
+        tnfprint(f, x->left, depth + 1);
+    }
+    if (x->right != NULL) {
+        tnfprint(f, x->right, depth +  1);
+    }
+}
+
+void tfprint(FILE* f, struct treap* t) {
+    tnfprint(f, t->root, 0);
+}
+
+void tprint(struct treap* t) {
+    tfprint(stdout, t);
 }
 
 #ifdef TEST
