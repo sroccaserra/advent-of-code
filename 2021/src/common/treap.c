@@ -1,9 +1,10 @@
 #include <assert.h>
-#include <stdlib.h>
+#include <err.h>
+#include <error.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 #define TREAP_R (1.0*rand()/RAND_MAX)
 
@@ -21,11 +22,9 @@ struct treap {
 };
 
 static struct treap_node* create_node(char* key, double priority) {
-    errno = 0;
     struct treap_node* result = malloc(sizeof(struct treap_node));
     if (result == NULL) {
-        perror(key);
-        assert(false);
+        err(1, "key: %s", key);
     }
 
     result->key = key;
@@ -197,7 +196,7 @@ static void aes(char* expected, char* actual) {
         actual = "(NULL)";
     }
     if (0 != strcmp(expected, actual)) {
-        fprintf(stderr, "ASSERTION FAILED.\nExpected: %s\nGot: %s\n", expected, actual);
+        error(1, 0, "ASSERTION FAILED!\n⭕ %s\n❌ %s", expected, actual);
     }
 }
 
