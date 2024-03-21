@@ -166,7 +166,7 @@ static void tnfprint(FILE* f, struct treap_node* x, int depth) {
         return;
     }
     for (int i = 0; i < depth; ++i) {
-        printf("  ");
+        fprintf(f, "  ");
     }
     fprintf(f, "%s - %.2f\n", x->key, x->priority);
     if (x->left != NULL) {
@@ -195,18 +195,27 @@ static void aes(char* expected, char* actual) {
         actual = "(NULL)";
     }
     if (0 != strcmp(expected, actual)) {
-        error(1, 0, "ASSERTION FAILED!\n⭕ %s\n❌ %s", expected, actual);
+        error(1, 0, "ASSERTION FAILED!\n⭕\n%s\n❌\n%s", expected, actual);
     }
 }
 
+#define BUFF_SIZE 10000
+
+static void tsprint(char* buf, struct treap* t) {
+    FILE* f = fmemopen(buf, BUFF_SIZE, "w");
+    tfprint(f, t);
+    fclose(f);
+}
+
 struct entry {
-    char* name;
+    char* key;
     double priority;
 };
 
 static void test_insert_exemple_from_book() {
     struct entry entries[] = {
         {"Bacon", 77},
+        {"Beer", 20},
         {"Butter", 76},
         {"Cabbage", 159},
         {"Eggs", 129},
@@ -214,43 +223,28 @@ static void test_insert_exemple_from_book() {
         {"Milk", 55},
         {"Pork", 56},
         {"Water", 32},
+        {NULL, 0},
     };
     struct treap t = {};
-    for (size_t i = 0; i < 8 ; ++i) {
-        struct entry e = entries[i];
-        treap_insert(&t, e.name, e.priority);
-    }
-    aes("Floor", t.root->key); {
-        aes("Butter", t.root->left->key); {
-            aes("Bacon", t.root->left->left->key);
-            aes("Eggs", t.root->left->right->key); {
-                aes("Cabbage", t.root->left->right->left->key);
-            }
-        }
-        aes("Water", t.root->right->key); {
-            aes("Milk", t.root->right->left->key); {
-                aes("Pork", t.root->right->left->right->key);
-            }
-        }
+    size_t i = 0;
+    struct entry e;
+    while ((e = entries[i++]).key != NULL) {
+        treap_insert(&t, e.key, e.priority);
     }
 
-    treap_insert(&t, "Beer", 20);
+    char buf[BUFF_SIZE];
+    tsprint(buf, &t);
 
-    aes("Floor", t.root->key); {
-        aes("Beer", t.root->left->key); {
-            aes("Bacon", t.root->left->left->key);
-            aes("Butter", t.root->left->right->key); {
-                aes("Eggs", t.root->left->right->right->key); {
-                    aes("Cabbage", t.root->left->right->right->left->key);
-                }
-            }
-        }
-        aes("Water", t.root->right->key); {
-            aes("Milk", t.root->right->left->key); {
-                aes("Pork", t.root->right->left->right->key);
-            }
-        }
-    }
+    aes("Floor - 10.00\n"
+            "  Beer - 20.00\n"
+            "    Bacon - 77.00\n"
+            "    Butter - 76.00\n"
+            "      Eggs - 129.00\n"
+            "        Cabbage - 159.00\n"
+            "  Water - 32.00\n"
+            "    Milk - 55.00\n"
+            "      Pork - 56.00\n"
+            , buf);
 }
 
 int main() {
