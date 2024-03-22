@@ -199,10 +199,10 @@ static void aes(char* expected, char* actual) {
     }
 }
 
-#define BUFF_SIZE 10000
+#define BUF_SIZE 4096
 
 static void tsprint(char* buf, struct treap* t) {
-    FILE* f = fmemopen(buf, BUFF_SIZE, "w");
+    FILE* f = fmemopen(buf, BUF_SIZE, "w");
     tfprint(f, t);
     fclose(f);
 }
@@ -232,7 +232,7 @@ static void test_insert_exemple_from_book() {
         treap_insert(&t, e.key, e.priority);
     }
 
-    char buf[BUFF_SIZE];
+    char buf[BUF_SIZE];
     tsprint(buf, &t);
 
     aes("Floor - 10.00\n"
