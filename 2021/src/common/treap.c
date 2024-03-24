@@ -29,7 +29,17 @@ T treap_alloc() {
     return result;
 }
 
+static void treap_node_free(struct treap_node* n) {
+    if (NULL != n) {
+        treap_node_free(n->left);
+        treap_node_free(n->right);
+        free(n);
+    }
+}
+
 void treap_free(T* treap) {
+    assert(treap);
+    treap_node_free((*treap)->root);
     free(*treap);
     *treap = NULL;
 }
