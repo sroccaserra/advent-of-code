@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TREAP_R (1.0*rand()/RAND_MAX)
-
 #define T treap_t
 typedef struct T* T;
 
