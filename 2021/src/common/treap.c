@@ -36,21 +36,6 @@ void treap_free(T* treap) {
     *treap = NULL;
 }
 
-static struct treap_node* create_node(char* key, double priority) {
-    struct treap_node* result = malloc(sizeof(struct treap_node));
-    if (result == NULL) {
-        err(1, "key: %s", key);
-    }
-
-    result->key = key;
-    result->priority = priority;
-    result->left = NULL;
-    result->right = NULL;
-    result->parent = NULL;
-
-    return result;
-}
-
 static void treap_set_left(struct treap_node* node, struct treap_node* left) {
     node->left = left;
     if (left != NULL) {
@@ -124,18 +109,19 @@ static void treap_left_rotate(T t, struct treap_node* x) {
     treap_set_left(x, y);
 }
 
-struct treap_node* treap_search(struct treap_node* node, char* key) {
-    if (NULL == node) {
-        return NULL;
+static struct treap_node* create_node(char* key, double priority) {
+    struct treap_node* result = malloc(sizeof(struct treap_node));
+    if (result == NULL) {
+        err(1, "key: %s", key);
     }
-    const int cmp = strcmp(key, node->key);
-    if (cmp == 0) {
-        return node;
-    } else if (cmp < 0) {
-        return treap_search(node->left, key);
-    } else {
-        return treap_search(node->right, key);
-    }
+
+    result->key = key;
+    result->priority = priority;
+    result->left = NULL;
+    result->right = NULL;
+    result->parent = NULL;
+
+    return result;
 }
 
 void treap_insert(T t, char* key, double priority) {
@@ -175,6 +161,20 @@ void treap_insert(T t, char* key, double priority) {
     }
 }
 
+struct treap_node* treap_search(struct treap_node* node, char* key) {
+    if (NULL == node) {
+        return NULL;
+    }
+    const int cmp = strcmp(key, node->key);
+    if (cmp == 0) {
+        return node;
+    } else if (cmp < 0) {
+        return treap_search(node->left, key);
+    } else {
+        return treap_search(node->right, key);
+    }
+}
+
 static void tnfprint(FILE* f, struct treap_node* x, int depth) {
     if (x == NULL) {
         fprintf(f, "Empty tree.\n");
@@ -202,11 +202,11 @@ void tprint(T t) {
 
 #undef T
 
-/*********
- * Tests *
- *********/
-
 #ifdef TEST
+
+/**************
+ * Test tools *
+ **************/
 
 static void aes(char* expected, char* actual) {
     if (NULL == expected) {
@@ -240,6 +240,10 @@ static void build_treap(struct entry* entries, treap_t t) {
         treap_insert(t, e.key, e.priority);
     }
 }
+
+/*********
+ * Tests *
+ *********/
 
 static void test_treap_free_sets_pointer_to_null() {
     treap_t t = treap_alloc();
