@@ -6,8 +6,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*************
+ * Interface *
+ *************/
+
 #define T treap_t
 typedef struct T* T;
+
+T treap_alloc();
+void treap_free(T* t);
+void treap_insert(T t, char* key, double priority);
+void tfprint(FILE* f, T t);
+void tprint(T t);
+
+/******************
+ * Implementation *
+ ******************/
 
 struct T {
     struct treap_node* root;
@@ -37,11 +51,11 @@ static void treap_node_free(struct treap_node* n) {
     }
 }
 
-void treap_free(T* treap) {
-    assert(treap);
-    treap_node_free((*treap)->root);
-    free(*treap);
-    *treap = NULL;
+void treap_free(T* t) {
+    assert(t);
+    treap_node_free((*t)->root);
+    free(*t);
+    *t = NULL;
 }
 
 static void treap_set_left(struct treap_node* node, struct treap_node* left) {
