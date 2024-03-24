@@ -8,6 +8,13 @@
 
 #define TREAP_R (1.0*rand()/RAND_MAX)
 
+#define T treap_t
+typedef struct T* T;
+
+struct T {
+    struct treap_node* root;
+};
+
 struct treap_node {
     char* key;
     double priority;
@@ -17,9 +24,17 @@ struct treap_node {
     struct treap_node* parent;
 };
 
-struct treap {
-    struct treap_node* root;
-};
+T treap_alloc() {
+    T result = malloc(sizeof(struct T));
+    result->root = NULL;
+    assert(result);
+    return result;
+}
+
+void treap_free(T* treap) {
+    free(*treap);
+    *treap = NULL;
+}
 
 static struct treap_node* create_node(char* key, double priority) {
     struct treap_node* result = malloc(sizeof(struct treap_node));
@@ -57,7 +72,7 @@ static void treap_set_right(struct treap_node* node, struct treap_node* right) {
  *    / \            / \
  *   a   b          b   c
  */
-static void treap_right_rotate(struct treap* t, struct treap_node* x) {
+static void treap_right_rotate(T t, struct treap_node* x) {
     assert(x != NULL);
     assert(x->parent != NULL);
 
@@ -86,7 +101,7 @@ static void treap_right_rotate(struct treap* t, struct treap_node* x) {
  *      / \    / \
  *     b   c  a   b
  */
-static void treap_left_rotate(struct treap* t, struct treap_node* x) {
+static void treap_left_rotate(T t, struct treap_node* x) {
     assert(x != NULL);
     assert(x->parent != NULL);
 
@@ -123,7 +138,7 @@ struct treap_node* treap_search(struct treap_node* node, char* key) {
     }
 }
 
-void treap_insert(struct treap* t, char* key, double priority) {
+void treap_insert(T t, char* key, double priority) {
     struct treap_node* node = t->root;
     struct treap_node* parent = NULL;
     struct treap_node* new_node = create_node(key, priority);
@@ -177,13 +192,19 @@ static void tnfprint(FILE* f, struct treap_node* x, int depth) {
     }
 }
 
-void tfprint(FILE* f, struct treap* t) {
+void tfprint(FILE* f, T t) {
     tnfprint(f, t->root, 0);
 }
 
-void tprint(struct treap* t) {
+void tprint(T t) {
     tfprint(stdout, t);
 }
+
+#undef T
+
+/*********
+ * Tests *
+ *********/
 
 #ifdef TEST
 
@@ -201,7 +222,7 @@ static void aes(char* expected, char* actual) {
 
 #define BUF_SIZE 4096
 
-static void tsprint(char* buf, struct treap* t) {
+static void tsprint(char* buf, treap_t t) {
     FILE* f = fmemopen(buf, BUF_SIZE, "w");
     tfprint(f, t);
     fclose(f);
@@ -211,6 +232,21 @@ struct entry {
     char* key;
     double priority;
 };
+
+static void build_treap(struct entry* entries, treap_t t) {
+    size_t i = 0;
+    struct entry e;
+    while ((e = entries[i++]).key != NULL) {
+        treap_insert(t, e.key, e.priority);
+    }
+}
+
+static void test_treap_free_sets_pointer_to_null() {
+    treap_t t = treap_alloc();
+    treap_free(&t);
+
+    assert(t == NULL);
+}
 
 static void test_insert_exemple_from_book() {
     struct entry entries[] = {
@@ -225,15 +261,12 @@ static void test_insert_exemple_from_book() {
         {"Water", 32},
         {NULL, 0},
     };
-    struct treap t = {};
-    size_t i = 0;
-    struct entry e;
-    while ((e = entries[i++]).key != NULL) {
-        treap_insert(&t, e.key, e.priority);
-    }
+
+    treap_t t = treap_alloc();
+    build_treap(entries, t);
 
     char buf[BUF_SIZE];
-    tsprint(buf, &t);
+    tsprint(buf, t);
 
     aes("Floor - 10.00\n"
             "  Beer - 20.00\n"
@@ -245,9 +278,12 @@ static void test_insert_exemple_from_book() {
             "    Milk - 55.00\n"
             "      Pork - 56.00\n"
             , buf);
+
+    treap_free(&t);
 }
 
 int main() {
+    test_treap_free_sets_pointer_to_null();
     test_insert_exemple_from_book();
     return 0;
 }
