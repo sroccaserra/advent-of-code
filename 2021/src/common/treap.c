@@ -6,24 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*************
- * Interface *
- *************/
-
-#define T treap_t
-typedef struct T* T;
-
-T treap_alloc();
-void treap_free(T* t);
-void treap_insert(T t, char* key, void* value, double priority);
-void* treap_search(T t, char* key);
-bool treap_remove(T t, char* key);
-void tfprint(FILE* f, T t);
-void tprint(T t);
+#include "treap.h"
 
 /******************
  * Implementation *
  ******************/
+
+#define T treap_t
 
 struct T {
     struct treap_node* root;
@@ -281,7 +270,7 @@ void tprint(T t) {
 
 #undef T
 
-#ifdef TEST
+#ifdef TEST_TREAP
 
 /**************
  * Test tools *
