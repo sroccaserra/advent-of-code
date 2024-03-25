@@ -212,6 +212,15 @@ static void treap_node_fprint(FILE* f, struct treap_node* x, int depth) {
     for (int i = 0; i < depth; ++i) {
         fprintf(f, "  ");
     }
+    if (NULL == x->parent) {
+        fprintf(f, "^:");
+    } else if (x->parent->left == x) {
+        fprintf(f, "<:");
+    } else if (x->parent->right == x) {
+        fprintf(f, ">:");
+    } else {
+        assert(NULL);
+    }
     fprintf(f, "%s - %.2f\n", x->key, x->priority);
     if (x->left != NULL) {
         treap_node_fprint(f, x->left, depth + 1);
@@ -302,15 +311,15 @@ static void test_insert_exemple_from_book() {
     char buf[BUF_SIZE];
     tsprint(buf, t);
 
-    aes("Floor - 10.00\n"
-            "  Beer - 20.00\n"
-            "    Bacon - 77.00\n"
-            "    Butter - 76.00\n"
-            "      Eggs - 129.00\n"
-            "        Cabbage - 159.00\n"
-            "  Water - 32.00\n"
-            "    Milk - 55.00\n"
-            "      Pork - 56.00\n"
+    aes("^:Floor - 10.00\n"
+            "  <:Beer - 20.00\n"
+            "    <:Bacon - 77.00\n"
+            "    >:Butter - 76.00\n"
+            "      >:Eggs - 129.00\n"
+            "        <:Cabbage - 159.00\n"
+            "  >:Water - 32.00\n"
+            "    <:Milk - 55.00\n"
+            "      >:Pork - 56.00\n"
             , buf);
 
     treap_free(&t);
