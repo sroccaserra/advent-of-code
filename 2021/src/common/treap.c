@@ -38,6 +38,9 @@ struct treap_node {
     struct treap_node* parent;
 };
 
+#define IS_ROOT(node) (NULL == node->parent)
+#define IS_LEAF(node) (NULL == node->left && NULL == node->right)
+
 T treap_alloc() {
     T result = malloc(sizeof(struct T));
     result->root = NULL;
@@ -83,7 +86,7 @@ static void treap_set_right(struct treap_node* node, struct treap_node* right) {
  */
 static void treap_right_rotate(T t, struct treap_node* x) {
     assert(x != NULL);
-    assert(x->parent != NULL);
+    assert(!IS_ROOT(x));
 
     struct treap_node* y = x->parent;
     assert(y->left == x);
@@ -112,7 +115,7 @@ static void treap_right_rotate(T t, struct treap_node* x) {
  */
 static void treap_left_rotate(T t, struct treap_node* x) {
     assert(x != NULL);
-    assert(x->parent != NULL);
+    assert(!IS_ROOT(x));
 
     struct treap_node* y = x->parent;
     assert(y->right == x);
@@ -173,7 +176,7 @@ void treap_insert(T t, char* key, void* value, double priority) {
     }
     new_node->parent = parent;
 
-    while ((new_node->parent != NULL) &&
+    while (!IS_ROOT(new_node) &&
             (new_node->priority < new_node->parent->priority)) {
         if (new_node == new_node->parent->left) {
             treap_right_rotate(t, new_node);
@@ -181,7 +184,7 @@ void treap_insert(T t, char* key, void* value, double priority) {
             treap_left_rotate(t, new_node);
         }
     }
-    if (new_node->parent == NULL) {
+    if (IS_ROOT(new_node)) {
         t->root = new_node;
     }
 }
@@ -214,12 +217,12 @@ bool treap_remove(T t, char* key) {
     if (NULL == node) {
         return false;
     }
-    if (NULL == node->parent && (NULL == node->left && NULL == node->right)) {
+    if (IS_ROOT(node) && IS_LEAF(node)) {
         treap_node_free(t->root);
         t->root = NULL;
         return true;
     }
-    while (!(NULL == node->left && NULL == node->right)) {
+    while (!IS_LEAF(node)) {
         struct treap_node* left = node->left;
         struct treap_node* right = node->right;
         if (NULL != left && (right == NULL || left->priority < right->priority)) {
@@ -228,7 +231,7 @@ bool treap_remove(T t, char* key) {
             treap_left_rotate(t, right);
         }
         struct treap_node* parent = node->parent;
-        if (NULL == parent->parent) {
+        if (IS_ROOT(parent)) {
             t->root = parent;
         }
     }
@@ -250,7 +253,7 @@ static void treap_node_fprint(FILE* f, struct treap_node* x, int depth) {
     for (int i = 0; i < depth; ++i) {
         fprintf(f, "  ");
     }
-    if (NULL == x->parent) {
+    if (IS_ROOT(x)) {
         fprintf(f, "^:");
     } else if (x->parent->left == x) {
         fprintf(f, "<:");
