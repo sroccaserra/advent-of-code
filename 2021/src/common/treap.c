@@ -31,7 +31,7 @@ struct treap_node {
 #define IS_LEAF(node) (NULL == node->left && NULL == node->right)
 
 T treap_alloc() {
-    T result = malloc(sizeof(struct T));
+    T result = malloc(sizeof(*result));
     result->root = NULL;
     assert(result);
     return result;
@@ -126,7 +126,7 @@ static void treap_left_rotate(T t, struct treap_node* x) {
 }
 
 static struct treap_node* create_node(char* key, void* value, double priority) {
-    struct treap_node* result = malloc(sizeof(struct treap_node));
+    struct treap_node* result = malloc(sizeof(*result));
     if (result == NULL) {
         err(1, "key: %s", key);
     }
