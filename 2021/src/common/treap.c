@@ -15,7 +15,8 @@ typedef struct T* T;
 
 T treap_alloc();
 void treap_free(T* t);
-void treap_insert(T t, char* key, double priority);
+void treap_insert(T t, char* key, void* value, double priority);
+void* treap_search(T t, char* key);
 void tfprint(FILE* f, T t);
 void tprint(T t);
 
@@ -30,7 +31,7 @@ struct T {
 struct treap_node {
     char* key;
     double priority;
-
+    void* value;
     struct treap_node* left;
     struct treap_node* right;
     struct treap_node* parent;
@@ -131,7 +132,7 @@ static void treap_left_rotate(T t, struct treap_node* x) {
     treap_set_left(x, y);
 }
 
-static struct treap_node* create_node(char* key, double priority) {
+static struct treap_node* create_node(char* key, void* value, double priority) {
     struct treap_node* result = malloc(sizeof(struct treap_node));
     if (result == NULL) {
         err(1, "key: %s", key);
@@ -139,6 +140,7 @@ static struct treap_node* create_node(char* key, double priority) {
 
     result->key = key;
     result->priority = priority;
+    result->value = value;
     result->left = NULL;
     result->right = NULL;
     result->parent = NULL;
@@ -146,10 +148,10 @@ static struct treap_node* create_node(char* key, double priority) {
     return result;
 }
 
-void treap_insert(T t, char* key, double priority) {
+void treap_insert(T t, char* key, void* value, double priority) {
     struct treap_node* node = t->root;
     struct treap_node* parent = NULL;
-    struct treap_node* new_node = create_node(key, priority);
+    struct treap_node* new_node = create_node(key, value, priority);
     assert(new_node != NULL);
 
     while (node != NULL) {
@@ -183,21 +185,26 @@ void treap_insert(T t, char* key, double priority) {
     }
 }
 
-struct treap_node* treap_search(struct treap_node* node, char* key) {
+static void* treap_node_search(struct treap_node* node, char* key) {
     if (NULL == node) {
         return NULL;
     }
     const int cmp = strcmp(key, node->key);
     if (cmp == 0) {
-        return node;
+        return node->value;
     } else if (cmp < 0) {
-        return treap_search(node->left, key);
+        return treap_node_search(node->left, key);
     } else {
-        return treap_search(node->right, key);
+        return treap_node_search(node->right, key);
     }
 }
 
-static void tnfprint(FILE* f, struct treap_node* x, int depth) {
+void* treap_search(T t, char* key) {
+    assert(t);
+    return treap_node_search(t->root, key);
+}
+
+static void treap_node_fprint(FILE* f, struct treap_node* x, int depth) {
     if (x == NULL) {
         fprintf(f, "Empty tree.\n");
         return;
@@ -207,15 +214,15 @@ static void tnfprint(FILE* f, struct treap_node* x, int depth) {
     }
     fprintf(f, "%s - %.2f\n", x->key, x->priority);
     if (x->left != NULL) {
-        tnfprint(f, x->left, depth + 1);
+        treap_node_fprint(f, x->left, depth + 1);
     }
     if (x->right != NULL) {
-        tnfprint(f, x->right, depth +  1);
+        treap_node_fprint(f, x->right, depth +  1);
     }
 }
 
 void tfprint(FILE* f, T t) {
-    tnfprint(f, t->root, 0);
+    treap_node_fprint(f, t->root, 0);
 }
 
 void tprint(T t) {
@@ -253,13 +260,14 @@ static void tsprint(char* buf, treap_t t) {
 struct entry {
     char* key;
     double priority;
+    void* value;
 };
 
 static void build_treap(struct entry* entries, treap_t t) {
     size_t i = 0;
     struct entry e;
     while ((e = entries[i++]).key != NULL) {
-        treap_insert(t, e.key, e.priority);
+        treap_insert(t, e.key, e.value, e.priority);
     }
 }
 
@@ -308,9 +316,36 @@ static void test_insert_exemple_from_book() {
     treap_free(&t);
 }
 
+static void test_search() {
+    int value = 0xdeadbeef;
+    struct entry entries[] = {
+        {"Bacon", 77, &value},
+        {"Beer", 20},
+        {"Butter", 76},
+        {"Cabbage", 159},
+        {"Eggs", 129},
+        {"Floor", 10},
+        {"Milk", 55},
+        {"Pork", 56},
+        {"Water", 32},
+        {NULL, 0},
+    };
+    treap_t t = treap_alloc();
+    build_treap(entries, t);
+
+    int* result = treap_search(t, "Bacon");
+    assert(0xdeadbeef == *result);
+
+    result = treap_search(t, "dontexist");
+    assert(NULL == result);
+
+    treap_free(&t);
+}
+
 int main() {
     test_treap_free_sets_pointer_to_null();
     test_insert_exemple_from_book();
+    test_search();
     return 0;
 }
 
