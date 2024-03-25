@@ -17,6 +17,7 @@ T treap_alloc();
 void treap_free(T* t);
 void treap_insert(T t, char* key, void* value, double priority);
 void* treap_search(T t, char* key);
+bool treap_remove(T t, char* key);
 void tfprint(FILE* f, T t);
 void tprint(T t);
 
@@ -185,13 +186,13 @@ void treap_insert(T t, char* key, void* value, double priority) {
     }
 }
 
-static void* treap_node_search(struct treap_node* node, char* key) {
+static struct treap_node* treap_node_search(struct treap_node* node, char* key) {
     if (NULL == node) {
         return NULL;
     }
     const int cmp = strcmp(key, node->key);
     if (cmp == 0) {
-        return node->value;
+        return node;
     } else if (cmp < 0) {
         return treap_node_search(node->left, key);
     } else {
@@ -201,7 +202,44 @@ static void* treap_node_search(struct treap_node* node, char* key) {
 
 void* treap_search(T t, char* key) {
     assert(t);
-    return treap_node_search(t->root, key);
+    struct treap_node* node = treap_node_search(t->root, key);
+    if (NULL == node) {
+        return NULL;
+    }
+    return node->value;
+}
+
+bool treap_remove(T t, char* key) {
+    struct treap_node* node = treap_node_search(t->root, key);
+    if (NULL == node) {
+        return false;
+    }
+    if (NULL == node->parent && (NULL == node->left && NULL == node->right)) {
+        treap_node_free(t->root);
+        t->root = NULL;
+        return true;
+    }
+    while (!(NULL == node->left && NULL == node->right)) {
+        struct treap_node* left = node->left;
+        struct treap_node* right = node->right;
+        if (NULL != left && (right == NULL || left->priority < right->priority)) {
+            treap_right_rotate(t, left);
+        } else {
+            treap_left_rotate(t, right);
+        }
+        struct treap_node* parent = node->parent;
+        if (NULL == parent->parent) {
+            t->root = parent;
+        }
+    }
+    if (node->parent->left == node) {
+        node->parent->left = NULL;
+    } else {
+        node->parent->right = NULL;
+    }
+    treap_node_free(node);
+
+    return true;
 }
 
 static void treap_node_fprint(FILE* f, struct treap_node* x, int depth) {
@@ -351,10 +389,60 @@ static void test_search() {
     treap_free(&t);
 }
 
+static void test_remove() {
+    struct entry entries[] = {
+        {"Beer", 20},
+        {"Beet", 81},
+        {"Butter", 76},
+        {"Cabbage", 159},
+        {"Eggs", 129},
+        {"Floor", 10},
+        {"Milk", 55},
+        {"Pork", 56},
+        {"Water", 32},
+        {NULL, 0},
+    };
+
+    treap_t t = treap_alloc();
+    build_treap(entries, t);
+
+    char buf[BUF_SIZE];
+    tsprint(buf, t);
+
+    aes("^:Floor - 10.00\n"
+            "  <:Beer - 20.00\n"
+            "    >:Butter - 76.00\n"
+            "      <:Beet - 81.00\n"
+            "      >:Eggs - 129.00\n"
+            "        <:Cabbage - 159.00\n"
+            "  >:Water - 32.00\n"
+            "    <:Milk - 55.00\n"
+            "      >:Pork - 56.00\n"
+            , buf);
+
+    bool result = treap_remove(t, "Butter");
+
+    assert(result);
+    tsprint(buf, t);
+    aes("^:Floor - 10.00\n"
+            "  <:Beer - 20.00\n"
+            "    >:Beet - 81.00\n"
+            "      >:Eggs - 129.00\n"
+            "        <:Cabbage - 159.00\n"
+            "  >:Water - 32.00\n"
+            "    <:Milk - 55.00\n"
+            "      >:Pork - 56.00\n"
+            , buf);
+
+
+    treap_free(&t);
+}
+
 int main() {
     test_treap_free_sets_pointer_to_null();
     test_insert_exemple_from_book();
     test_search();
+    test_remove();
     return 0;
 }
 
