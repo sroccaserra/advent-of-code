@@ -144,17 +144,23 @@ static struct treap_node* create_node(char* key, void* value, double priority) {
 void treap_insert(T t, char* key, void* value, double priority) {
     struct treap_node* node = t->root;
     struct treap_node* parent = NULL;
-    struct treap_node* new_node = create_node(key, value, priority);
-    assert(new_node != NULL);
 
     while (node != NULL) {
         parent = node;
-        if (strcmp(key, node->key) <= 0) {
+        int cmp = strcmp(key, node->key);
+        if (cmp == 0) {
+            node->value = value;
+            return;
+        }
+        if (cmp < 0) {
             node = node->left;
         } else {
             node = node->right;
         }
     }
+
+    struct treap_node* new_node = create_node(key, value, priority);
+    assert(new_node != NULL);
     if (parent == NULL) {
         t->root = new_node;
         t->size++;

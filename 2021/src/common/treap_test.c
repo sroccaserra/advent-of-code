@@ -96,6 +96,32 @@ static void test_insert_exemple_from_book() {
     treap_free(&t);
 }
 
+static void test_insert_to_same_key_updates_value() {
+    struct entry entries[] = {
+        {"Bacon", 77, NULL},
+        {"Beer", 20, NULL},
+        {"Butter", 76, NULL},
+        {"Cabbage", 159, NULL},
+        {"Eggs", 129, NULL},
+        {"Floor", 10, NULL},
+        {"Milk", 55, NULL},
+        {"Pork", 56, NULL},
+        {"Water", 32, NULL},
+        {NULL, 0, NULL},
+    };
+    treap_t t = create_treap(entries);
+
+    int value = 1234;
+    treap_insert(t, "Eggs", &value, 129);
+
+    int* result = treap_search(t, "Eggs");
+
+    assert(1234 == *result);
+    assert(9 == treap_size(t));
+
+    treap_free(&t);
+}
+
 static void test_search() {
     int value = 1234;
     struct entry entries[] = {
@@ -196,6 +222,7 @@ static void test_size() {
 int main() {
     test_treap_free_sets_pointer_to_null();
     test_insert_exemple_from_book();
+    test_insert_to_same_key_updates_value();
     test_search();
     test_remove();
     test_size();
