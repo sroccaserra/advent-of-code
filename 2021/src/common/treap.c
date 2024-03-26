@@ -13,10 +13,12 @@
  ******************/
 
 #define T treap_t
+typedef int (*cmp_fn)(const void* lhs, const void* rhs);
 
 struct T {
     struct treap_node* root;
     size_t size;
+    cmp_fn cmp;
 };
 
 struct treap_node {
@@ -33,6 +35,7 @@ struct treap_node {
 
 T treap_alloc() {
     T result = calloc(1, sizeof(*result));
+    result->cmp = (cmp_fn)strcmp;
     assert(result);
     return result;
 }
@@ -147,7 +150,7 @@ void treap_insert(T t, char* key, void* value, double priority) {
 
     while (node != NULL) {
         parent = node;
-        int cmp = strcmp(key, node->key);
+        int cmp = t->cmp(key, node->key);
         if (cmp == 0) {
             node->value = value;
             return;
@@ -165,7 +168,7 @@ void treap_insert(T t, char* key, void* value, double priority) {
         t->root = new_node;
         t->size++;
         return;
-    } else if(strcmp(key, parent->key) <= 0) {
+    } else if(t->cmp(key, parent->key) <= 0) {
         parent->left = new_node;
     } else {
         parent->right = new_node;
@@ -187,23 +190,23 @@ void treap_insert(T t, char* key, void* value, double priority) {
     t->size++;
 }
 
-static struct treap_node* treap_node_search(struct treap_node* node, char* key) {
+static struct treap_node* treap_node_search(cmp_fn cmp, struct treap_node* node, char* key) {
     if (NULL == node) {
         return NULL;
     }
-    const int cmp = strcmp(key, node->key);
-    if (cmp == 0) {
+    const int n = cmp(key, node->key);
+    if (n == 0) {
         return node;
-    } else if (cmp < 0) {
-        return treap_node_search(node->left, key);
+    } else if (n < 0) {
+        return treap_node_search(cmp, node->left, key);
     } else {
-        return treap_node_search(node->right, key);
+        return treap_node_search(cmp, node->right, key);
     }
 }
 
 void* treap_search(T t, char* key) {
     assert(t);
-    struct treap_node* node = treap_node_search(t->root, key);
+    struct treap_node* node = treap_node_search(t->cmp, t->root, key);
     if (NULL == node) {
         return NULL;
     }
@@ -211,7 +214,7 @@ void* treap_search(T t, char* key) {
 }
 
 bool treap_remove(T t, char* key) {
-    struct treap_node* node = treap_node_search(t->root, key);
+    struct treap_node* node = treap_node_search(t->cmp, t->root, key);
     if (NULL == node) {
         return false;
     }

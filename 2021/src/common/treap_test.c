@@ -117,7 +117,7 @@ static void test_insert_to_same_key_updates_value() {
     int* result = treap_search(t, "Eggs");
 
     assert(1234 == *result);
-    assert(9 == treap_size(t));
+    aei(9, treap_size(t));
 
     treap_free(&t);
 }
