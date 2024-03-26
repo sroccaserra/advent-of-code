@@ -4,7 +4,12 @@ BUILD=build
 SRC=src
 LIB=lib
 
-CFLAGS=-std=c18 -Wall -Wextra -Wpedantic -Werror
+SRC_COMMON := $(wildcard src/common/*.c)
+OBJ_COMMON := $(SRC_COMMON:src/common/%.c=build/%.o)
+
+CFLAGS :=-std=c18 -Wall -Wextra -Wpedantic -Werror
+CPPFLAGS := -Isrc/common -MMD -MP
+LDLIBS := -lc
 
 ##
 # Common
@@ -42,6 +47,21 @@ $(BUILD)/%_cpp: $(SRC)/%.cpp $(SRC)/common/common.hpp $(BUILD)
 %_cpp: $(BUILD)/%_cpp
 	@$< src/$*.in
 
+##
+# C
+
+.PRECIOUS: build/%.o
+build/%.o: src/common/%.c | build
+	cc $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+
+.PRECIOUS: $(BUILD)/%_test_c
+$(BUILD)/%_test_c: $(OBJ_COMMON)
+	cc $(CFLAGS) $^ $(LDLIBS) -o $@
+
+.PHONY: %_test_c
+%_test_c: $(BUILD)/%_test_c | build
+	@$<
+
 .PRECIOUS: $(BUILD)/%_c
 $(BUILD)/%_c: $(SRC)/%.c $(BUILD) $(SRC)/common/*.h
 	gcc $(CFLAGS) -o $@ $<
@@ -49,6 +69,8 @@ $(BUILD)/%_c: $(SRC)/%.c $(BUILD) $(SRC)/common/*.h
 .PHONY: %_c
 %_c: $(BUILD)/%_c
 	@$< src/$*.in
+
+-include $(OBJ_COMMON:.o=.d)
 
 ##
 # Rust
