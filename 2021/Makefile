@@ -5,6 +5,7 @@ SRC=src
 LIB=lib
 
 SRC_COMMON := $(wildcard src/common/*.c)
+SRC_COMMON := $(filter-out $(wildcard src/common/*_test.c), $(SRC_COMMON))
 OBJ_COMMON := $(SRC_COMMON:src/common/%.c=build/%.o)
 
 CFLAGS :=-std=c18 -Wall -Wextra -Wpedantic -Werror
@@ -54,8 +55,8 @@ $(BUILD)/%_cpp: $(SRC)/%.cpp $(SRC)/common/common.hpp $(BUILD)
 build/%.o: src/common/%.c | build
 	cc $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-.PRECIOUS: $(BUILD)/%_test_c
-$(BUILD)/%_test_c: $(OBJ_COMMON)
+.PRECIOUS: build/%_test_c
+build/%_test_c: $(OBJ_COMMON) build/%_test.o
 	cc $(CFLAGS) $^ $(LDLIBS) -o $@
 
 .PHONY: %_test_c
