@@ -2,6 +2,7 @@
 #define DICT_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 #define D dict_t
 typedef struct D* D;
@@ -12,6 +13,7 @@ void dict_free(D* d);
 void dict_put(D d, char* key, void* value);
 void* dict_at(D d, char* key);
 bool dict_remove(D d, char* key);
+size_t dict_size(D d);
 
 #undef D
 #endif

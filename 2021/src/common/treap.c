@@ -16,6 +16,7 @@
 
 struct T {
     struct treap_node* root;
+    size_t size;
 };
 
 struct treap_node {
@@ -31,8 +32,7 @@ struct treap_node {
 #define IS_LEAF(node) (NULL == node->left && NULL == node->right)
 
 T treap_alloc() {
-    T result = malloc(sizeof(*result));
-    result->root = NULL;
+    T result = calloc(1, sizeof(*result));
     assert(result);
     return result;
 }
@@ -157,6 +157,7 @@ void treap_insert(T t, char* key, void* value, double priority) {
     }
     if (parent == NULL) {
         t->root = new_node;
+        t->size++;
         return;
     } else if(strcmp(key, parent->key) <= 0) {
         parent->left = new_node;
@@ -176,6 +177,8 @@ void treap_insert(T t, char* key, void* value, double priority) {
     if (IS_ROOT(new_node)) {
         t->root = new_node;
     }
+
+    t->size++;
 }
 
 static struct treap_node* treap_node_search(struct treap_node* node, char* key) {
@@ -209,6 +212,7 @@ bool treap_remove(T t, char* key) {
     if (IS_ROOT(node) && IS_LEAF(node)) {
         treap_node_free(t->root);
         t->root = NULL;
+        t->size--;
         return true;
     }
     while (!IS_LEAF(node)) {
@@ -231,7 +235,12 @@ bool treap_remove(T t, char* key) {
     }
     treap_node_free(node);
 
+    t->size--;
     return true;
+}
+
+size_t treap_size(T t) {
+    return t->size;
 }
 
 static void treap_node_fprint(FILE* f, struct treap_node* x, int depth) {
@@ -275,6 +284,12 @@ void tprint(T t) {
 /**************
  * Test tools *
  **************/
+
+static void aei(int expected, int actual) {
+    if (expected != actual) {
+        error(1, 0, "ASSERTION FAILED!\n⭕ %d\n❌ %d", expected, actual);
+    }
+}
 
 static void aes(char* expected, char* actual) {
     if (NULL == expected) {
@@ -430,11 +445,39 @@ static void test_remove() {
     treap_free(&t);
 }
 
+static void test_size() {
+    struct entry entries[] = {
+        {"Beer", 20},
+        {"Beet", 81},
+        {"Butter", 76},
+        {"Cabbage", 159},
+        {"Eggs", 129},
+        {"Floor", 10},
+        {"Milk", 55},
+        {"Pork", 56},
+        {"Water", 32},
+        {NULL, 0},
+    };
+
+    treap_t t = treap_alloc();
+    build_treap(entries, t);
+
+    size_t result = treap_size(t);
+    aei(9, result);
+
+    treap_remove(t, "Butter");
+    result = treap_size(t);
+    aei(8, result);
+
+    treap_free(&t);
+}
+
 int main() {
     test_treap_free_sets_pointer_to_null();
     test_insert_exemple_from_book();
     test_search();
     test_remove();
+    test_size();
     return 0;
 }
 

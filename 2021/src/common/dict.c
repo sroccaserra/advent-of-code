@@ -35,6 +35,10 @@ bool dict_remove(D d, char* key) {
     return treap_remove((treap_t)d, key);
 }
 
+size_t dict_size(D d) {
+    return treap_size((treap_t)d);
+}
+
 #undef D
 
 #ifdef TEST_DICT
@@ -65,9 +69,10 @@ static dict_t create_int_dict(struct int_entry* entries) {
  *********/
 
 static void test_alloc_and_free() {
-    dict_t dict = dict_alloc();
-    dict_free(&dict);
-    assert(NULL == dict);
+    dict_t d = dict_alloc();
+    assert(0 == dict_size(d));
+    dict_free(&d);
+    assert(NULL == d);
 }
 
 static void test_search() {
@@ -80,6 +85,7 @@ static void test_search() {
         {NULL, 0},
     };
     dict_t d = create_int_dict(entries);
+    assert(5 == dict_size(d));
 
     int* result = dict_at(d, "b");
 
