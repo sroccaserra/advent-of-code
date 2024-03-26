@@ -43,12 +43,14 @@ struct entry {
     void* value;
 };
 
-static void build_treap(struct entry* entries, treap_t t) {
+static treap_t create_treap(struct entry* entries) {
+    treap_t result = treap_alloc();
     size_t i = 0;
     struct entry e;
     while ((e = entries[i++]).key != NULL) {
-        treap_insert(t, e.key, e.value, e.priority);
+        treap_insert(result, e.key, e.value, e.priority);
     }
+    return result;;
 }
 
 /*********
@@ -75,9 +77,7 @@ static void test_insert_exemple_from_book() {
         {"Water", 32, NULL},
         {NULL, 0, NULL},
     };
-
-    treap_t t = treap_alloc();
-    build_treap(entries, t);
+    treap_t t = create_treap(entries);
 
     char buf[BUF_SIZE];
     tsprint(buf, t);
@@ -110,8 +110,7 @@ static void test_search() {
         {"Water", 32, NULL},
         {NULL, 0, NULL},
     };
-    treap_t t = treap_alloc();
-    build_treap(entries, t);
+    treap_t t = create_treap(entries);
 
     int* result = treap_search(t, "Bacon");
     assert(1234 == *result);
@@ -135,9 +134,7 @@ static void test_remove() {
         {"Water", 32, NULL},
         {NULL, 0, NULL},
     };
-
-    treap_t t = treap_alloc();
-    build_treap(entries, t);
+    treap_t t = create_treap(entries);
 
     char buf[BUF_SIZE];
     tsprint(buf, t);
@@ -184,9 +181,7 @@ static void test_size() {
         {"Water", 32, NULL},
         {NULL, 0, NULL},
     };
-
-    treap_t t = treap_alloc();
-    build_treap(entries, t);
+    treap_t t = create_treap(entries);
 
     size_t result = treap_size(t);
     aei(9, result);
