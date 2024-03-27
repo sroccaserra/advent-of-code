@@ -37,16 +37,20 @@ static void tsprint(char* buf, treap_t t) {
     fclose(f);
 }
 
-struct entry {
+struct test_entry {
     char* key;
     double priority;
     void* value;
 };
 
-static treap_t create_treap(struct entry* entries) {
-    treap_t result = treap_alloc();
+static void fprint_entry(FILE* f, const void* entry) {
+    fprintf(f, "%s", (char*)entry);
+}
+
+static treap_t create_treap(struct test_entry* entries) {
+    treap_t result = treap_alloc((cmp_fn)strcmp, fprint_entry);
     size_t i = 0;
-    struct entry e;
+    struct test_entry e;
     while ((e = entries[i++]).key != NULL) {
         treap_insert(result, e.key, e.value, e.priority);
     }
@@ -58,14 +62,14 @@ static treap_t create_treap(struct entry* entries) {
  *********/
 
 static void test_treap_free_sets_pointer_to_null() {
-    treap_t t = treap_alloc();
+    treap_t t = treap_alloc((cmp_fn)strcmp, fprint_entry);
     treap_free(&t);
 
     assert(t == NULL);
 }
 
 static void test_insert_exemple_from_book() {
-    struct entry entries[] = {
+    struct test_entry entries[] = {
         {"Bacon", 77, NULL},
         {"Beer", 20, NULL},
         {"Butter", 76, NULL},
@@ -97,7 +101,7 @@ static void test_insert_exemple_from_book() {
 }
 
 static void test_insert_to_same_key_updates_value() {
-    struct entry entries[] = {
+    struct test_entry entries[] = {
         {"Bacon", 77, NULL},
         {"Beer", 20, NULL},
         {"Butter", 76, NULL},
@@ -124,7 +128,7 @@ static void test_insert_to_same_key_updates_value() {
 
 static void test_search() {
     int value = 1234;
-    struct entry entries[] = {
+    struct test_entry entries[] = {
         {"Bacon", 77, &value},
         {"Beer", 20, NULL},
         {"Butter", 76, NULL},
@@ -148,7 +152,7 @@ static void test_search() {
 }
 
 static void test_remove() {
-    struct entry entries[] = {
+    struct test_entry entries[] = {
         {"Beer", 20, NULL},
         {"Beet", 81, NULL},
         {"Butter", 76, NULL},
@@ -195,7 +199,7 @@ static void test_remove() {
 }
 
 static void test_size() {
-    struct entry entries[] = {
+    struct test_entry entries[] = {
         {"Beer", 20, NULL},
         {"Beet", 81, NULL},
         {"Butter", 76, NULL},

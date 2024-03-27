@@ -14,15 +14,17 @@
 
 #define T treap_t
 typedef int (*cmp_fn)(const void* lhs, const void* rhs);
+typedef void (*fprint_fn)(FILE* f, const void* key);
 
 struct T {
     struct treap_node* root;
     size_t size;
     cmp_fn cmp;
+    fprint_fn fprint;
 };
 
 struct treap_node {
-    char* key;
+    void* key;
     double priority;
     void* value;
     struct treap_node* left;
@@ -33,9 +35,10 @@ struct treap_node {
 #define IS_ROOT(node) (NULL == node->parent)
 #define IS_LEAF(node) (NULL == node->left && NULL == node->right)
 
-T treap_alloc() {
+T treap_alloc(cmp_fn cmp, fprint_fn fprint) {
     T result = calloc(1, sizeof(*result));
-    result->cmp = (cmp_fn)strcmp;
+    result->cmp = cmp;
+    result->fprint = fprint;
     assert(result);
     return result;
 }
@@ -128,11 +131,9 @@ static void treap_left_rotate(T t, struct treap_node* x) {
     treap_set_left(x, y);
 }
 
-static struct treap_node* create_node(char* key, void* value, double priority) {
+static struct treap_node* create_node(void* key, void* value, double priority) {
     struct treap_node* result = malloc(sizeof(*result));
-    if (result == NULL) {
-        err(1, "key: %s", key);
-    }
+    assert(result);
 
     result->key = key;
     result->priority = priority;
@@ -144,7 +145,7 @@ static struct treap_node* create_node(char* key, void* value, double priority) {
     return result;
 }
 
-void treap_insert(T t, char* key, void* value, double priority) {
+void treap_insert(T t, void* key, void* value, double priority) {
     struct treap_node* node = t->root;
     struct treap_node* parent = NULL;
 
@@ -190,7 +191,7 @@ void treap_insert(T t, char* key, void* value, double priority) {
     t->size++;
 }
 
-static struct treap_node* treap_node_search(cmp_fn cmp, struct treap_node* node, char* key) {
+static struct treap_node* treap_node_search(cmp_fn cmp, struct treap_node* node, void* key) {
     if (NULL == node) {
         return NULL;
     }
@@ -204,7 +205,7 @@ static struct treap_node* treap_node_search(cmp_fn cmp, struct treap_node* node,
     }
 }
 
-void* treap_search(T t, char* key) {
+void* treap_search(T t, void* key) {
     assert(t);
     struct treap_node* node = treap_node_search(t->cmp, t->root, key);
     if (NULL == node) {
@@ -213,7 +214,7 @@ void* treap_search(T t, char* key) {
     return node->value;
 }
 
-bool treap_remove(T t, char* key) {
+bool treap_remove(T t, void* key) {
     struct treap_node* node = treap_node_search(t->cmp, t->root, key);
     if (NULL == node) {
         return false;
@@ -252,7 +253,7 @@ size_t treap_size(T t) {
     return t->size;
 }
 
-static void treap_node_fprint(FILE* f, struct treap_node* x, int depth) {
+static void treap_node_fprint(FILE* f, T t, struct treap_node* x, int depth) {
     if (x == NULL) {
         fprintf(f, "Empty tree.\n");
         return;
@@ -269,17 +270,22 @@ static void treap_node_fprint(FILE* f, struct treap_node* x, int depth) {
     } else {
         assert(NULL);
     }
-    fprintf(f, "%s - %.2f\n", x->key, x->priority);
+    if (NULL != t->fprint) {
+        t->fprint(f, x->key);
+    } else {
+        fprintf(f, "?");
+    }
+    fprintf(f, " - %.2f\n", x->priority);
     if (x->left != NULL) {
-        treap_node_fprint(f, x->left, depth + 1);
+        treap_node_fprint(f, t, x->left, depth + 1);
     }
     if (x->right != NULL) {
-        treap_node_fprint(f, x->right, depth +  1);
+        treap_node_fprint(f, t, x->right, depth +  1);
     }
 }
 
 void tfprint(FILE* f, T t) {
-    treap_node_fprint(f, t->root, 0);
+    treap_node_fprint(f, t, t->root, 0);
 }
 
 void tprint(T t) {
@@ -287,4 +293,3 @@ void tprint(T t) {
 }
 
 #undef T
-

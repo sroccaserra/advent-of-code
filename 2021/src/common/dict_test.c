@@ -12,7 +12,7 @@ struct int_entry {
 };
 
 static dict_t create_int_dict(struct int_entry* entries) {
-    dict_t result = dict_alloc();
+    dict_t result = str_dict_alloc();
 
     size_t i = 0;
     struct int_entry* e;
@@ -28,7 +28,7 @@ static dict_t create_int_dict(struct int_entry* entries) {
  *********/
 
 static void test_alloc_and_free() {
-    dict_t d = dict_alloc();
+    dict_t d = str_dict_alloc();
     assert(0 == dict_size(d));
     dict_free(&d);
     assert(NULL == d);
