@@ -16,15 +16,16 @@ int getlines(char* filename, char*** linesp, size_t* size) {
         return -1;
     }
 
-    PointerVector vlines = createPointerVector();
+    PointerVector* lines = createPointerVector();
     char* line;
     while(EOF != getln(file, &line)) {
-        pushValue(&vlines, line);
+        pushValue(lines, line);
     };
     fclose(file);
 
-    *size = vlines.size;
-    *linesp = (char**)vlines.data;
+    *size = lines->size;
+    *linesp = (char**)lines->data;
+    freePointerVector(&lines);
 
     return 0;
 }

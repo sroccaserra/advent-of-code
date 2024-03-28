@@ -12,13 +12,28 @@ typedef struct {
 
 const size_t pv_default_size = 8;
 
-PointerVector createPointerVector() {
+PointerVector* createPointerVector() {
     void** data = malloc(sizeof(void*[pv_default_size]));
     assert(NULL != data);
-    return (PointerVector){.size = 0, .max_size = pv_default_size,.data = data};
+
+    PointerVector* result = malloc(sizeof(result));
+    result->size = 0;
+    result->max_size = pv_default_size;
+    result->data = data;
+    return result;
 }
 
-void deletePointerVector(PointerVector* v) {
+/*
+ * Does not free the data part, as PointerVector is useful to
+ * assign a C array (the data part).
+ */
+void freePointerVector(PointerVector** v) {
+    assert(*v);
+    free(*v);
+    *v = NULL;
+}
+
+void clearPointerVector(PointerVector* v) {
     assert(NULL != v);
     assert(NULL != v->data);
 
