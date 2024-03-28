@@ -60,15 +60,15 @@ build/%_test_c: $(OBJ_COMMON) build/%_test.o
 	cc $(CFLAGS) $^ $(LDLIBS) -o $@
 
 .PHONY: %_test_c
-%_test_c: $(BUILD)/%_test_c | build
+%_test_c: build/%_test_c | build
 	@$<
 
-.PRECIOUS: $(BUILD)/%_c
-$(BUILD)/%_c: $(SRC)/%.c $(BUILD) $(SRC)/common/*.h
-	gcc $(CFLAGS) -o $@ $<
+.PRECIOUS: build/%_c
+build/%_c: src/%.c $(OBJ_COMMON) | build
+	gcc $(CFLAGS) -o $@ $^
 
 .PHONY: %_c
-%_c: $(BUILD)/%_c
+%_c: build/%_c
 	@$< src/$*.in
 
 -include $(OBJ_COMMON:.o=.d)
