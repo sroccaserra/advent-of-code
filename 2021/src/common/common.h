@@ -23,8 +23,9 @@ int getlines(char* filename, char*** linesp, size_t* size) {
     };
     fclose(file);
 
-    *size = lines->size;
-    *linesp = (char**)lines->data;
+    *size = vectorSize(lines);
+    *linesp = vectorArray(lines);
+
     freePointerVector(&lines);
 
     return 0;

@@ -33,6 +33,14 @@ void freePointerVector(PointerVector** v) {
     *v = NULL;
 }
 
+size_t vectorSize(PointerVector* v) {
+    return v->size;
+}
+
+void* vectorArray(PointerVector* v) {
+    return v->data;
+}
+
 void clearPointerVector(PointerVector* v) {
     assert(NULL != v);
     assert(NULL != v->data);
