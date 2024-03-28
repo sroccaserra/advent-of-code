@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "PointerVector.h"
+#include "vector.h"
 
 int getln(FILE* file, char** linep);
 
@@ -16,17 +16,17 @@ int getlines(char* filename, char*** linesp, size_t* size) {
         return -1;
     }
 
-    PointerVector* lines = createPointerVector();
+    vector_t lines = vector_alloc();
     char* line;
     while(EOF != getln(file, &line)) {
-        pushValue(lines, line);
+        vector_push(lines, line);
     };
     fclose(file);
 
-    *size = vectorSize(lines);
-    *linesp = vectorArray(lines);
+    *size = vector_size(lines);
+    *linesp = vector_array(lines);
 
-    freePointerVector(&lines);
+    vector_free(&lines);
 
     return 0;
 }

@@ -1,22 +1,25 @@
-#ifndef __POINTER_VECTOR_H__
-#define __POINTER_VECTOR_H__
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <stdlib.h>
 #include <assert.h>
 
-typedef struct {
+#define V vector_t
+typedef struct V* V;
+
+struct V {
     size_t size;
     size_t max_size;
     void** data;
-} PointerVector;
+};
 
 const size_t pv_default_size = 8;
 
-PointerVector* createPointerVector() {
+V vector_alloc() {
     void** data = malloc(sizeof(void*[pv_default_size]));
     assert(NULL != data);
 
-    PointerVector* result = malloc(sizeof(result));
+    V result = malloc(sizeof(result));
     result->size = 0;
     result->max_size = pv_default_size;
     result->data = data;
@@ -27,21 +30,21 @@ PointerVector* createPointerVector() {
  * Does not free the data part, as PointerVector is useful to
  * assign a C array (the data part).
  */
-void freePointerVector(PointerVector** v) {
+void vector_free(V* v) {
     assert(*v);
     free(*v);
     *v = NULL;
 }
 
-size_t vectorSize(PointerVector* v) {
+size_t vector_size(V v) {
     return v->size;
 }
 
-void* vectorArray(PointerVector* v) {
+void* vector_array(V v) {
     return v->data;
 }
 
-void clearPointerVector(PointerVector* v) {
+void vector_clear(V v) {
     assert(NULL != v);
     assert(NULL != v->data);
 
@@ -51,7 +54,7 @@ void clearPointerVector(PointerVector* v) {
     v->max_size = pv_default_size;
 }
 
-void resizePointerVector(PointerVector* v, size_t new_max_size) {
+void vector_resize(V v, size_t new_max_size) {
     assert(NULL != v);
     assert(NULL != v->data);
     assert(v->max_size < new_max_size);
@@ -63,24 +66,25 @@ void resizePointerVector(PointerVector* v, size_t new_max_size) {
     v->max_size = new_max_size;
 }
 
-void* getValue(PointerVector* v, size_t pos) {
+void* vector_get(V v, size_t pos) {
     assert(pos < v->size);
     return v->data[pos];
 }
 
-void setValue(PointerVector* v, size_t pos, void* value) {
+void vector_set(V v, size_t pos, void* value) {
     assert(pos < v->size);
     v->data[pos] = value;
 }
 
-void pushValue(PointerVector* v, void* value) {
+void vector_push(V v, void* value) {
     size_t new_pos = v->size;
     if (v->max_size <= new_pos) {
-        resizePointerVector(v, 2*v->max_size);
+        vector_resize(v, 2*v->max_size);
     }
     assert (new_pos < v->max_size);
     v->data[new_pos] =value;
     v->size += 1;
 }
 
-#endif // __POINTER_VECTOR_H__
+#undef V
+#endif
