@@ -47,11 +47,12 @@ static void treap_node_free(struct treap_node* node) {
     }
 }
 
-void treap_free(T* t) {
+void treap_free(T* tp) {
+    T t = *tp;
     assert(t);
-    treap_node_free((*t)->root);
-    free(*t);
-    *t = NULL;
+    treap_node_free(t->root);
+    free(t);
+    *tp = NULL;
 }
 
 static void treap_set_left(struct treap_node* node, struct treap_node* left) {

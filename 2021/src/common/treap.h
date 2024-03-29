@@ -15,7 +15,7 @@ typedef int (*cmp_fn)(const void* lhs, const void* rhs);
 typedef void (*fprint_fn)(FILE* f, const void* entry);
 
 T treap_alloc(cmp_fn cmp, fprint_fn fprint);
-void treap_free(T* t);
+void treap_free(T* tp);
 
 void treap_insert(T t, void* key, void* value, double priority);
 void* treap_search(T t, void* key);

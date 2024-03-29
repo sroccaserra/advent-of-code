@@ -26,10 +26,10 @@ D dict_alloc(cmp_fn cmp, fprint_fn fpr) {
     return (D)treap_alloc(cmp, fpr);
 }
 
-void dict_free(D* d) {
-    treap_t t = (treap_t)*d;
+void dict_free(D* dp) {
+    treap_t t = (treap_t)*dp;
     treap_free(&t);
-    *d = NULL;
+    *dp = NULL;
 }
 
 void dict_put(D d, void* key, void* value) {
