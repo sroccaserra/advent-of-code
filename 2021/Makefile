@@ -12,6 +12,8 @@ CFLAGS := -std=c18 -Wall -Wextra -Wpedantic -Werror -g
 CPPFLAGS := -Isrc/common -MMD -MP
 LDLIBS := -lc
 
+default: test_c
+
 ##
 # Common
 
