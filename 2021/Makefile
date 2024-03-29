@@ -63,6 +63,9 @@ build/%_test_c: $(OBJ_COMMON) build/%_test.o
 %_test_c: build/%_test_c | build
 	@$<
 
+.PHONY: test_c
+test_c: dict_test_c treap_test_c
+
 .PRECIOUS: build/%_c
 build/%_c: src/%.c $(OBJ_COMMON) | build
 	gcc $(CFLAGS) -o $@ $^

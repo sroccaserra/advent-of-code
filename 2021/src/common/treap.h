@@ -10,6 +10,7 @@
 
 #define T treap_t
 typedef struct T* T;
+
 typedef int (*cmp_fn)(const void* lhs, const void* rhs);
 typedef void (*fprint_fn)(FILE* f, const void* entry);
 

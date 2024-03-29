@@ -1,10 +1,7 @@
 #include <assert.h>
-#include <err.h>
-#include <error.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "treap.h"
 
@@ -13,8 +10,6 @@
  ******************/
 
 #define T treap_t
-typedef int (*cmp_fn)(const void* lhs, const void* rhs);
-typedef void (*fprint_fn)(FILE* f, const void* key);
 
 struct T {
     struct treap_node* root;
@@ -37,9 +32,10 @@ struct treap_node {
 
 T treap_alloc(cmp_fn cmp, fprint_fn fprint) {
     T result = calloc(1, sizeof(*result));
+    assert(result);
+
     result->cmp = cmp;
     result->fprint = fprint;
-    assert(result);
     return result;
 }
 
