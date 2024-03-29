@@ -5,7 +5,7 @@
 
 #define HUGE 9999999
 
-int solve_1(int numbers[], size_t size) {
+static int solve_1(int numbers[], size_t size) {
     int previous = HUGE;
     int result = 0;
     for (size_t i = 0; i < size; ++i) {
@@ -18,7 +18,7 @@ int solve_1(int numbers[], size_t size) {
     return result;
 }
 
-int solve_2(int numbers[], size_t size) {
+static int solve_2(int numbers[], size_t size) {
     int p_1 = HUGE, p_2 = HUGE, p_3 = HUGE;
     int result = 0;
     for (size_t i = 0; i < size; ++i) {

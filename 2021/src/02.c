@@ -10,7 +10,7 @@ struct CommandList {
     struct CommandList* next;
 };
 
-void solve(const struct CommandList* commands, int* result_1, int* result_2) {
+static void solve(const struct CommandList* commands, int* result_1, int* result_2) {
     int hpos = 0, depth_1 = 0, depth_2 = 0, aim = 0;
 
     while (NULL != commands) {
