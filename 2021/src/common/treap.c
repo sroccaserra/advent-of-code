@@ -39,11 +39,11 @@ T treap_alloc(cmp_fn cmp, fprint_fn fprint) {
     return result;
 }
 
-static void treap_node_free(struct treap_node* n) {
-    if (NULL != n) {
-        treap_node_free(n->left);
-        treap_node_free(n->right);
-        free(n);
+static void treap_node_free(struct treap_node* node) {
+    if (NULL != node) {
+        treap_node_free(node->left);
+        treap_node_free(node->right);
+        free(node);
     }
 }
 
@@ -128,16 +128,12 @@ static void treap_left_rotate(T t, struct treap_node* x) {
 }
 
 static struct treap_node* create_node(void* key, void* value, double priority) {
-    struct treap_node* result = malloc(sizeof(*result));
+    struct treap_node* result = calloc(1, sizeof(*result));
     assert(result);
 
     result->key = key;
     result->priority = priority;
     result->value = value;
-    result->left = NULL;
-    result->right = NULL;
-    result->parent = NULL;
-
     return result;
 }
 
@@ -249,43 +245,44 @@ size_t treap_size(T t) {
     return t->size;
 }
 
-static void treap_node_fprint(FILE* f, T t, struct treap_node* x, int depth) {
-    if (x == NULL) {
+static void treap_node_fprint(FILE* f, T t, struct treap_node* node, int depth) {
+    if (t->root == NULL) {
         fprintf(f, "Empty tree.\n");
         return;
     }
+    if (node == NULL) {
+        return;
+    }
+
     for (int i = 0; i < depth; ++i) {
         fprintf(f, "  ");
     }
-    if (IS_ROOT(x)) {
+    if (IS_ROOT(node)) {
         fprintf(f, "^:");
-    } else if (x->parent->left == x) {
+    } else if (node->parent->left == node) {
         fprintf(f, "<:");
-    } else if (x->parent->right == x) {
+    } else if (node->parent->right == node) {
         fprintf(f, ">:");
     } else {
-        assert(NULL);
+        assert(false);
     }
     if (NULL != t->fprint) {
-        t->fprint(f, x->key);
+        t->fprint(f, node->key);
     } else {
         fprintf(f, "?");
     }
-    fprintf(f, " - %.2f\n", x->priority);
-    if (x->left != NULL) {
-        treap_node_fprint(f, t, x->left, depth + 1);
-    }
-    if (x->right != NULL) {
-        treap_node_fprint(f, t, x->right, depth +  1);
-    }
+    fprintf(f, " - %.2f\n", node->priority);
+
+    treap_node_fprint(f, t, node->left, depth + 1);
+    treap_node_fprint(f, t, node->right, depth + 1);
 }
 
-void tfprint(FILE* f, T t) {
+void treap_print(T t) {
+    treap_fprint(stdout, t);
+}
+
+void treap_fprint(FILE* f, T t) {
     treap_node_fprint(f, t, t->root, 0);
-}
-
-void tprint(T t) {
-    tfprint(stdout, t);
 }
 
 #undef T

@@ -21,8 +21,8 @@ void treap_insert(T t, void* key, void* value, double priority);
 void* treap_search(T t, void* key);
 bool treap_remove(T t, void* key);
 size_t treap_size(T t);
-void tfprint(FILE* f, T t);
-void tprint(T t);
+void treap_print(T t);
+void treap_fprint(FILE* f, T t);
 
 #undef T
 #endif

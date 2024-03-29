@@ -31,9 +31,9 @@ static void aes(char* expected, char* actual) {
 
 extern FILE* fmemopen(void* buf, size_t size, const char* mode);
 
-static void tsprint(char* buf, treap_t t) {
+static void treap_sprint(char* buf, treap_t t) {
     FILE* f = fmemopen(buf, BUF_SIZE, "w");
-    tfprint(f, t);
+    treap_fprint(f, t);
     fclose(f);
 }
 
@@ -84,7 +84,7 @@ static void test_insert_exemple_from_book() {
     treap_t t = create_treap(entries);
 
     char buf[BUF_SIZE];
-    tsprint(buf, t);
+    treap_sprint(buf, t);
 
     aes("^:Floor - 10.00\n"
             "  <:Beer - 20.00\n"
@@ -167,7 +167,7 @@ static void test_remove() {
     treap_t t = create_treap(entries);
 
     char buf[BUF_SIZE];
-    tsprint(buf, t);
+    treap_sprint(buf, t);
 
     aes("^:Floor - 10.00\n"
             "  <:Beer - 20.00\n"
@@ -183,7 +183,7 @@ static void test_remove() {
     bool result = treap_remove(t, "Butter");
 
     assert(result);
-    tsprint(buf, t);
+    treap_sprint(buf, t);
     aes("^:Floor - 10.00\n"
             "  <:Beer - 20.00\n"
             "    >:Beet - 81.00\n"
