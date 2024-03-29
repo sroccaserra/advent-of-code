@@ -11,17 +11,17 @@ struct int_entry {
     int value;
 };
 
-static dict_t create_int_dict(struct int_entry* entries) {
+static dict_t create_int_dict(struct int_entry* entries, size_t nb_entries) {
     dict_t result = str_dict_alloc();
 
-    size_t i = 0;
-    struct int_entry* e;
-    while ((e = &entries[i++])->key != NULL) {
+    struct int_entry* e = entries;
+    for (size_t i = 0; i < nb_entries; ++i, ++e) {
         dict_put(result, e->key, &(e->value));
     }
-
     return result;
 }
+
+#define CREATE_DICT(entries) (create_int_dict(entries, sizeof(entries)/sizeof(entries[0])))
 
 /*********
  * Tests *
@@ -41,9 +41,8 @@ static void test_search() {
         {"c", 56},
         {"d", 78},
         {"e", 90},
-        {NULL, 0},
     };
-    dict_t d = create_int_dict(entries);
+    dict_t d = CREATE_DICT(entries);
     assert(5 == dict_size(d));
 
     int* result = dict_at(d, "b");
@@ -60,9 +59,8 @@ static void test_remove() {
         {"c", 56},
         {"d", 78},
         {"e", 90},
-        {NULL, 0},
     };
-    dict_t d = create_int_dict(entries);
+    dict_t d = CREATE_DICT(entries);
 
     bool is_removed = dict_remove(d, "b");
     assert(is_removed);

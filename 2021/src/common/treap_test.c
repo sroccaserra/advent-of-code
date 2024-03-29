@@ -47,15 +47,17 @@ static void fprint_entry(FILE* f, const void* entry) {
     fprintf(f, "%s", (char*)entry);
 }
 
-static treap_t create_treap(struct test_entry* entries) {
+static treap_t create_treap(struct test_entry* entries, size_t nb_entries) {
     treap_t result = treap_alloc((cmp_fn)strcmp, fprint_entry);
-    size_t i = 0;
-    struct test_entry e;
-    while ((e = entries[i++]).key != NULL) {
-        treap_insert(result, e.key, e.value, e.priority);
+
+    struct test_entry* e = entries;
+    for (size_t i = 0; i < nb_entries; ++i, ++e) {
+        treap_insert(result, e->key, e->value, e->priority);
     }
     return result;;
 }
+
+#define CREATE_TREAP(entries) (create_treap(entries, sizeof(entries)/sizeof(entries[0])))
 
 /*********
  * Tests *
@@ -79,9 +81,8 @@ static void test_insert_exemple_from_book() {
         {"Milk", 55, NULL},
         {"Pork", 56, NULL},
         {"Water", 32, NULL},
-        {NULL, 0, NULL},
     };
-    treap_t t = create_treap(entries);
+    treap_t t = CREATE_TREAP(entries);
 
     char buf[BUF_SIZE];
     treap_sprint(buf, t);
@@ -111,9 +112,8 @@ static void test_insert_to_same_key_updates_value() {
         {"Milk", 55, NULL},
         {"Pork", 56, NULL},
         {"Water", 32, NULL},
-        {NULL, 0, NULL},
     };
-    treap_t t = create_treap(entries);
+    treap_t t = CREATE_TREAP(entries);
 
     int value = 1234;
     treap_insert(t, "Eggs", &value, 129);
@@ -138,9 +138,8 @@ static void test_search() {
         {"Milk", 55, NULL},
         {"Pork", 56, NULL},
         {"Water", 32, NULL},
-        {NULL, 0, NULL},
     };
-    treap_t t = create_treap(entries);
+    treap_t t = CREATE_TREAP(entries);
 
     int* result = treap_search(t, "Bacon");
     assert(1234 == *result);
@@ -162,9 +161,8 @@ static void test_remove() {
         {"Milk", 55, NULL},
         {"Pork", 56, NULL},
         {"Water", 32, NULL},
-        {NULL, 0, NULL},
     };
-    treap_t t = create_treap(entries);
+    treap_t t = CREATE_TREAP(entries);
 
     char buf[BUF_SIZE];
     treap_sprint(buf, t);
@@ -209,9 +207,8 @@ static void test_size() {
         {"Milk", 55, NULL},
         {"Pork", 56, NULL},
         {"Water", 32, NULL},
-        {NULL, 0, NULL},
     };
-    treap_t t = create_treap(entries);
+    treap_t t = CREATE_TREAP(entries);
 
     size_t result = treap_size(t);
     aei(9, result);
