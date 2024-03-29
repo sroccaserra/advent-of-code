@@ -71,6 +71,11 @@ int getln(FILE* file, char** linep) {
         nchars++;
     }
 
+    if (c == EOF && 0 == nchars) {
+        free(array);
+        return EOF;
+    }
+
     array[nchars] = '\0';
     *linep = array;
 

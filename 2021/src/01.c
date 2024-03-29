@@ -43,7 +43,7 @@ int main() {
     for (size_t i = 0; i < size; ++i) {
         char* line = lines[i];
         sscanf(line, "%d\n", &numbers[i]);
-        free(lines[i]);
+        free(line);
         lines[i] = NULL;
     }
     free(lines);

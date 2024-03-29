@@ -37,6 +37,14 @@ void solve(const struct CommandList* commands, int* result_1, int* result_2) {
     *result_2 = hpos * depth_2;
 }
 
+static void free_commands(struct CommandList* head) {
+    while(head) {
+        struct CommandList* next = head->next;
+        free(head);
+        head = next;
+    }
+}
+
 int main() {
     const char* const filename = "src/02.in";
     FILE* file = fopen(filename, "r");
@@ -50,7 +58,7 @@ int main() {
     struct CommandList* head = NULL;
     struct CommandList* last = NULL;
     while(EOF != fscanf(file, "%s %d\n", buffer, &n)) {
-        struct CommandList* next = malloc(sizeof(struct CommandList));
+        struct CommandList* next = malloc(sizeof(*next));
         assert(next);
         next->direction = buffer[0];
         next->value = n;
@@ -67,5 +75,6 @@ int main() {
 
     int result_1, result_2;
     solve(head, &result_1, &result_2);
+    free_commands(head);
     printf("%d\n%d\n", result_1, result_2);
 }

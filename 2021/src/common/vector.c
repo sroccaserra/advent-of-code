@@ -17,7 +17,7 @@ V vector_alloc() {
     void** data = malloc(sizeof(void*[pv_default_size]));
     assert(NULL != data);
 
-    V result = malloc(sizeof(result));
+    V result = malloc(sizeof(*result));
     result->size = 0;
     result->max_size = pv_default_size;
     result->data = data;
