@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "common/common.h"
+#include "common/vector.h"
 
 #define NB_FLOORS 4
 
@@ -29,38 +30,38 @@ int solve_1(vector_t* floors) {
 }
 
 void scan_line(char* line, vector_t* floor) {
-    char* res = strtok(line, " ");
+    char* word = strtok(line, " ");
     // skip to content
     do {
-        res = strtok(NULL, " ");
-    } while (0 != strcmp("contains", res));
-    res = strtok(NULL, " ");
+        word = strtok(NULL, " ");
+    } while (0 != strcmp("contains", word));
+    word = strtok(NULL, " ");
     int word_position = 0;
-    if (0 == strcmp("nothing", res)) {
+    if (0 == strcmp("nothing", word)) {
         return;
     }
     // content
     struct element* e;
-    while (NULL != res)
+    while (NULL != word)
     {
-        if (res[0] == 'a') {
-            if (res[1] == '\0') {
+        if (word[0] == 'a') {
+            if (word[1] == '\0') {
                 word_position = 0;
                 e = malloc(sizeof *e);
             }
             goto next;
         }
         if (word_position == 0) {
-            strncpy(e->material, res, 4);
+            strncpy(e->material, word, 4);
             e->material[4] = '\0';
         }
         else {
-            e->type = ('g' == res[0]) ? RTG : MICROCHIP;
+            e->type = ('g' == word[0]) ? RTG : MICROCHIP;
             vector_push(*floor, e);
         }
         ++word_position;
 next:
-        res = strtok(NULL, "., ");
+        word = strtok(NULL, "., ");
     }
 }
 
@@ -86,11 +87,19 @@ int main() {
     for (size_t i = 0; i < nb_lines; ++i) {
         char* line = lines[i];
         scan_line(line, &floors[i]);
+        free(line);
     }
+    free(lines);
 
     solve_1(floors);
 
     for (size_t i = 0; i < NB_FLOORS; ++i) {
-        vector_free(&floors[i]);
+        vector_t floor = floors[i];
+        for (size_t j = 0; j < vector_size(floor); ++j) {
+            struct element* e = vector_get(floor, j);
+            free(e);
+            vector_set(floor, j, NULL);
+        }
+        vector_free_all(&floor);
     }
 }
