@@ -6,7 +6,7 @@
 
 void test_alloc_free() {
     vector_t v = vector_alloc();
-    vector_free(&v);
+    vector_free_all(&v);
 
     assert(NULL == v);
 }
@@ -19,7 +19,7 @@ void test_push_get() {
     char* result = vector_get(v, 0);
 
     assert(0 == strcmp("a", result));
-    vector_free(&v);
+    vector_free_all(&v);
 }
 
 int main() {

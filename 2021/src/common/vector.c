@@ -24,6 +24,11 @@ V vector_alloc() {
     return result;
 }
 
+void vector_free_all(V* v) {
+    free((*v)->data);
+    vector_free(v);
+}
+
 /*
  * Does not free the data part, as PointerVector is useful to
  * assign a C array (the data part).

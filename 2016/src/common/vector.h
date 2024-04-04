@@ -8,6 +8,7 @@ typedef struct V* V;
 
 V vector_alloc();
 void vector_free(V* v);
+void vector_free_all(V* v);
 
 size_t vector_size(V v);
 void vector_push(V v, void* value);
