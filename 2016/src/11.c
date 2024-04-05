@@ -23,35 +23,41 @@ int solve_1(vector_t* floors) {
         printf("# floor %d\n", i+1);
         for(size_t j = 0; j < vector_size(floor); ++j) {
             struct element* e = vector_get(floor, j);
-            printf("%s %s\n", e->material, e->type == MICROCHIP ? "microchip" : "rpg");
+            printf("%s %s\n", e->material, e->type == MICROCHIP ? "microchip" : "rtg");
         }
     }
     return 0;
 }
 
 void scan_line(char* line, vector_t* floor) {
-    char* word = strtok(line, " ");
-    // skip to content
-    do {
-        word = strtok(NULL, " ");
-    } while (0 != strcmp("contains", word));
-    word = strtok(NULL, " ");
-    int word_position = 0;
+    char** words = NULL;
+    size_t nb_words;
+    split(line, " ,.", &words, &nb_words);
+
+    // skip past "contains"
+    size_t i = 0;
+    char* word = words[i];
+    while (0 != strcmp("contains", word)) {
+        word = words[i++];
+    }
+    word = words[i++];
+    // content
     if (0 == strcmp("nothing", word)) {
         return;
     }
-    // content
+    int word_position = 0;
     struct element* e;
-    while (NULL != word)
-    {
-        if (word[0] == 'a') {
-            if (word[1] == '\0') {
-                word_position = 0;
-                e = malloc(sizeof *e);
-            }
-            goto next;
+    for (;i < nb_words; ++i) {
+        word = words[i];
+        if (0 == strcmp("and", word)) {
+            continue;
+        }
+        if (0 == strcmp("a", word)) {
+            word_position = 0;
+            continue;
         }
         if (word_position == 0) {
+            e = malloc(sizeof *e);
             strncpy(e->material, word, 4);
             e->material[4] = '\0';
         }
@@ -60,9 +66,8 @@ void scan_line(char* line, vector_t* floor) {
             vector_push(*floor, e);
         }
         ++word_position;
-next:
-        word = strtok(NULL, "., ");
     }
+    free(words);
 }
 
 /*

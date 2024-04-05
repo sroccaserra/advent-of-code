@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 
 #include "vector.h"
 
@@ -80,6 +81,18 @@ int getln(FILE* file, char** linep) {
     *linep = array;
 
     return (c == EOF) ? EOF : 0;
+}
+
+void split(char* src, char* delim, char*** dst, size_t* size) {
+    vector_t words = vector_alloc();
+    char* word = strtok(src, delim);
+    while (NULL != word) {
+        vector_push(words, word);
+        word = strtok(NULL, delim);
+    }
+    *dst = vector_array(words);
+    *size = vector_size(words);
+    vector_free(&words);
 }
 
 #endif
