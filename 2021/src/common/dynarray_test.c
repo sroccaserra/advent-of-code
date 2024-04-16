@@ -24,6 +24,19 @@ void test_size_of_empty_array() {
     aei(0, da_size(numbers));
 }
 
+void test_free_empty_dyn_array() {
+    int* numbers = NULL;
+    da_free(numbers);
+    assert(NULL == numbers);
+}
+
+void test_free_non_empty_dyn_array() {
+    int* numbers = NULL;
+    da_push(numbers, 9);
+    da_free(numbers);
+    assert(NULL == numbers);
+}
+
 void test_push_ten_values() {
     int* numbers = NULL;
 
@@ -32,6 +45,7 @@ void test_push_ten_values() {
         aei(i, da_size(numbers));
         aei(i, numbers[i-1]);
     }
+    da_free(numbers);
 }
 
 void test_string_dynarray() {
@@ -41,10 +55,13 @@ void test_string_dynarray() {
     da_push(strings, "hello");
 
     assert(0 == strcmp("hello", strings[0]));
+    da_free(strings);
 }
 
 int main() {
     test_size_of_empty_array();
+    test_free_empty_dyn_array();
+    test_free_non_empty_dyn_array();
     test_push_ten_values();
     test_string_dynarray();
 }
