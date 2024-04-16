@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <assert.h>
 #include <error.h>
+#include <string.h>
 
 #include "dynarray.h"
 
@@ -23,13 +24,27 @@ void test_size_of_empty_array() {
     aei(0, da_size(numbers));
 }
 
-void test_push_a_value() {
+void test_push_ten_values() {
     int* numbers = NULL;
-    da_push(numbers, 9);
-    aei(1, da_size(numbers));
+
+    for (int i = 1; i <= 10; ++i) {
+        da_push(numbers, i);
+        aei(i, da_size(numbers));
+        aei(i, numbers[i-1]);
+    }
+}
+
+void test_string_dynarray() {
+    char** strings = NULL;
+    aei(0, da_size(strings));
+
+    da_push(strings, "hello");
+
+    assert(0 == strcmp("hello", strings[0]));
 }
 
 int main() {
     test_size_of_empty_array();
-    test_push_a_value();
+    test_push_ten_values();
+    test_string_dynarray();
 }
