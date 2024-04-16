@@ -5,8 +5,9 @@ SRC=src
 LIB=lib
 
 SRC_COMMON := $(wildcard src/common/*.c)
-SRC_COMMON := $(filter-out $(wildcard src/common/*_test.c), $(SRC_COMMON))
 OBJ_COMMON := $(SRC_COMMON:src/common/%.c=build/%.o)
+SRC_COMMON_NO_TEST := $(filter-out $(wildcard src/common/*_test.c), $(SRC_COMMON))
+OBJ_COMMON_NO_TEST := $(SRC_COMMON_NO_TEST:src/common/%.c=build/%.o)
 
 CFLAGS := -std=c18 -Wall -Wextra -Wpedantic -Werror -g
 CPPFLAGS := -Isrc/common -MMD -MP
@@ -58,7 +59,7 @@ build/%.o: src/common/%.c | build
 	cc $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 .PRECIOUS: build/%_test_c
-build/%_test_c: $(OBJ_COMMON) build/%_test.o
+build/%_test_c: $(OBJ_COMMON_NO_TEST) build/%_test.o
 	cc $(CFLAGS) $^ $(LDLIBS) -o $@
 
 .PHONY: %_test_c
@@ -66,10 +67,10 @@ build/%_test_c: $(OBJ_COMMON) build/%_test.o
 	@$<
 
 .PHONY: test_c
-test_c: dict_test_c treap_test_c
+test_c: dict_test_c treap_test_c vector_test_c dynarray_test_c
 
 .PRECIOUS: build/%_c
-build/%_c: src/%.c $(OBJ_COMMON) | build
+build/%_c: src/%.c $(OBJ_COMMON_NO_TEST) | build
 	gcc $(CFLAGS) -o $@ $^
 
 .PHONY: %_c
