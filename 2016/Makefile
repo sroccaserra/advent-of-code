@@ -1,8 +1,9 @@
 SHELL=/bin/bash -euo pipefail
 
 SRC_COMMON := $(wildcard src/common/*.c)
-SRC_COMMON := $(filter-out $(wildcard src/common/*_test.c), $(SRC_COMMON))
 OBJ_COMMON := $(SRC_COMMON:src/common/%.c=build/%.o)
+SRC_COMMON_NO_TEST := $(filter-out $(wildcard src/common/*_test.c), $(SRC_COMMON))
+OBJ_COMMON_NO_TEST := $(SRC_COMMON_NO_TEST:src/common/%.c=build/%.o)
 
 CFLAGS := -std=c18 -Wall -Wextra -Wpedantic -Werror -g
 CPPFLAGS := -Isrc/common -MMD -MP
@@ -25,18 +26,18 @@ clean:
 
 .PRECIOUS: build/%.o
 build/%.o: src/common/%.c | build
-	cc $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+	gcc $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 .PRECIOUS: build/%_test
-build/%_test: $(OBJ_COMMON) build/%_test.o
-	cc $(CFLAGS) $^ $(LDLIBS) -o $@
+build/%_test: $(OBJ_COMMON_NO_TEST) build/%_test.o
+	gcc $(CFLAGS) $^ $(LDLIBS) -o $@
 
 .PHONY: %_test
 %_test: build/%_test | build
 	@$<
 
 .PRECIOUS: build/%
-build/%: src/%.c $(OBJ_COMMON) | build
+build/%: src/%.c $(OBJ_COMMON_NO_TEST) | build
 	gcc $(CFLAGS) -o $@ $^
 
 .PHONY: %
