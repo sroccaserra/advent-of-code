@@ -5,11 +5,11 @@
 #include <errno.h>
 #include <string.h>
 
-#include "vector.h"
+#include "dynarray.h"
 
 int getln(FILE* file, char** linep);
 
-int getlines(char* filename, char*** linesp, size_t* size) {
+int getlines(char* filename, char*** linesp) {
     errno = 0;
     FILE *file = fopen(filename, "r");
     if (NULL == file) {
@@ -17,17 +17,14 @@ int getlines(char* filename, char*** linesp, size_t* size) {
         return -1;
     }
 
-    vector_t lines = vector_alloc();
+    char** lines = NULL;
     char* line;
     while(EOF != getln(file, &line)) {
-        vector_push(lines, line);
+        da_push(lines, line);
     };
     fclose(file);
 
-    *size = vector_size(lines);
-    *linesp = vector_array(lines);
-
-    vector_free(&lines);
+    *linesp = lines;
 
     return 0;
 }
@@ -83,16 +80,14 @@ int getln(FILE* file, char** linep) {
     return (c == EOF) ? EOF : 0;
 }
 
-void split(char* src, char* delim, char*** dst, size_t* size) {
-    vector_t words = vector_alloc();
+char** split(char* src, char* delim) {
+    char** words = NULL;
     char* word = strtok(src, delim);
     while (NULL != word) {
-        vector_push(words, word);
+        da_push(words, word);
         word = strtok(NULL, delim);
     }
-    *dst = vector_array(words);
-    *size = vector_size(words);
-    vector_free(&words);
+    return words;
 }
 
 #endif

@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "common/common.h"
-#include "common/vector.h"
 
 #define NB_FLOORS 4
 
@@ -12,27 +11,28 @@ enum type {
     RTG,
 };
 
-struct element {
+typedef struct element_s {
     char material[5];
     enum type type;
-};
+} element_s;
 
-int solve_1(vector_t* floors) {
+typedef element_s* floor;
+
+int solve_1(floor* floors) {
     for (int i = 0; i < NB_FLOORS; ++i) {
-        vector_t floor = floors[i];
+        floor floor = floors[i];
         printf("# floor %d\n", i+1);
-        for(size_t j = 0; j < vector_size(floor); ++j) {
-            struct element* e = vector_get(floor, j);
+        for(size_t j = 0; j < da_size(floor); ++j) {
+            element_s* e = &floor[j];
             printf("%s %s\n", e->material, e->type == MICROCHIP ? "microchip" : "rtg");
         }
     }
     return 0;
 }
 
-void scan_line(char* line, vector_t* floor) {
-    char** words = NULL;
-    size_t nb_words;
-    split(line, " ,.", &words, &nb_words);
+element_s* parse_line(char* line) {
+    char** words = split(line, " ,.");
+    element_s* result = NULL;
 
     // skip past "contains"
     size_t i = 0;
@@ -43,10 +43,11 @@ void scan_line(char* line, vector_t* floor) {
     word = words[i++];
     // content
     if (0 == strcmp("nothing", word)) {
-        return;
+        goto end;
     }
     int word_position = 0;
-    struct element* e;
+    element_s e;
+    size_t nb_words = da_size(words);
     for (;i < nb_words; ++i) {
         word = words[i];
         if (0 == strcmp("and", word)) {
@@ -57,17 +58,18 @@ void scan_line(char* line, vector_t* floor) {
             continue;
         }
         if (word_position == 0) {
-            e = malloc(sizeof *e);
-            strncpy(e->material, word, 4);
-            e->material[4] = '\0';
+            strncpy(e.material, word, 4);
+            e.material[4] = '\0';
         }
         else {
-            e->type = ('g' == word[0]) ? RTG : MICROCHIP;
-            vector_push(*floor, e);
+            e.type = ('g' == word[0]) ? RTG : MICROCHIP;
+            da_push(result, e);
         }
         ++word_position;
     }
-    free(words);
+end:
+    da_free(words);
+    return result;
 }
 
 /*
@@ -79,32 +81,26 @@ The fourth floor contains nothing relevant.
 
 
 int main() {
-    size_t nb_lines;
     char** lines;
-    int res = getlines("input/11", &lines, &nb_lines);
+    int res = getlines("input/11", &lines);
     assert(0 == res);
 
-    vector_t floors[NB_FLOORS];
+    floor floors[NB_FLOORS];
     for (size_t i = 0; i < NB_FLOORS; ++i) {
-        floors[i] = vector_alloc();
+        floors[i] = NULL;
     }
 
+    size_t nb_lines = da_size(lines);
     for (size_t i = 0; i < nb_lines; ++i) {
         char* line = lines[i];
-        scan_line(line, &floors[i]);
+        floors[i] = parse_line(line);
         free(line);
     }
-    free(lines);
+    da_free(lines);
 
     solve_1(floors);
 
     for (size_t i = 0; i < NB_FLOORS; ++i) {
-        vector_t floor = floors[i];
-        for (size_t j = 0; j < vector_size(floor); ++j) {
-            struct element* e = vector_get(floor, j);
-            free(e);
-            vector_set(floor, j, NULL);
-        }
-        vector_free_all(&floor);
+        da_free(floors[i]);
     }
 }
