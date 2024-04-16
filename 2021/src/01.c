@@ -2,13 +2,15 @@
 #include <stdio.h>
 
 #include "common/common.h"
+#include "common/dynarray.h"
 
 #define HUGE 9999999
 
-static int solve_1(int numbers[], size_t size) {
+static int solve_1(int* numbers) {
     int previous = HUGE;
     int result = 0;
-    for (size_t i = 0; i < size; ++i) {
+    size_t size = numbers[0];
+    for (size_t i = 1; i <= size; ++i) {
         int n = numbers[i];
         if (n > previous) {
             ++result;
@@ -18,10 +20,11 @@ static int solve_1(int numbers[], size_t size) {
     return result;
 }
 
-static int solve_2(int numbers[], size_t size) {
+static int solve_2(int* numbers) {
     int p_1 = HUGE, p_2 = HUGE, p_3 = HUGE;
     int result = 0;
-    for (size_t i = 0; i < size; ++i) {
+    size_t size = numbers[0];
+    for (size_t i = 1; i <= size; ++i) {
         int n = numbers[i];
         if (n + p_1 + p_2 > p_1 + p_2 + p_3) {
             ++result;
@@ -34,24 +37,24 @@ static int solve_2(int numbers[], size_t size) {
 }
 
 int main() {
-    size_t size;
     char** lines;
-    int res = getlines("src/01.in", &lines, &size);
+    int res = getlines("src/01.in", &lines);
     assert(0 == res);
 
-    int numbers[size];
-    for (size_t i = 0; i < size; ++i) {
+    size_t nb_lines = da_size(lines);
+    int numbers[nb_lines+1];
+    numbers[0] = nb_lines; // Use firt value as size => 1-indexed array, like Lua & Smalltalk
+    for (size_t i = 0; i < nb_lines; ++i) {
         char* line = lines[i];
-        sscanf(line, "%d\n", &numbers[i]);
+        sscanf(line, "%d\n", &numbers[i+1]);
         free(line);
         lines[i] = NULL;
     }
-    free(lines);
-    lines = NULL;
+    da_free(lines);
 
     printf("%d\n%d\n",
-            solve_1(numbers, size),
-            solve_2(numbers, size));
+            solve_1(numbers),
+            solve_2(numbers));
 
     return 0;
 }

@@ -67,7 +67,7 @@ build/%_test_c: $(OBJ_COMMON_NO_TEST) build/%_test.o
 	@$<
 
 .PHONY: test_c
-test_c: dict_test_c treap_test_c vector_test_c dynarray_test_c
+test_c: dict_test_c treap_test_c dynarray_test_c
 
 .PRECIOUS: build/%_c
 build/%_c: src/%.c $(OBJ_COMMON_NO_TEST) | build

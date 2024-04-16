@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "vector.h"
+#include "dynarray.h"
 
 int getln(FILE* file, char** linep);
 
-int getlines(char* filename, char*** linesp, size_t* size) {
+int getlines(char* filename, char*** linesp) {
     errno = 0;
     FILE *file = fopen(filename, "r");
     if (NULL == file) {
@@ -16,17 +16,14 @@ int getlines(char* filename, char*** linesp, size_t* size) {
         return -1;
     }
 
-    vector_t lines = vector_alloc();
+    char** lines = NULL;
     char* line;
     while(EOF != getln(file, &line)) {
-        vector_push(lines, line);
+        da_push(lines, line);
     };
     fclose(file);
 
-    *size = vector_size(lines);
-    *linesp = vector_array(lines);
-
-    vector_free(&lines);
+    *linesp = lines;
 
     return 0;
 }
