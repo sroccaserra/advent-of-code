@@ -24,6 +24,9 @@ clean:
 ##
 # C
 
+.PHONY: test
+test: dynarray_test
+
 .PRECIOUS: build/%.o
 build/%.o: src/common/%.c | build
 	gcc $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
