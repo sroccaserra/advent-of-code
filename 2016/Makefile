@@ -5,7 +5,7 @@ OBJ_COMMON := $(SRC_COMMON:src/common/%.c=build/%.o)
 SRC_COMMON_NO_TEST := $(filter-out $(wildcard src/common/*_test.c), $(SRC_COMMON))
 OBJ_COMMON_NO_TEST := $(SRC_COMMON_NO_TEST:src/common/%.c=build/%.o)
 
-CFLAGS := -std=c18 -Wall -Wextra -Wpedantic -Werror -g
+CFLAGS := -std=c18 -Wall -Wextra -Wpedantic -Werror -g -D_POSIX_C_SOURCE
 CPPFLAGS := -Isrc/common -MMD -MP
 LDLIBS := -lc
 

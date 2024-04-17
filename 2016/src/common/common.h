@@ -82,10 +82,11 @@ int getln(FILE* file, char** linep) {
 
 char** split(char* src, char* delim) {
     char** words = NULL;
-    char* word = strtok(src, delim);
+    char* saveptr;
+    char* word = strtok_r(src, delim, &saveptr);
     while (NULL != word) {
         da_push(words, word);
-        word = strtok(NULL, delim);
+        word = strtok_r(NULL, delim, &saveptr);
     }
     return words;
 }
