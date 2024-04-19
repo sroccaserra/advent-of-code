@@ -16,14 +16,14 @@ enum type {
     RTG,
 };
 
-typedef struct element_s {
+struct element {
     char material[N_CHARS+1];
     enum type type;
-} element_s;
+};
 
 int cmp_elements(const void* a, const void* b) {
-    element_s* lhs = (element_s*)a;
-    element_s* rhs = (element_s*)b;
+    struct element* lhs = (struct element*)a;
+    struct element* rhs = (struct element*)b;
     int cmp_m = strncmp(lhs->material, rhs->material, N_CHARS);
     if (0 == cmp_m) {
         return lhs->type - rhs->type;
@@ -31,11 +31,11 @@ int cmp_elements(const void* a, const void* b) {
     return cmp_m;
 }
 
-uint64_t solve_1(element_s* elements, uint16_t* floors) {
+uint64_t solve_1(struct element* elements, uint16_t* floors) {
     // print sorted elements
     size_t nb_elements = da_size(elements);
     for (size_t i = 0; i < nb_elements; ++i) {
-        element_s* e = &elements[i];
+        struct element* e = &elements[i];
         printf("%ld %s:%s\n", i, e->material, e->type == MICROCHIP ? "microchip" : "rtg");
     }
     // print element positions as one bit field by floor
@@ -48,9 +48,9 @@ uint64_t solve_1(element_s* elements, uint16_t* floors) {
     return *(uint64_t*)floors;
 }
 
-element_s* parse_line(char* line) {
+struct element* parse_line(char* line) {
     char** words = split(line, " ,.");
-    element_s* result = NULL;
+    struct element* result = NULL;
 
     // skip past "contains"
     size_t i = 0;
@@ -64,7 +64,7 @@ element_s* parse_line(char* line) {
         goto end;
     }
     int word_position = 0;
-    element_s e;
+    struct element e;
     size_t nb_words = da_size(words);
     for (;i < nb_words; ++i) {
         word = words[i];
@@ -90,7 +90,7 @@ end:
     return result;
 }
 
-int find_index_of(element_s* haystack, element_s needle) {
+int find_index_of(struct element* haystack, struct element needle) {
     size_t nb_elements = da_size(haystack);
     for (size_t i = 0; i < nb_elements; ++i) {
         if (0 == cmp_elements(&haystack[i], &needle)) {
@@ -101,10 +101,10 @@ int find_index_of(element_s* haystack, element_s needle) {
     return -1;
 }
 
-uint16_t* build_floors(element_s* elements, element_s** elements_by_floor) {
+uint16_t* build_floors(struct element* elements, struct element** elements_by_floor) {
     uint16_t* result = malloc(NB_FLOORS*sizeof(uint16_t));
     for (size_t i = 0; i < NB_FLOORS; ++i) {
-        element_s* floor = elements_by_floor[i];
+        struct element* floor = elements_by_floor[i];
         result[i] = 0;
         for (size_t j = 0; j < da_size(floor); ++j) {
             int index = find_index_of(elements, floor[j]);
@@ -147,11 +147,11 @@ int main() {
     size_t nb_lines = da_size(lines);
     assert(NB_FLOORS == nb_lines);
 
-    element_s* elements = NULL;
-    element_s* elems_by_floor[NB_FLOORS];
+    struct element* elements = NULL;
+    struct element* elems_by_floor[NB_FLOORS];
     for (size_t i = 0; i < nb_lines; ++i) {
         char* line = lines[i];
-        element_s* elements_at_floor = parse_line(line);
+        struct element* elements_at_floor = parse_line(line);
         elems_by_floor[i] = elements_at_floor;
         for (size_t j = 0; j < da_size(elements_at_floor); ++j) {
             da_push(elements, elements_at_floor[j]);
@@ -162,7 +162,7 @@ int main() {
 
     size_t nb_elements = da_size(elements);
     assert(nb_elements <= 16);
-    qsort(elements, nb_elements, sizeof(element_s),cmp_elements);
+    qsort(elements, nb_elements, sizeof(struct element),cmp_elements);
 
     uint16_t* floors = build_floors(elements, elems_by_floor);
     for (size_t i = 0; i < NB_FLOORS; ++i) {
