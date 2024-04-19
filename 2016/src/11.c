@@ -26,7 +26,7 @@ int cmp_elements(const void* a, const void* b) {
     struct element* rhs = (struct element*)b;
     int cmp_m = strncmp(lhs->material, rhs->material, N_CHARS);
     if (0 == cmp_m) {
-        return lhs->type - rhs->type;
+        return rhs->type - lhs->type;
     }
     return cmp_m;
 }
@@ -39,10 +39,15 @@ uint64_t solve_1(struct element* elements, uint16_t* floors) {
         printf("%ld %s:%s\n", i, e->material, e->type == MICROCHIP ? "microchip" : "generator");
     }
     // print element positions as one bit field by floor
-    for (size_t i = 0; i < NB_FLOORS; ++i) {
-        char buffer[17];
+    for (int i = NB_FLOORS-1; i >= 0 ; --i) {
+        char buffer[MAX_ELEMENTS+1];
         itoa(floors[i], buffer, 2);
-        printf("%16s\n",buffer);
+        reverse(buffer);
+        for (int j = strlen(buffer); j < MAX_ELEMENTS; ++j) {
+            buffer[j] = '0';
+        }
+        buffer[nb_elements] = '\0';
+        printf("%16s\n", buffer);
     }
     // returns element positions as a single ulong
     return *(uint64_t*)floors;
