@@ -31,14 +31,15 @@ int cmp_elements(const void* a, const void* b) {
     return cmp_m;
 }
 
-uint64_t solve_1(struct element* elements, uint16_t* floors) {
-    // print sorted elements
+void print_elements(struct element* elements) {
     size_t nb_elements = da_size(elements);
     for (size_t i = 0; i < nb_elements; ++i) {
         struct element* e = &elements[i];
         printf("%ld %s:%s\n", i, e->material, e->type == MICROCHIP ? "microchip" : "generator");
     }
-    // print element positions as one bit field by floor
+}
+
+void print_floors(uint16_t* floors, size_t nb_elements) {
     for (int i = NB_FLOORS-1; i >= 0 ; --i) {
         char buffer[MAX_ELEMENTS+1];
         itoa(floors[i], buffer, 2);
@@ -49,7 +50,11 @@ uint64_t solve_1(struct element* elements, uint16_t* floors) {
         buffer[nb_elements] = '\0';
         printf("%16s\n", buffer);
     }
-    // returns element positions as a single ulong
+}
+
+uint64_t solve_1(struct element* elements, uint16_t* floors) {
+    print_elements(elements);
+    print_floors(floors, da_size(elements));
     return *(uint64_t*)floors;
 }
 
@@ -121,13 +126,6 @@ uint16_t* build_floors(struct element* elements, struct element** elements_by_fl
 }
 
 /*
-The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
-The second floor contains a hydrogen generator.
-The third floor contains a lithium generator.
-The fourth floor contains nothing relevant.
-*/
-
-/*
  * Le plan
  *
  * Pour pouvoir faire le graph des possibles, on veut pouvoir savoir si un
@@ -140,8 +138,12 @@ The fourth floor contains nothing relevant.
  * - il n'y a pas d'autre generator dans l'étage next
  *
  * Un generator peut aller à l'étage "next" si :
- * - son microchip n'est pas à l'étage prévious ou il n'y a pas d'autre generator à previous
+ * - son microchip n'est pas à l'étage prévious ou il n'y a pas d'autre
+ *   generator à previous
  * - il n'y a pas de microchip incompatible seul à l'étage next
+ *
+ * L'ascenseur peut monter zéro, un ou deux éléments. Est-ce qu'on a besoin de
+ * modéliser l'ascenseur ?
  *
  */
 int main(int argc, char** argv) {
