@@ -131,16 +131,17 @@ The fourth floor contains nothing relevant.
  * L'étage "next" est soit l'étage n+1 soit l'étage n-1 ? Même étage possible ?
  *
  * Un microchip peut aller à l'étage "next" si, au choix :
- * - il y a son rtg dans l'étage next
- * - il n'y a pas d'autre rtg dans l'étage next
+ * - il y a son generator dans l'étage next
+ * - il n'y a pas d'autre generator dans l'étage next
  *
- * Un rtg peut aller à l'étage "next" si :
- * - son microchip n'est pas à l'étage prévious ou il n'y a pas d'autre rtg à previous
+ * Un generator peut aller à l'étage "next" si :
+ * - son microchip n'est pas à l'étage prévious ou il n'y a pas d'autre generator à previous
  * - il n'y a pas de microchip incompatible seul à l'étage next
  *
  */
-int main() {
-    char** lines = getlines("input/11");
+int main(int argc, char** argv) {
+    char* filename = (argc == 1) ? "input/11" : argv[1];
+    char** lines = getlines(filename);
 
     size_t nb_lines = da_size(lines);
     assert(NB_FLOORS == nb_lines);

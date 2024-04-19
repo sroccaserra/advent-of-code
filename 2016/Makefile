@@ -45,6 +45,6 @@ build/%: src/%.c $(OBJ_COMMON_NO_TEST) | build
 
 .PHONY: %
 %: build/%
-	@$< src/$*.in
+	@$< $(INPUT)
 
 -include $(OBJ_COMMON:.o=.d)
