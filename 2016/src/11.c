@@ -140,9 +140,7 @@ The fourth floor contains nothing relevant.
  *
  */
 int main() {
-    char** lines;
-    int res = getlines("input/11", &lines);
-    assert(0 == res);
+    char** lines = getlines("input/11");
 
     size_t nb_lines = da_size(lines);
     assert(NB_FLOORS == nb_lines);

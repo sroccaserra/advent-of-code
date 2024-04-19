@@ -1,21 +1,21 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <stdio.h>
+#include <assert.h>
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "dynarray.h"
 
-int getln(FILE* file, char** linep);
+#define assert_msg(val, msg) (val ? (void)0 : (perror(msg), assert(val)))
 
-int getlines(char* filename, char*** linesp) {
+int getln(FILE* const file, char** const linep);
+
+char** getlines(const char* const filename) {
     errno = 0;
-    FILE *file = fopen(filename, "r");
-    if (NULL == file) {
-        perror(filename);
-        return -1;
-    }
+    FILE* const file = fopen(filename, "r");
+    assert_msg(file, filename);
 
     char** lines = NULL;
     char* line;
@@ -24,9 +24,7 @@ int getlines(char* filename, char*** linesp) {
     };
     fclose(file);
 
-    *linesp = lines;
-
-    return 0;
+    return lines;
 }
 
 /**
@@ -43,13 +41,10 @@ int getlines(char* filename, char*** linesp) {
 #define GETLN_GROW_BY 2
 #define GETLN_EXTRA_SPACE 1
 
-int getln(FILE* file, char** linep) {
+int getln(FILE* const file, char** const linep) {
     errno = 0;
     char* array = malloc(GETLN_INIT_SIZE*sizeof(char));
-    if (array == NULL) {
-        perror("getln");
-        return -1;
-    }
+    assert_msg(array, "getln");
 
     int max = GETLN_INIT_SIZE;
     int nchars = 0;
@@ -59,10 +54,7 @@ int getln(FILE* file, char** linep) {
             max *= GETLN_GROW_BY;
             errno = 0;
             char* new_array = realloc(array, max*sizeof(char));
-            if (NULL == new_array) {
-                perror("getln");
-                return -1;
-            }
+            assert_msg(new_array, "getln");
             array = new_array;
         }
         array[nchars] = c;
@@ -95,7 +87,7 @@ char** split(char* src, char* delim) {
 /* From K&R */
 /************/
 
-void reverse(char s[]) {
+void reverse(char* s) {
     int i, j;
     char c;
 

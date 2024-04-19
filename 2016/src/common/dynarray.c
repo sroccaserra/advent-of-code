@@ -7,7 +7,7 @@
 
 #define MIN_CAPACITY 8
 
-size_t da_size(void* a) {
+size_t da_size(const void* const a) {
     if (a == NULL) {
         return 0;
     }
@@ -15,7 +15,7 @@ size_t da_size(void* a) {
     return h->size;
 }
 
-void* da_grow(void* a, size_t elem_size) {
+void* da_grow(void* const a, const size_t elem_size) {
     da_header_s* const header = a ? da_header(a) : NULL;
     if (a && (header->size < header->capacity)) {
         return a;
