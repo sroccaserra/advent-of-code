@@ -13,7 +13,7 @@
 
 enum type {
     MICROCHIP,
-    RTG,
+    GENERATOR,
 };
 
 struct element {
@@ -36,7 +36,7 @@ uint64_t solve_1(struct element* elements, uint16_t* floors) {
     size_t nb_elements = da_size(elements);
     for (size_t i = 0; i < nb_elements; ++i) {
         struct element* e = &elements[i];
-        printf("%ld %s:%s\n", i, e->material, e->type == MICROCHIP ? "microchip" : "rtg");
+        printf("%ld %s:%s\n", i, e->material, e->type == MICROCHIP ? "microchip" : "generator");
     }
     // print element positions as one bit field by floor
     for (size_t i = 0; i < NB_FLOORS; ++i) {
@@ -80,7 +80,7 @@ struct element* parse_line(char* line) {
             e.material[4] = '\0';
         }
         else {
-            e.type = ('g' == word[0]) ? RTG : MICROCHIP;
+            e.type = ('g' == word[0]) ? GENERATOR : MICROCHIP;
             da_push(result, e);
         }
         ++word_position;
