@@ -4,13 +4,16 @@
 #include <string.h>
 #include <stdint.h>
 
-
 #include "common/common.h"
 #include "common/dynarray.h"
 
 #define NB_FLOORS 4
 #define MAX_ELEMENTS 10
 #define N_CHARS 4
+
+/***********
+ * Element *
+ ***********/
 
 enum type {
     MICROCHIP,
@@ -27,11 +30,6 @@ static struct element elements[MAX_ELEMENTS] = {0};
 
 #define type_name(e) ((e).type ? "G" : "M")
 
-struct state {
-    uint16_t floors[4];
-    uint8_t positions[MAX_ELEMENTS];
-};
-
 int cmp_elements(const void* a, const void* b) {
     struct element* lhs = (struct element*)a;
     struct element* rhs = (struct element*)b;
@@ -40,6 +38,16 @@ int cmp_elements(const void* a, const void* b) {
         return rhs->type - lhs->type;
     }
     return cmp_m;
+}
+
+int find_index_of(struct element* haystack, struct element needle) {
+    for (size_t i = 0; i < nb_elements; ++i) {
+        if (0 == cmp_elements(&haystack[i], &needle)) {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 void print_elements() {
@@ -54,6 +62,44 @@ void print_elements() {
         is_first_time = false;
     }
     printf("\n");
+}
+
+/******************
+ * Floors & State *
+ ******************/
+
+struct state {
+    uint16_t floors[4];
+    uint8_t positions[MAX_ELEMENTS];
+};
+
+struct state build_state(struct element* elements, struct element** elements_by_floor) {
+    struct state result = {0};
+    for (size_t i = 0; i < NB_FLOORS; ++i) {
+        struct element* floor = elements_by_floor[i];
+        result.floors[i] = 0;
+        for (size_t j = 0; j < da_size(floor); ++j) {
+            int index = find_index_of(elements, floor[j]);
+            assert(-1 != index);
+            result.floors[i] |= 1<<index;
+            result.positions[index] = i;
+        }
+    }
+    return result;
+}
+
+uint16_t* build_floors(struct element* elements, struct element** elements_by_floor) {
+    uint16_t* result = malloc(NB_FLOORS*sizeof(uint16_t));
+    for (size_t i = 0; i < NB_FLOORS; ++i) {
+        struct element* floor = elements_by_floor[i];
+        result[i] = 0;
+        for (size_t j = 0; j < da_size(floor); ++j) {
+            int index = find_index_of(elements, floor[j]);
+            assert(-1 != index);
+            result[i] |= 1<<index;
+        }
+    }
+    return result;
 }
 
 void print_floor(uint16_t floor) {
@@ -77,11 +123,19 @@ void print_state(struct state state) {
     }
 }
 
+/******************
+ * Solving (TODO) *
+ ******************/
+
 uint64_t solve_1(struct state state) {
     print_elements();
     print_state(state);
     return *(uint64_t*)state.floors;
 }
+
+/*************************
+ * Parsing & entry point *
+ *************************/
 
 struct element* parse_line(char* line) {
     char** words = split(line, " ,.");
@@ -125,46 +179,6 @@ end:
     return result;
 }
 
-int find_index_of(struct element* haystack, struct element needle) {
-    for (size_t i = 0; i < nb_elements; ++i) {
-        if (0 == cmp_elements(&haystack[i], &needle)) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
-struct state build_state(struct element* elements, struct element** elements_by_floor) {
-    struct state result = {0};
-    // build floors
-    for (size_t i = 0; i < NB_FLOORS; ++i) {
-        struct element* floor = elements_by_floor[i];
-        result.floors[i] = 0;
-        for (size_t j = 0; j < da_size(floor); ++j) {
-            int index = find_index_of(elements, floor[j]);
-            assert(-1 != index);
-            result.floors[i] |= 1<<index;
-            result.positions[index] = i;
-        }
-    }
-    return result;
-}
-
-uint16_t* build_floors(struct element* elements, struct element** elements_by_floor) {
-    uint16_t* result = malloc(NB_FLOORS*sizeof(uint16_t));
-    for (size_t i = 0; i < NB_FLOORS; ++i) {
-        struct element* floor = elements_by_floor[i];
-        result[i] = 0;
-        for (size_t j = 0; j < da_size(floor); ++j) {
-            int index = find_index_of(elements, floor[j]);
-            assert(-1 != index);
-            result[i] |= 1<<index;
-        }
-    }
-    return result;
-}
-
 /*
  * Le plan
  *
@@ -186,6 +200,7 @@ uint16_t* build_floors(struct element* elements, struct element** elements_by_fl
  * modéliser l'ascenseur ?
  *
  */
+
 int main(int argc, char** argv) {
     char* filename = (argc == 1) ? "input/11" : argv[1];
     char** lines = getlines(filename);
