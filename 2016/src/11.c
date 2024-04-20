@@ -23,6 +23,14 @@ struct element {
 };
 
 static size_t nb_elements;
+static struct element elements[MAX_ELEMENTS] = {0};
+
+#define type_name(e) ((e).type ? "G" : "M")
+
+struct state {
+    uint16_t floors[4];
+    uint8_t positions[MAX_ELEMENTS];
+};
 
 int cmp_elements(const void* a, const void* b) {
     struct element* lhs = (struct element*)a;
@@ -34,15 +42,15 @@ int cmp_elements(const void* a, const void* b) {
     return cmp_m;
 }
 
-void print_elements(struct element* elements) {
+void print_elements() {
     printf("Elems:\t");
     bool is_first_time = true;
     for (size_t i = 0; i < nb_elements; ++i) {
         if (!is_first_time) {
-            printf(", ");
+            printf("  ");
         }
         struct element* e = &elements[i];
-        printf("%ld:%s:%s", i, e->material, e->type == MICROCHIP ? "M" : "G");
+        printf("%ld:%s_%s", i, e->material, type_name(*e));
         is_first_time = false;
     }
     printf("\n");
@@ -59,16 +67,20 @@ void print_floor(uint16_t floor) {
     printf("%16s\n", buffer);
 }
 
-void print_floors(uint16_t* floors) {
+void print_state(struct state state) {
     for (int i = NB_FLOORS-1; i >= 0 ; --i) {
-        print_floor(floors[i]);
+        print_floor(state.floors[i]);
+    }
+    for (size_t i = 0; i<nb_elements; ++i) {
+        struct element element = elements[i];
+        printf("%s_%s:%d\n", element.material, type_name(element), state.positions[i]);
     }
 }
 
-uint64_t solve_1(struct element* elements, uint16_t* floors) {
-    print_elements(elements);
-    print_floors(floors);
-    return *(uint64_t*)floors;
+uint64_t solve_1(struct state state) {
+    print_elements();
+    print_state(state);
+    return *(uint64_t*)state.floors;
 }
 
 struct element* parse_line(char* line) {
@@ -123,6 +135,22 @@ int find_index_of(struct element* haystack, struct element needle) {
     return -1;
 }
 
+struct state build_state(struct element* elements, struct element** elements_by_floor) {
+    struct state result = {0};
+    // build floors
+    for (size_t i = 0; i < NB_FLOORS; ++i) {
+        struct element* floor = elements_by_floor[i];
+        result.floors[i] = 0;
+        for (size_t j = 0; j < da_size(floor); ++j) {
+            int index = find_index_of(elements, floor[j]);
+            assert(-1 != index);
+            result.floors[i] |= 1<<index;
+            result.positions[index] = i;
+        }
+    }
+    return result;
+}
+
 uint16_t* build_floors(struct element* elements, struct element** elements_by_floor) {
     uint16_t* result = malloc(NB_FLOORS*sizeof(uint16_t));
     for (size_t i = 0; i < NB_FLOORS; ++i) {
@@ -165,31 +193,27 @@ int main(int argc, char** argv) {
     size_t nb_lines = da_size(lines);
     assert(NB_FLOORS == nb_lines);
 
-    struct element* elements = NULL;
+    nb_elements = 0;
     struct element* elems_by_floor[NB_FLOORS];
     for (size_t i = 0; i < nb_lines; ++i) {
         char* line = lines[i];
         struct element* elements_at_floor = parse_line(line);
         elems_by_floor[i] = elements_at_floor;
         for (size_t j = 0; j < da_size(elements_at_floor); ++j) {
-            da_push(elements, elements_at_floor[j]);
+            elements[nb_elements++] = elements_at_floor[j];
         }
         free(line);
     }
     da_free(lines);
 
-    nb_elements = da_size(elements);
     assert(nb_elements <= 16);
     qsort(elements, nb_elements, sizeof(struct element),cmp_elements);
 
-    uint16_t* floors = build_floors(elements, elems_by_floor);
+    struct state state = build_state(elements, elems_by_floor);
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         da_free(elems_by_floor[i]);
     }
 
-    uint64_t result_1 = solve_1(elements, floors);
+    uint64_t result_1 = solve_1(state);
     printf("%lx\n", result_1);
-
-    free(floors);
-    da_free(elements);
 }
