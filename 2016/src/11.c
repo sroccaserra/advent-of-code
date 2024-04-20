@@ -21,6 +21,8 @@ struct element {
     enum type type;
 };
 
+static size_t nb_elements;
+
 int cmp_elements(const void* a, const void* b) {
     struct element* lhs = (struct element*)a;
     struct element* rhs = (struct element*)b;
@@ -32,29 +34,32 @@ int cmp_elements(const void* a, const void* b) {
 }
 
 void print_elements(struct element* elements) {
-    size_t nb_elements = da_size(elements);
     for (size_t i = 0; i < nb_elements; ++i) {
         struct element* e = &elements[i];
         printf("%ld %s:%s\n", i, e->material, e->type == MICROCHIP ? "microchip" : "generator");
     }
 }
 
-void print_floors(uint16_t* floors, size_t nb_elements) {
+void print_floor(uint16_t floor) {
+    char buffer[MAX_ELEMENTS+1];
+    itoa(floor, buffer, 2);
+    reverse(buffer);
+    for (int j = strlen(buffer); j < MAX_ELEMENTS; ++j) {
+        buffer[j] = '0';
+    }
+    buffer[nb_elements] = '\0';
+    printf("%16s\n", buffer);
+}
+
+void print_floors(uint16_t* floors) {
     for (int i = NB_FLOORS-1; i >= 0 ; --i) {
-        char buffer[MAX_ELEMENTS+1];
-        itoa(floors[i], buffer, 2);
-        reverse(buffer);
-        for (int j = strlen(buffer); j < MAX_ELEMENTS; ++j) {
-            buffer[j] = '0';
-        }
-        buffer[nb_elements] = '\0';
-        printf("%16s\n", buffer);
+        print_floor(floors[i]);
     }
 }
 
 uint64_t solve_1(struct element* elements, uint16_t* floors) {
     print_elements(elements);
-    print_floors(floors, da_size(elements));
+    print_floors(floors);
     return *(uint64_t*)floors;
 }
 
@@ -101,7 +106,6 @@ end:
 }
 
 int find_index_of(struct element* haystack, struct element needle) {
-    size_t nb_elements = da_size(haystack);
     for (size_t i = 0; i < nb_elements; ++i) {
         if (0 == cmp_elements(&haystack[i], &needle)) {
             return i;
@@ -166,7 +170,7 @@ int main(int argc, char** argv) {
     }
     da_free(lines);
 
-    size_t nb_elements = da_size(elements);
+    nb_elements = da_size(elements);
     assert(nb_elements <= 16);
     qsort(elements, nb_elements, sizeof(struct element),cmp_elements);
 
