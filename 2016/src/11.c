@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -34,10 +35,17 @@ int cmp_elements(const void* a, const void* b) {
 }
 
 void print_elements(struct element* elements) {
+    printf("Elems:\t");
+    bool is_first_time = true;
     for (size_t i = 0; i < nb_elements; ++i) {
+        if (!is_first_time) {
+            printf(", ");
+        }
         struct element* e = &elements[i];
-        printf("%ld %s:%s\n", i, e->material, e->type == MICROCHIP ? "microchip" : "generator");
+        printf("%ld:%s:%s", i, e->material, e->type == MICROCHIP ? "M" : "G");
+        is_first_time = false;
     }
+    printf("\n");
 }
 
 void print_floor(uint16_t floor) {
