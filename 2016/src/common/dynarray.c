@@ -11,22 +11,22 @@ size_t da_size(const void* const a) {
     if (a == NULL) {
         return 0;
     }
-    da_header_s* h = da_header(a);
+    struct da_header* h = da_header(a);
     return h->size;
 }
 
 void* da_grow(void* const a, const size_t elem_size) {
-    da_header_s* const header = a ? da_header(a) : NULL;
+    struct da_header* const header = a ? da_header(a) : NULL;
     if (a && (header->size < header->capacity)) {
         return a;
     }
     const size_t new_capacity = a ? 2*header->capacity : MIN_CAPACITY;
-    const size_t next_size = new_capacity*elem_size + sizeof(da_header_s);
-    da_header_s* const new_header = realloc(header, next_size);
+    const size_t next_size = new_capacity*elem_size + sizeof(struct da_header);
+    struct da_header* const new_header = realloc(header, next_size);
     assert(new_header);
     if (NULL == a) {
         new_header->size = 0;
     }
     new_header->capacity = new_capacity;
-    return (char*)new_header + sizeof(da_header_s);
+    return (char*)new_header + sizeof(struct da_header);
 }
