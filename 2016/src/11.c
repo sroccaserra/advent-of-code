@@ -51,15 +51,10 @@ int find_index_of(struct element* haystack, struct element needle) {
 }
 
 void print_elements(void) {
-    printf("Elems:\t");
-    bool is_first_time = true;
+    printf("Elems:");
     for (size_t i = 0; i < nb_elements; ++i) {
-        if (!is_first_time) {
-            printf("  ");
-        }
         struct element* e = &elements[i];
-        printf("%ld:%s_%s", i, e->material, type_name(*e));
-        is_first_time = false;
+        printf("  %ld:%s_%s", i, e->material, type_name(*e));
     }
     printf("\n");
 }
