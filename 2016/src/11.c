@@ -84,7 +84,7 @@ int get_position(uint64_t positions, int element_index) {
     return (int)((positions & mask) >> nibble);
 }
 
-struct state build_state(struct element* elements, struct element** elements_by_floor) {
+struct state build_state(struct element** elements_by_floor) {
     struct state result = {0};
     for (size_t floor_number = 0; floor_number < NB_FLOORS; ++floor_number) {
         struct element* floor = elements_by_floor[floor_number];
@@ -99,7 +99,7 @@ struct state build_state(struct element* elements, struct element** elements_by_
     return result;
 }
 
-uint16_t* build_floors(struct element* elements, struct element** elements_by_floor) {
+uint16_t* build_floors(struct element** elements_by_floor) {
     uint16_t* result = malloc(NB_FLOORS*sizeof(uint16_t));
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         struct element* floor = elements_by_floor[i];
@@ -236,7 +236,7 @@ int main(int argc, char** argv) {
     assert(nb_elements <= 16);
     qsort(elements, nb_elements, sizeof(struct element),cmp_elements);
 
-    struct state state = build_state(elements, elems_by_floor);
+    struct state state = build_state(elems_by_floor);
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         da_free(elems_by_floor[i]);
     }
