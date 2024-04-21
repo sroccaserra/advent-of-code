@@ -19,25 +19,25 @@ static void aei(int expected, int actual) {
  * Tests *
  *********/
 
-void test_size_of_empty_array() {
+void test_size_of_empty_array(void) {
     int* numbers = NULL;
     aei(0, da_size(numbers));
 }
 
-void test_free_empty_dyn_array() {
+void test_free_empty_dyn_array(void) {
     int* numbers = NULL;
     da_free(numbers);
     assert(NULL == numbers);
 }
 
-void test_free_non_empty_dyn_array() {
+void test_free_non_empty_dyn_array(void) {
     int* numbers = NULL;
     da_push(numbers, 9);
     da_free(numbers);
     assert(NULL == numbers);
 }
 
-void test_push_ten_values() {
+void test_push_ten_values(void) {
     int* numbers = NULL;
 
     for (int i = 1; i <= 10; ++i) {
@@ -48,7 +48,7 @@ void test_push_ten_values() {
     da_free(numbers);
 }
 
-void test_string_dynarray() {
+void test_string_dynarray(void) {
     char** strings = NULL;
     aei(0, da_size(strings));
 
@@ -58,7 +58,7 @@ void test_string_dynarray() {
     da_free(strings);
 }
 
-int main() {
+int main(void) {
     test_size_of_empty_array();
     test_free_empty_dyn_array();
     test_free_non_empty_dyn_array();

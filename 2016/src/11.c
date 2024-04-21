@@ -50,7 +50,7 @@ int find_index_of(struct element* haystack, struct element needle) {
     return -1;
 }
 
-void print_elements() {
+void print_elements(void) {
     printf("Elems:\t");
     bool is_first_time = true;
     for (size_t i = 0; i < nb_elements; ++i) {
