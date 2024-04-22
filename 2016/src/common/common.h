@@ -10,7 +10,7 @@
 
 #define assert_msg(val, msg) (val ? (void)0 : (perror(msg), assert(val)))
 
-int getln(FILE* const file, char** const linep);
+int getline(FILE* const file, char** const linep);
 
 char** getlines(const char* const filename) {
     errno = 0;
@@ -19,7 +19,7 @@ char** getlines(const char* const filename) {
 
     char** lines = NULL;
     char* line;
-    while(EOF != getln(file, &line)) {
+    while(EOF != getline(file, &line)) {
         da_push(lines, line);
     };
     fclose(file);
@@ -28,45 +28,41 @@ char** getlines(const char* const filename) {
 }
 
 /**
- * Definition of getln() function.
+ * Definition of getline() function.
  *
  * We could use the POSIX getline() function, but it would
  * require to define _POSIX_C_SOURCE=200809L in our build chain,
  * which is fine but I think it's a little bit ugly.
  *
- * And by writing getln() I learn something.
+ * And by writing getln() I learn something. See also: K&R getline()
  */
 
-#define GETLN_INIT_SIZE 8
-#define GETLN_GROW_BY 2
+#define GETLN_MIN_CAP 8
 #define GETLN_EXTRA_SPACE 1
 
-int getln(FILE* const file, char** const linep) {
+int getline(FILE* const file, char** const linep) {
     errno = 0;
-    char* array = malloc(GETLN_INIT_SIZE*sizeof(char));
+    char* array = malloc(GETLN_MIN_CAP*sizeof(char));
     assert_msg(array, "getln");
 
-    int max = GETLN_INIT_SIZE;
-    int nchars = 0;
-    int c;
-    while ((c = fgetc(file)) != EOF && c != '\n') {
-        if (nchars + GETLN_EXTRA_SPACE >= max) {
-            max *= GETLN_GROW_BY;
+    int c, size, capacity;
+    for (size = 0, capacity = GETLN_MIN_CAP; (c = fgetc(file)) != EOF && c != '\n'; ++size) {
+        if (capacity <= size + GETLN_EXTRA_SPACE) {
+            capacity *= 2;
             errno = 0;
-            char* new_array = realloc(array, max*sizeof(char));
-            assert_msg(new_array, "getln");
+            char* new_array = realloc(array, capacity*sizeof(char));
+            assert_msg(new_array, __func__);
             array = new_array;
         }
-        array[nchars] = c;
-        nchars++;
+        array[size] = c;
     }
 
-    if (c == EOF && 0 == nchars) {
+    if (EOF == c && 0 == size) {
         free(array);
         return EOF;
     }
 
-    array[nchars] = '\0';
+    array[size] = '\0';
     *linep = array;
 
     return (c == EOF) ? EOF : 0;
@@ -88,11 +84,8 @@ char** split(char* src, char* delim) {
 /************/
 
 void reverse(char* s) {
-    int i, j;
-    char c;
-
-    for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
-        c = s[i];
+    for (int i = 0, j = strlen(s)-1; i<j; i++, j--) {
+        char c = s[i];
         s[i] = s[j];
         s[j] = c;
     }
