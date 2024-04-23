@@ -116,7 +116,7 @@ void print_floor(uint16_t floor) {
         buffer[j] = '0';
     }
     buffer[nb_elements] = '\0';
-    printf("%16s\n", buffer);
+    printf("%s\n", buffer);
 }
 
 void print_state(struct state state) {
