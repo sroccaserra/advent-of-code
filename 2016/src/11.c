@@ -74,9 +74,8 @@ uint64_t position_bits(int element_index, int floor_number) {
 }
 
 int get_position(uint64_t positions, int element_index) {
-    int nibble = element_index*4;
-    uint64_t mask = 3<<nibble;
-    return (int)((positions & mask) >> nibble);
+    int nibble_offset = element_index*4;
+    return positions>>nibble_offset & 3;
 }
 
 struct state build_state(struct element** elements_by_floor) {
