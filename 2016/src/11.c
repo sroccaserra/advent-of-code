@@ -71,14 +71,15 @@ struct state {
     uint64_t positions; // one nibble per element, allows at most 16 elements
 };
 
-uint64_t position_bits(int element_index, int floor_number) {
-    int nibble_offset = 4*element_index;
-    return floor_number<<nibble_offset;
+int get_position(struct state* state, int element_id) {
+    int nibble_offset = 4*element_id;
+    return state->positions>>nibble_offset & 15;
 }
 
-int get_position(uint64_t positions, int element_index) {
-    int nibble_offset = 4*element_index;
-    return positions>>nibble_offset & 15;
+void set_position(struct state* state, int element_id, int floor_number) {
+    state->floors[floor_number] |= 1<<element_id;
+    int nibble_offset = 4*element_id;
+    state->positions |= floor_number<<nibble_offset;
 }
 
 struct state build_state(struct element** elements_by_floor) {
@@ -87,10 +88,9 @@ struct state build_state(struct element** elements_by_floor) {
         struct element* floor = elements_by_floor[floor_number];
         result.floors[floor_number] = 0;
         for (size_t j = 0; j < da_size(floor); ++j) {
-            int index = find_index_of(elements, floor[j]);
-            assert(-1 != index);
-            result.floors[floor_number] |= 1<<index;
-            result.positions |= position_bits(index, floor_number);
+            int element_id = find_index_of(elements, floor[j]);
+            assert(-1 != element_id);
+            set_position(&result, element_id, floor_number);
         }
     }
     return result;
@@ -134,7 +134,7 @@ void print_state(struct state state) {
     for (size_t i = 0; i<nb_elements; ++i) {
         struct element element = elements[i];
         printf("%s_%s:%d\n", element.material, type_name(element),
-                get_position(state.positions, i));
+                get_position(&state, i));
     }
 }
 
