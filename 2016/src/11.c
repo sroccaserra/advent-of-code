@@ -81,6 +81,10 @@ void set_position(struct state* state, int element_id, int floor_number) {
     state->positions |= floor_number<<nibble_offset;
 }
 
+bool is_at_floor(struct state* state, int element_id, int floor_number) {
+    return floor_number == get_position(state, element_id);
+}
+
 struct state build_state(struct element** elements_by_floor) {
     struct state result = {0};
     for (size_t floor_number = 0; floor_number < NB_FLOORS; ++floor_number) {
@@ -107,15 +111,12 @@ uint16_t* build_floors(struct element** elements_by_floor) {
     return result;
 }
 
-void print_floor(uint16_t floor) {
-    char buffer[MAX_ELEMENTS+1];
-    itoa(floor, buffer, 2);
-    reverse(buffer);
-    for (int j = strlen(buffer); j < MAX_ELEMENTS; ++j) {
-        buffer[j] = '0';
+void print_floor(struct state* state, int floor_number) {
+    printf("F%d ",floor_number+1);
+    for (size_t i = 0; i < nb_elements; ++i) {
+        printf("%s", is_at_floor(state, i, floor_number) ? "X": ".");
     }
-    buffer[nb_elements] = '\0';
-    printf("%s\n", buffer);
+    printf("\n");
 }
 
 void print_state(struct state state) {
@@ -125,8 +126,7 @@ void print_state(struct state state) {
     }
     printf("\n");
     for (int i = NB_FLOORS-1; i >= 0 ; --i) {
-        printf("F%d ",i+1);
-        print_floor(state.floors[i]);
+        print_floor(&state, i);
     }
     for (size_t i = 0; i<nb_elements; ++i) {
         struct element element = elements[i];
