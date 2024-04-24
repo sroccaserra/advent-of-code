@@ -11,6 +11,9 @@
 #define MAX_ELEMENTS 10
 #define N_CHARS 4
 
+static_assert(NB_FLOORS * MAX_ELEMENTS <= 8*sizeof(uint64_t),
+        "Check that one element per bit per floor holds in a uint64_t");
+
 /***********
  * Element *
  ***********/
