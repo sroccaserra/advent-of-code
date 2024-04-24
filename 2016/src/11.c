@@ -65,17 +65,17 @@ void print_elements(void) {
 
 struct state {
     uint16_t floors[4];
-    uint64_t positions;
+    uint64_t positions; // one nibble per element, allows at most 16 elements
 };
 
 uint64_t position_bits(int element_index, int floor_number) {
-    int nibble_num = 4*element_index;
-    return floor_number<<nibble_num;
+    int nibble_offset = 4*element_index;
+    return floor_number<<nibble_offset;
 }
 
 int get_position(uint64_t positions, int element_index) {
-    int nibble_offset = element_index*4;
-    return positions>>nibble_offset & 3;
+    int nibble_offset = 4*element_index;
+    return positions>>nibble_offset & 15;
 }
 
 struct state build_state(struct element** elements_by_floor) {
@@ -119,7 +119,13 @@ void print_floor(uint16_t floor) {
 }
 
 void print_state(struct state state) {
+    printf("   ");
+    for (size_t i = 0; i < nb_elements; ++i) {
+        printf("%ld", i);
+    }
+    printf("\n");
     for (int i = NB_FLOORS-1; i >= 0 ; --i) {
+        printf("F%d ",i+1);
         print_floor(state.floors[i]);
     }
     for (size_t i = 0; i<nb_elements; ++i) {
@@ -227,7 +233,7 @@ int main(int argc, char** argv) {
     }
     da_free(lines);
 
-    assert(nb_elements <= 16);
+    assert(nb_elements <= MAX_ELEMENTS);
     qsort(elements, nb_elements, sizeof(struct element),cmp_elements);
 
     struct state state = build_state(elems_by_floor);
