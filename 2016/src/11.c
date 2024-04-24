@@ -43,14 +43,13 @@ int cmp_elements(const void* a, const void* b) {
     return cmp_m;
 }
 
-int find_index_of(struct element* haystack, struct element needle) {
+int find_element_id(struct element element) {
     for (size_t i = 0; i < nb_elements; ++i) {
-        if (0 == cmp_elements(&haystack[i], &needle)) {
+        if (0 == cmp_elements(&elements[i], &element)) {
             return i;
         }
     }
-
-    return -1;
+    assert(false);
 }
 
 void print_elements(void) {
@@ -88,8 +87,7 @@ struct state build_state(struct element** elements_by_floor) {
         struct element* floor = elements_by_floor[floor_number];
         result.floors[floor_number] = 0;
         for (size_t j = 0; j < da_size(floor); ++j) {
-            int element_id = find_index_of(elements, floor[j]);
-            assert(-1 != element_id);
+            int element_id = find_element_id(floor[j]);
             set_position(&result, element_id, floor_number);
         }
     }
@@ -102,9 +100,8 @@ uint16_t* build_floors(struct element** elements_by_floor) {
         struct element* floor = elements_by_floor[i];
         result[i] = 0;
         for (size_t j = 0; j < da_size(floor); ++j) {
-            int index = find_index_of(elements, floor[j]);
-            assert(-1 != index);
-            result[i] |= 1<<index;
+            int element_id = find_element_id(floor[j]);
+            result[i] |= 1<<element_id;
         }
     }
     return result;
