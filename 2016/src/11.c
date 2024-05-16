@@ -130,6 +130,10 @@ void print_state(struct state state) {
     for (int i = NB_FLOORS-1; i >= 0 ; --i) {
         print_floor(&state, i);
     }
+    uint64_t floors_as_int = *(uint64_t*)state.floors;
+    for (int i = NB_FLOORS - 1; i >= 0; --i) {
+        printf("%04lx\n", 0xffff & floors_as_int>>(i*16)) ;
+    }
     for (size_t i = 0; i<nb_elements; ++i) {
         struct element element = elements[i];
         printf("%s_%s:%d\n", element.material, type_name(element),
