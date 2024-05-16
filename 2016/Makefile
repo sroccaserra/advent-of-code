@@ -7,13 +7,12 @@ LDLIBS := -lc
 TEST_C_FILES := $(wildcard src/common/*_test.c)
 COMMON_C_FILES := $(wildcard src/common/*.c)
 COMMON_C_FILES_NO_TEST := $(filter-out $(TEST_C_FILES), $(COMMON_C_FILES))
-COMMON_OBJ_FILES := $(COMMON_C_FILES:src/common/%.c=build/%.o)
+COMMON_OBJ_FILES := $(COMMON_C_FILES:src/common/%.c=build/common/%.o)
 MAIN_C_FILES := $(wildcard src/*.c)
 
 # Used in targets
-COMMON_OBJ_FILES_NO_TEST := $(COMMON_C_FILES_NO_TEST:src/common/%.c=build/%.o)
-COMMON_D_FILES := $(COMMON_OBJ_FILES:.o=.d)
-MAIN_D_FILES := $(MAIN_C_FILES:src/%.c=build/%.d)
+COMMON_OBJ_FILES_NO_TEST := $(COMMON_C_FILES_NO_TEST:src/common/%.c=build/common/%.o)
+DEPS := $(COMMON_OBJ_FILES:.o=.d) $(MAIN_C_FILES:src/%.c=build/%.d)
 
 default: test
 
@@ -30,34 +29,31 @@ clean:
 ##
 # Main
 
-.PRECIOUS: build/%.o
-build/%.o: src/common/%.c | build
-	gcc $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+.PHONY: %
+%: build/%
+	@$< $(INPUT)
 
 .PRECIOUS: build/%
-build/%: src/%.c $(COMMON_OBJ_FILES_NO_TEST) | build
-	gcc -o $@ $^ $(CPPFLAGS) $(CFLAGS)
+build/%: src/%.c src/common/common.h $(COMMON_OBJ_FILES_NO_TEST) | build
+	gcc $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
-.PHONY: %
-%: build/% | build
-	@$< $(INPUT)
+-include $(DEPS)
+
+.PRECIOUS: build/common/%.o
+build/common/%.o: src/common/%.c
+	mkdir -p $(@D)
+	gcc $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 ##
 # Tests
 
 .PHONY: test
-test: dynarray_test
+test: build/common/dynarray_test
 
 .PHONY: %_test
-%_test: build/%_test | build
+%_test: build/%_test
 	@$<
 
 .PRECIOUS: build/%_test
-build/%_test: $(COMMON_OBJ_FILES_NO_TEST) build/%_test.o | build
+build/%_test: src/%_test.c $(COMMON_OBJ_FILES_NO_TEST) | build
 	gcc $(CFLAGS) $^ $(LDLIBS) -o $@
-
-##
-# Generated Deps
-
--include $(COMMON_D_FILES)
--include $(MAIN_D_FILES)
