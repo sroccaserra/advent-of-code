@@ -219,6 +219,15 @@ end:
  *
  */
 
+void test(void) {
+    struct state state = {0};
+    print_state(state);
+    set_position(&state, 0, 1);
+    print_state(state);
+    set_position(&state, 0, 3);
+    print_state(state);
+}
+
 int main(int argc, char** argv) {
     char* filename = (argc == 1) ? "input/11" : argv[1];
     char** lines = getlines(filename);
@@ -247,6 +256,10 @@ int main(int argc, char** argv) {
         da_free(elems_by_floor[i]);
     }
 
-    uint64_t result_1 = solve_1(state);
-    printf("%lx\n", result_1);
+    if (NULL != getenv("TEST")) {
+        test();
+    } else {
+        uint64_t result_1 = solve_1(state);
+        printf("%016lx\n", result_1);
+    }
 }
