@@ -65,14 +65,16 @@ void print_elements(void) {
  * Floors & State *
  ******************/
 
+#define NIBBLE_BITS 4
+#define NIBBLE_MASK 0x0f
+
 struct state {
     uint16_t floors[4];
     uint64_t positions; // one nibble per element, allows at most 16 elements
 };
 
 int get_position(struct state* state, int element_id) {
-    int nibble_offset = 4*element_id;
-    return state->positions>>nibble_offset & 15;
+    return state->positions>>(NIBBLE_BITS*element_id) & NIBBLE_MASK;
 }
 
 void set_position(struct state* state, int element_id, int floor_number) {
