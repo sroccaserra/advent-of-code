@@ -19,8 +19,8 @@ static_assert(NB_FLOORS * MAX_ELEMENTS <= 8*sizeof(uint64_t),
  ***********/
 
 enum type {
-    MICROCHIP,
-    GENERATOR,
+    MICROCHIP_TYPE = 0,
+    GENERATOR_TYPE,
 };
 
 struct element {
@@ -181,7 +181,7 @@ struct element* parse_line(char* line) {
             e.material[4] = '\0';
         }
         else {
-            e.type = ('g' == word[0]) ? GENERATOR : MICROCHIP;
+            e.type = ('g' == word[0]) ? GENERATOR_TYPE : MICROCHIP_TYPE;
             da_push(result, e);
         }
         ++word_position;
