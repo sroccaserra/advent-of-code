@@ -78,7 +78,12 @@ int get_position(struct state *state, int element_id) {
 }
 
 void set_position(struct state *state, int element_id, int floor_number) {
+    uint16_t mask = ~ (1<<element_id);
+    for (int i = 0; i < NB_FLOORS; ++i) {
+        state->floors[i] &= mask;
+    }
     state->floors[floor_number] |= 1<<element_id;
+
     int nibble_offset = 4*element_id;
     state->positions |= floor_number<<nibble_offset;
 }
@@ -197,6 +202,29 @@ end:
     return result;
 }
 
+/*********
+ * Tests *
+ *********/
+
+void test(void) {
+    struct state state = {0};
+    for (int i = 0 ; i < MAX_ELEMENTS; ++i) {
+        set_position(&state, i, 0);
+    }
+    assert(get_position(&state, 0) == 0);
+    assert(state.floors[0] == 0x3ff);
+
+    set_position(&state, 0, 1);
+    assert(get_position(&state, 0) == 1);
+    assert(state.floors[1] == 0x001);
+    assert(state.floors[0] == 0x3fe);
+
+    set_position(&state, 0, 3);
+    assert(get_position(&state, 0) == 3);
+    assert(state.floors[3] == 0x001);
+    assert(state.floors[1] == 0x000);
+}
+
 /*
  * Le plan
  *
@@ -218,15 +246,6 @@ end:
  * modéliser l'ascenseur ?
  *
  */
-
-void test(void) {
-    struct state state = {0};
-    print_state(state);
-    set_position(&state, 0, 1);
-    print_state(state);
-    set_position(&state, 0, 3);
-    print_state(state);
-}
 
 int main(int argc, char **argv) {
     char *filename = (argc == 1) ? "input/11" : argv[1];
