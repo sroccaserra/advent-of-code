@@ -225,6 +225,20 @@ void test(void) {
     assert(state.floors[1] == 0x000);
 }
 
+void parse_input(char* lines[], struct element *elems_by_floor[]) {
+    nb_elements = 0;
+    size_t nb_lines = da_size(lines);
+    for (size_t i = 0; i < nb_lines; ++i) {
+        char *line = lines[i];
+        struct element *elements_at_floor = parse_line(line);
+        elems_by_floor[i] = elements_at_floor;
+        for (size_t j = 0; j < da_size(elements_at_floor); ++j) {
+            elements[nb_elements++] = elements_at_floor[j];
+        }
+    }
+    assert(nb_elements <= MAX_ELEMENTS);
+}
+
 /*
  * Le plan
  *
@@ -254,21 +268,14 @@ int main(int argc, char **argv) {
     size_t nb_lines = da_size(lines);
     assert(NB_FLOORS == nb_lines);
 
-    nb_elements = 0;
     struct element *elems_by_floor[NB_FLOORS];
+    parse_input(lines, elems_by_floor);
     for (size_t i = 0; i < nb_lines; ++i) {
-        char *line = lines[i];
-        struct element *elements_at_floor = parse_line(line);
-        elems_by_floor[i] = elements_at_floor;
-        for (size_t j = 0; j < da_size(elements_at_floor); ++j) {
-            elements[nb_elements++] = elements_at_floor[j];
-        }
-        free(line);
+        free(lines[i]);
     }
     da_free(lines);
 
-    assert(nb_elements <= MAX_ELEMENTS);
-    qsort(elements, nb_elements, sizeof(struct element),cmp_elements);
+    qsort(elements, nb_elements, sizeof elements[0], cmp_elements);
 
     struct state state = build_state(elems_by_floor);
     for (size_t i = 0; i < NB_FLOORS; ++i) {
