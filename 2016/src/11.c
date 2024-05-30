@@ -219,6 +219,12 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
     }
 }
 
+void free_lines(char *lines[]) {
+    for (size_t i = 0; i < NB_FLOORS; ++i) {
+        free(lines[i]);
+    }
+    da_free(lines);
+}
 
 /*********
  * Tests *
@@ -273,10 +279,7 @@ int main(int argc, char **argv) {
     struct state state;
     init(lines, &state, elements, &nb_elements);
 
-    for (size_t i = 0; i < NB_FLOORS; ++i) {
-        free(lines[i]);
-    }
-    da_free(lines);
+    free_lines(lines);
 
     if (NULL != getenv("TEST")) {
         printf("Testing 11...");
