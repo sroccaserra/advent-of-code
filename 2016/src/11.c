@@ -187,19 +187,20 @@ void parse_input(char* lines[], struct element *elems_by_floor[]) {
     assert(nb_elements <= MAX_ELEMENTS);
 }
 
-void init(char* lines[], struct state *state) {
+void init(char* lines[], struct state *state, struct element elements[], size_t *nb_elements) {
     // Parsing lines as floors
     struct element *elems_by_floor[NB_FLOORS];
     parse_input(lines, elems_by_floor);
 
     // Building an ordered list of elements
+    *nb_elements = 0;
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         struct element *elements_at_floor = elems_by_floor[i];
         for (size_t j = 0; j < da_size(elements_at_floor); ++j) {
-            elements[nb_elements++] = elements_at_floor[j];
+            elements[(*nb_elements)++] = elements_at_floor[j];
         }
     }
-    qsort(elements, nb_elements, sizeof elements[0], cmp_elements);
+    qsort(elements, *nb_elements, sizeof elements[0], cmp_elements);
 
     // Using the above to build a state
     *state = (struct state){0};
@@ -272,7 +273,7 @@ int main(int argc, char **argv) {
     assert(NB_FLOORS == nb_lines);
 
     struct state state;
-    init(lines, &state);
+    init(lines, &state, elements, &nb_elements);
 
     for (size_t i = 0; i < nb_lines; ++i) {
         free(lines[i]);
