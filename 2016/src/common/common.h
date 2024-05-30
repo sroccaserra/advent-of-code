@@ -27,6 +27,14 @@ char **getlines(const char *const filename) {
     return lines;
 }
 
+void freelines(char *lines[]) {
+    size_t nb_lines = da_size(lines);
+    for (size_t i = 0; i < nb_lines; ++i) {
+        free(lines[i]);
+    }
+    da_free(lines);
+}
+
 /**
  * Definition of getline() function.
  *
