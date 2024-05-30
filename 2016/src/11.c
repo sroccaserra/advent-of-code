@@ -268,14 +268,12 @@ void test(void) {
 int main(int argc, char **argv) {
     char *filename = (argc == 1) ? "input/11" : argv[1];
     char **lines = getlines(filename);
-
-    size_t nb_lines = da_size(lines);
-    assert(NB_FLOORS == nb_lines);
+    assert(NB_FLOORS == da_size(lines));
 
     struct state state;
     init(lines, &state, elements, &nb_elements);
 
-    for (size_t i = 0; i < nb_lines; ++i) {
+    for (size_t i = 0; i < NB_FLOORS; ++i) {
         free(lines[i]);
     }
     da_free(lines);
