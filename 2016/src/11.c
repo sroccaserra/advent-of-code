@@ -113,19 +113,6 @@ struct state build_state(struct element **elements_by_floor) {
     return result;
 }
 
-uint16_t *build_floors(struct element **elements_by_floor) {
-    uint16_t *result = malloc(NB_FLOORS*sizeof(uint16_t));
-    for (size_t i = 0; i < NB_FLOORS; ++i) {
-        struct element *floor = elements_by_floor[i];
-        result[i] = 0;
-        for (size_t j = 0; j < da_size(floor); ++j) {
-            int element_id = find_element_id(floor[j]);
-            result[i] |= 1<<element_id;
-        }
-    }
-    return result;
-}
-
 void print_floor(struct state *state, int floor_number) {
     printf("F%d ",floor_number+1);
     for (size_t i = 0; i < nb_elements; ++i) {
