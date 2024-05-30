@@ -93,6 +93,14 @@ bool is_at_floor(struct state *state, int element_id, int floor_number) {
 }
 
 struct state build_state(struct element **elements_by_floor) {
+    for (size_t i = 0; i < NB_FLOORS; ++i) {
+        struct element *elements_at_floor = elements_by_floor[i];
+        for (size_t j = 0; j < da_size(elements_at_floor); ++j) {
+            elements[nb_elements++] = elements_at_floor[j];
+        }
+    }
+    qsort(elements, nb_elements, sizeof elements[0], cmp_elements);
+
     struct state result = {0};
     for (size_t floor_number = 0; floor_number < NB_FLOORS; ++floor_number) {
         struct element *floor = elements_by_floor[floor_number];
@@ -232,9 +240,6 @@ void parse_input(char* lines[], struct element *elems_by_floor[]) {
         char *line = lines[i];
         struct element *elements_at_floor = parse_line(line);
         elems_by_floor[i] = elements_at_floor;
-        for (size_t j = 0; j < da_size(elements_at_floor); ++j) {
-            elements[nb_elements++] = elements_at_floor[j];
-        }
     }
     assert(nb_elements <= MAX_ELEMENTS);
 }
@@ -275,15 +280,16 @@ int main(int argc, char **argv) {
     }
     da_free(lines);
 
-    qsort(elements, nb_elements, sizeof elements[0], cmp_elements);
-
     struct state state = build_state(elems_by_floor);
+
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         da_free(elems_by_floor[i]);
     }
 
     if (NULL != getenv("TEST")) {
+        printf("Testing 11...");
         test();
+        printf(" [OK]\n");
     } else {
         uint64_t result_1 = solve_1(state);
         printf("%016lx\n", result_1);
