@@ -16,6 +16,12 @@ Building from root dir:
 cmake --build cmake_build
 ```
 
+Build and run tests:
+
+```
+cmake --build cmake_build --target 11 test
+```
+
 Clean:
 
 ```
