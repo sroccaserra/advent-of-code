@@ -10,16 +10,16 @@
 
 #define assert_msg(val, msg) (val ? (void)0 : (perror(msg), assert(val)))
 
-int getline(FILE *const file, char **const linep);
+int get_line(FILE *const file, char **const linep);
 
-char **getlines(const char *const filename) {
+char **get_lines(const char *const filename) {
     errno = 0;
     FILE *const file = fopen(filename, "r");
     assert_msg(file, filename);
 
     char **lines = NULL;
     char *line;
-    while(EOF != getline(file, &line)) {
+    while(EOF != get_line(file, &line)) {
         da_push(lines, line);
     };
     fclose(file);
@@ -27,7 +27,7 @@ char **getlines(const char *const filename) {
     return lines;
 }
 
-void freelines(char *lines[]) {
+void free_lines(char *lines[]) {
     size_t nb_lines = da_size(lines);
     for (size_t i = 0; i < nb_lines; ++i) {
         free(lines[i]);
@@ -48,7 +48,7 @@ void freelines(char *lines[]) {
 #define GETLN_MIN_CAP 8
 #define GETLN_EXTRA_SPACE 1
 
-int getline(FILE *const file, char **const linep) {
+int get_line(FILE *const file, char **const linep) {
     errno = 0;
     char* array = malloc(GETLN_MIN_CAP*sizeof(char));
     assert_msg(array, "getln");

@@ -266,12 +266,12 @@ void test(void) {
 
 int main(int argc, char **argv) {
     char *filename = (argc == 1) ? "input/11" : argv[1];
-    char **lines = getlines(filename);
+    char **lines = get_lines(filename);
     assert(NB_FLOORS == da_size(lines));
 
     struct state state;
     init(lines, &state, elements, &nb_elements);
-    freelines(lines);
+    free_lines(lines);
 
     if (NULL != getenv("TEST")) {
         printf("Testing 11...");
