@@ -18,10 +18,6 @@ target_link_libraries(11_exe PRIVATE common_lib)
 
 enable_testing()
 
-function(do_test target arg result)
-  add_test(NAME Comp${arg} COMMAND ${target} ${arg})
-  set_tests_properties(Comp${arg}
-    PROPERTIES PASS_REGULAR_EXPRESSION ${result})
-endfunction()
+include(src/common/testing.cmake)
 
 do_test(11_exe ../input/11 "0000003c00820341")
