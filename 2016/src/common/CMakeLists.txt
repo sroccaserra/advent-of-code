@@ -1,1 +1,1 @@
-add_library(Common dynarray.c)
+add_library(common_lib dynarray.c)

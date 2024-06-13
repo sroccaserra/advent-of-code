@@ -19,7 +19,7 @@ cmake --build cmake_build
 Build and run tests:
 
 ```
-cmake --build cmake_build --target 11 test
+cmake --build cmake_build --target 11_exe test
 ```
 
 Clean:

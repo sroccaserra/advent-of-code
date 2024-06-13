@@ -9,9 +9,9 @@ project(AdventOfCode2016 LANGUAGES C)
 
 add_subdirectory(src/common)
 
-add_executable(11 src/11.c)
+add_executable(11_exe src/11.c)
 
-target_link_libraries(11 PRIVATE Common)
+target_link_libraries(11_exe PRIVATE common_lib)
 
 ##
 # Tests
@@ -24,4 +24,4 @@ function(do_test target arg result)
     PROPERTIES PASS_REGULAR_EXPRESSION ${result})
 endfunction()
 
-do_test(11 ../input/11 "0000003c00820341")
+do_test(11_exe ../input/11 "0000003c00820341")
