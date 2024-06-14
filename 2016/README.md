@@ -28,6 +28,12 @@ Clean:
 cmake --build cmake_build --target clean
 ```
 
+Clean can also be run before other targets:
+
+```
+cmake --build cmake_build --clean-first
+```
+
 ## Links
 
 Advent of Code:

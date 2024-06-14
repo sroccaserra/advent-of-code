@@ -6,9 +6,17 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 add_compile_options(-W -Wall -Wextra -Wpedantic -Werror)
 
 project(AdventOfCode2016 LANGUAGES C)
-add_executable(11_exe src/11.c)
 add_subdirectory(src/common)
-target_link_libraries(11_exe PRIVATE common_lib)
+
+function(add_target_for_day day_number)
+    add_executable(${day_number}_exe src/${day_number}.c)
+    target_link_libraries(${day_number}_exe PRIVATE common_lib)
+
+    add_custom_target(run_${day_number} ALL
+        COMMAND sh -c "./${day_number}_exe ../input/${day_number}")
+endfunction()
+
+add_target_for_day(11)
 
 ##
 # Tests
