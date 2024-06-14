@@ -6,11 +6,8 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 add_compile_options(-W -Wall -Wextra -Wpedantic -Werror)
 
 project(AdventOfCode2016 LANGUAGES C)
-
-add_subdirectory(src/common)
-
 add_executable(11_exe src/11.c)
-
+add_subdirectory(src/common)
 target_link_libraries(11_exe PRIVATE common_lib)
 
 ##
