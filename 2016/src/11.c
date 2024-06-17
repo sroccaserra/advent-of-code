@@ -86,6 +86,8 @@ void set_position(struct state *state, int element_id, int floor_number) {
     state->floors[floor_number] |= 1<<element_id;
 
     int nibble_offset = 4*element_id;
+    uint64_t element_mask = 0xf<<nibble_offset;
+    state->positions &= ~element_mask;
     state->positions |= floor_number<<nibble_offset;
 }
 
@@ -228,7 +230,34 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
 
 void test(void) {
     printf("Testing 11...\n");
-    struct state state = {0};
+    char *lines[] = {
+        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
+        "The second floor contains a hydrogen generator.",
+        "The third floor contains a lithium generator.",
+        "The fourth floor contains nothing relevant.",
+    };
+
+    struct state state;
+    init(lines, &state, elements, &nb_elements);
+    assert(4 == nb_elements);
+
+    assert(0 == strcmp("hydr", elements[0].material));
+    assert(0 == strcmp("G", type_name(elements[0])));
+
+    assert(0 == strcmp("hydr", elements[1].material));
+    assert(0 == strcmp("M", type_name(elements[1])));
+
+    assert(0 == strcmp("lith", elements[2].material));
+    assert(0 == strcmp("G", type_name(elements[2])));
+
+    assert(0 == strcmp("lith", elements[3].material));
+    assert(0 == strcmp("M", type_name(elements[3])));
+
+    assert(1 == get_position(&state, 0));
+    assert(0 == get_position(&state, 1));
+    assert(2 == get_position(&state, 2));
+    assert(0 == get_position(&state, 3));
+
     for (int i = 0 ; i < MAX_ELEMENTS; ++i) {
         set_position(&state, i, 0);
     }
@@ -245,7 +274,7 @@ void test(void) {
     assert(state.floors[3] == 0x001);
     assert(state.floors[1] == 0x000);
 
-    printf(" [OK]\n");
+    printf("[OK]\n");
 }
 
 /*
