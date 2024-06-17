@@ -12,8 +12,11 @@ function(add_target_for_day day_number)
     add_executable(${day_number}_exe src/${day_number}.c)
     target_link_libraries(${day_number}_exe PRIVATE common_lib)
 
-    add_custom_target(run_${day_number} ALL
+    add_custom_target(${day_number}_run ALL
         COMMAND sh -c "./${day_number}_exe ../input/${day_number}")
+
+    add_custom_target(${day_number}_test ALL
+        COMMAND sh -c "AOC_TEST=1 ./${day_number}_exe ../input/${day_number}")
 endfunction()
 
 add_target_for_day(11)
