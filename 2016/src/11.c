@@ -6,6 +6,7 @@
 
 #include "common/common.h"
 #include "common/dynarray.h"
+#include "common/testing.h"
 
 #define MAX_LINE_LENGTH 256
 #define NB_FLOORS 4
@@ -227,25 +228,6 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
 /*********
  * Tests *
  *********/
-
-int equals_int(int expected, int actual) {
-    if (expected != actual) {
-        fprintf(stderr, "ASSERTION FAILED!\n⭕ %d\n❌ %d\n", expected, actual);
-        return 0;
-    }
-    return 1;
-}
-
-int equals_str(char *expected, char *actual) {
-    if (0 != strcmp(expected, actual)) {
-        fprintf(stderr, "ASSERTION FAILED!\n⭕ %s\n❌ %s\n", expected, actual);
-        return 0;
-    }
-    return 1;
-}
-
-#define ae_eq(e, a) _Generic((e), int: equals_int, char *: equals_str)(e, a)
-#define assert_equals(e, a) (assert(ae_eq(e, a)))
 
 void test_elements_are_parsed() {
     char *lines[] = {
