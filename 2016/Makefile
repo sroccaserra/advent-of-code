@@ -48,7 +48,7 @@ build/common/%.o: src/common/%.c
 # Tests
 
 .PHONY: test
-test: export TEST=1
+test: export AOC_TEST=1
 test: 11 build/common/dynarray_test
 
 .PHONY: %_test

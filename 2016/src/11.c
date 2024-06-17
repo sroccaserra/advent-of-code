@@ -227,6 +227,7 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
  *********/
 
 void test(void) {
+    printf("Testing 11...\n");
     struct state state = {0};
     for (int i = 0 ; i < MAX_ELEMENTS; ++i) {
         set_position(&state, i, 0);
@@ -243,6 +244,8 @@ void test(void) {
     assert(get_position(&state, 0) == 3);
     assert(state.floors[3] == 0x001);
     assert(state.floors[1] == 0x000);
+
+    printf(" [OK]\n");
 }
 
 /*
@@ -268,6 +271,11 @@ void test(void) {
  */
 
 int main(int argc, char **argv) {
+    if (NULL != getenv("AOC_TEST")) {
+        test();
+        return 0;
+    }
+
     char *filename = (argc == 1) ? "input/11" : argv[1];
     char **lines = get_lines(filename);
     assert(NB_FLOORS == da_size(lines));
@@ -276,12 +284,6 @@ int main(int argc, char **argv) {
     init(lines, &state, elements, &nb_elements);
     free_lines(lines);
 
-    if (NULL != getenv("TEST")) {
-        printf("Testing 11...");
-        test();
-        printf(" [OK]\n");
-    } else {
-        uint64_t result_1 = solve_1(state);
-        printf("%016lx\n", result_1);
-    }
+    uint64_t result_1 = solve_1(state);
+    printf("%016lx\n", result_1);
 }
