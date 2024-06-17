@@ -236,7 +236,7 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
         "The fourth floor contains nothing relevant.",\
     }
 
-void test_elements_are_parsed() {
+void test_elements_are_parsed_and_assigned() {
     char *lines[] = TEST_LINES;
     struct state state;
 
@@ -265,7 +265,7 @@ void test_element_positions_are_set() {
     assert_equals(0, get_position(&state, 3));
 }
 
-void test_element_positions_can_be_reset() {
+void test_element_positions_can_be_updated() {
     char *lines[] = TEST_LINES;
     struct state state;
     init(lines, &state, elements, &nb_elements);
@@ -280,29 +280,33 @@ void test_element_positions_can_be_reset() {
     assert_equals(0, get_position(&state, 3));
 
     assert_equals(0x3ff, state.floors[0]);
-    assert_equals(0, state.floors[1]);
-    assert_equals(0, state.floors[2]);
-    assert_equals(0, state.floors[3]);
+    assert_equals(0x000, state.floors[1]);
+    assert_equals(0x000, state.floors[2]);
+    assert_equals(0x000, state.floors[3]);
 
     set_position(&state, 0, 1);
 
     assert_equals(1, get_position(&state, 0));
-    assert_equals(0x001, state.floors[1]);
     assert_equals(0x3fe, state.floors[0]);
+    assert_equals(0x001, state.floors[1]);
+    assert_equals(0x000, state.floors[2]);
+    assert_equals(0x000, state.floors[3]);
 
     set_position(&state, 0, 3);
 
     assert_equals(3, get_position(&state, 0));
+    assert_equals(0x3fe, state.floors[0]);
+    assert_equals(0x000, state.floors[1]);
+    assert_equals(0x000, state.floors[2]);
     assert_equals(0x001, state.floors[3]);
-    assert_equals(0x00, state.floors[1]);
 }
 
 void test(void) {
     printf("Testing 11...\n");
 
-    test_elements_are_parsed();
+    test_elements_are_parsed_and_assigned();
     test_element_positions_are_set();
-    test_element_positions_can_be_reset();
+    test_element_positions_can_be_updated();
 
     printf("[OK]\n");
 }
