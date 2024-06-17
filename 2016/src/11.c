@@ -7,6 +7,7 @@
 #include "common/common.h"
 #include "common/dynarray.h"
 
+#define MAX_LINE_LENGTH 256
 #define NB_FLOORS 4
 #define MAX_ELEMENTS 10
 #define N_CHARS 4
@@ -135,7 +136,11 @@ uint64_t solve_1(struct state state) {
  ***********/
 
 struct element *parse_line(char *line) {
-    char **words = split(line, " ,.");
+    char line_buff[MAX_LINE_LENGTH];
+    strncpy(line_buff, line, MAX_LINE_LENGTH);
+    assert('\0' == line_buff[MAX_LINE_LENGTH-1]);
+    char **words = split(line_buff, " ,.");
+    assert(words);
     struct element *result = NULL;
 
     // skip past "contains"

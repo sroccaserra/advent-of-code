@@ -76,9 +76,9 @@ int get_line(FILE *const file, char **const linep) {
     return (c == EOF) ? EOF : 0;
 }
 
-char **split(char *src, char *delim) {
-    char **words = NULL;
-    char *saveptr;
+char **split(char *src, const char *delim) {
+    char **words = 0;
+    char *saveptr = src;
     char *word = strtok_r(src, delim, &saveptr);
     while (NULL != word) {
         da_push(words, word);
