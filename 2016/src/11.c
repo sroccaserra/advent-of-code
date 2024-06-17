@@ -228,6 +228,22 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
  * Tests *
  *********/
 
+int equals_int(int expected, int actual) {
+    if (expected != actual) {
+        fprintf(stderr, "ASSERTION FAILED!\n⭕ %d\n❌ %d\n", expected, actual);
+        return 0;
+    }
+    return 1;
+}
+
+int equals_str(char *expected, char *actual) {
+    if (0 != strcmp(expected, actual)) {
+        fprintf(stderr, "ASSERTION FAILED!\n⭕ %s\n❌ %s\n", expected, actual);
+        return 0;
+    }
+    return 1;
+}
+
 void test_elements_are_parsed() {
     char *lines[] = {
         "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
@@ -238,19 +254,19 @@ void test_elements_are_parsed() {
 
     struct state state;
     init(lines, &state, elements, &nb_elements);
-    assert(4 == nb_elements);
+    assert(equals_int(4, nb_elements));
 
-    assert(0 == strcmp("hydr", elements[0].material));
-    assert(0 == strcmp("G", type_name(elements[0])));
+    assert(equals_str("hydr", elements[0].material));
+    assert(equals_str("G", type_name(elements[0])));
 
-    assert(0 == strcmp("hydr", elements[1].material));
-    assert(0 == strcmp("M", type_name(elements[1])));
+    assert(equals_str("hydr", elements[1].material));
+    assert(equals_str("M", type_name(elements[1])));
 
-    assert(0 == strcmp("lith", elements[2].material));
-    assert(0 == strcmp("G", type_name(elements[2])));
+    assert(equals_str("lith", elements[2].material));
+    assert(equals_str("G", type_name(elements[2])));
 
-    assert(0 == strcmp("lith", elements[3].material));
-    assert(0 == strcmp("M", type_name(elements[3])));
+    assert(equals_str("lith", elements[3].material));
+    assert(equals_str("M", type_name(elements[3])));
 }
 
 void test_element_positions_are_set() {
@@ -263,10 +279,10 @@ void test_element_positions_are_set() {
 
     struct state state;
     init(lines, &state, elements, &nb_elements);
-    assert(1 == get_position(&state, 0));
-    assert(0 == get_position(&state, 1));
-    assert(2 == get_position(&state, 2));
-    assert(0 == get_position(&state, 3));
+    assert(equals_int(1, get_position(&state, 0)));
+    assert(equals_int(0, get_position(&state, 1)));
+    assert(equals_int(2, get_position(&state, 2)));
+    assert(equals_int(0, get_position(&state, 3)));
 }
 
 void test_element_positions_can_be_reset() {
@@ -283,25 +299,25 @@ void test_element_positions_can_be_reset() {
     for (int i = 0 ; i < MAX_ELEMENTS; ++i) {
         set_position(&state, i, 0);
     }
-    assert(get_position(&state, 0) == 0);
-    assert(get_position(&state, 1) == 0);
-    assert(get_position(&state, 2) == 0);
-    assert(get_position(&state, 3) == 0);
+    assert(equals_int(0, get_position(&state, 0)));
+    assert(equals_int(0, get_position(&state, 1)));
+    assert(equals_int(0, get_position(&state, 2)));
+    assert(equals_int(0, get_position(&state, 3)));
 
-    assert(state.floors[0] == 0x3ff);
-    assert(state.floors[1] == 0);
-    assert(state.floors[2] == 0);
-    assert(state.floors[3] == 0);
+    assert(equals_int(0x3ff, state.floors[0]));
+    assert(equals_int(0, state.floors[1]));
+    assert(equals_int(0, state.floors[2]));
+    assert(equals_int(0, state.floors[3]));
 
     set_position(&state, 0, 1);
-    assert(get_position(&state, 0) == 1);
-    assert(state.floors[1] == 0x001);
-    assert(state.floors[0] == 0x3fe);
+    assert(equals_int(1, get_position(&state, 0)));
+    assert(equals_int(0x001, state.floors[1]));
+    assert(equals_int(0x3fe, state.floors[0]));
 
     set_position(&state, 0, 3);
-    assert(get_position(&state, 0) == 3);
-    assert(state.floors[3] == 0x001);
-    assert(state.floors[1] == 0x000);
+    assert(equals_int(3, get_position(&state, 0)));
+    assert(equals_int(0x001, state.floors[3]));
+    assert(equals_int(0x00, state.floors[1]));
 }
 
 void test(void) {
