@@ -228,8 +228,7 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
  * Tests *
  *********/
 
-void test(void) {
-    printf("Testing 11...\n");
+void test_elements_are_parsed() {
     char *lines[] = {
         "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
         "The second floor contains a hydrogen generator.",
@@ -252,17 +251,31 @@ void test(void) {
 
     assert(0 == strcmp("lith", elements[3].material));
     assert(0 == strcmp("M", type_name(elements[3])));
+}
 
-    assert(1 == get_position(&state, 0));
-    assert(0 == get_position(&state, 1));
-    assert(2 == get_position(&state, 2));
-    assert(0 == get_position(&state, 3));
+void test_element_positions_can_be_reset() {
+    char *lines[] = {
+        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
+        "The second floor contains a hydrogen generator.",
+        "The third floor contains a lithium generator.",
+        "The fourth floor contains nothing relevant.",
+    };
+
+    struct state state;
+    init(lines, &state, elements, &nb_elements);
 
     for (int i = 0 ; i < MAX_ELEMENTS; ++i) {
         set_position(&state, i, 0);
     }
     assert(get_position(&state, 0) == 0);
+    assert(get_position(&state, 1) == 0);
+    assert(get_position(&state, 2) == 0);
+    assert(get_position(&state, 3) == 0);
+
     assert(state.floors[0] == 0x3ff);
+    assert(state.floors[1] == 0);
+    assert(state.floors[2] == 0);
+    assert(state.floors[3] == 0);
 
     set_position(&state, 0, 1);
     assert(get_position(&state, 0) == 1);
@@ -273,6 +286,13 @@ void test(void) {
     assert(get_position(&state, 0) == 3);
     assert(state.floors[3] == 0x001);
     assert(state.floors[1] == 0x000);
+}
+
+void test(void) {
+    printf("Testing 11...\n");
+
+    test_elements_are_parsed();
+    test_element_positions_can_be_reset();
 
     printf("[OK]\n");
 }
