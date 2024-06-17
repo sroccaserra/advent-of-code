@@ -80,11 +80,11 @@ int get_position(struct state *state, int element_id) {
 }
 
 void set_position(struct state *state, int element_id, int floor_number) {
-    uint16_t mask = ~ (1<<element_id);
+    uint16_t floor_mask = 1<<element_id;
     for (int i = 0; i < NB_FLOORS; ++i) {
-        state->floors[i] &= mask;
+        state->floors[i] &= ~floor_mask;
     }
-    state->floors[floor_number] |= 1<<element_id;
+    state->floors[floor_number] |= floor_mask;
 
     int nibble_offset = 4*element_id;
     uint64_t element_mask = 0xf<<nibble_offset;
@@ -258,6 +258,7 @@ void test_element_positions_are_set() {
     struct state state;
 
     init(lines, &state, elements, &nb_elements);
+    assert_equals(4, nb_elements);
 
     assert_equals(1, get_position(&state, 0));
     assert_equals(0, get_position(&state, 1));
@@ -269,8 +270,9 @@ void test_element_positions_can_be_updated() {
     char *lines[] = TEST_LINES;
     struct state state;
     init(lines, &state, elements, &nb_elements);
+    assert_equals(4, nb_elements);
 
-    for (int i = 0 ; i < MAX_ELEMENTS; ++i) {
+    for (size_t i = 0 ; i < nb_elements; ++i) {
         set_position(&state, i, 0);
     }
 
@@ -279,26 +281,26 @@ void test_element_positions_can_be_updated() {
     assert_equals(0, get_position(&state, 2));
     assert_equals(0, get_position(&state, 3));
 
-    assert_equals(0x3ff, state.floors[0]);
-    assert_equals(0x000, state.floors[1]);
-    assert_equals(0x000, state.floors[2]);
-    assert_equals(0x000, state.floors[3]);
+    assert_equals(0x000f, state.floors[0]);
+    assert_equals(0x0000, state.floors[1]);
+    assert_equals(0x0000, state.floors[2]);
+    assert_equals(0x0000, state.floors[3]);
 
     set_position(&state, 0, 1);
 
     assert_equals(1, get_position(&state, 0));
-    assert_equals(0x3fe, state.floors[0]);
-    assert_equals(0x001, state.floors[1]);
-    assert_equals(0x000, state.floors[2]);
-    assert_equals(0x000, state.floors[3]);
+    assert_equals(0x000e, state.floors[0]);
+    assert_equals(0x0001, state.floors[1]);
+    assert_equals(0x0000, state.floors[2]);
+    assert_equals(0x0000, state.floors[3]);
 
     set_position(&state, 0, 3);
 
     assert_equals(3, get_position(&state, 0));
-    assert_equals(0x3fe, state.floors[0]);
-    assert_equals(0x000, state.floors[1]);
-    assert_equals(0x000, state.floors[2]);
-    assert_equals(0x001, state.floors[3]);
+    assert_equals(0x000e, state.floors[0]);
+    assert_equals(0x0000, state.floors[1]);
+    assert_equals(0x0000, state.floors[2]);
+    assert_equals(0x0001, state.floors[3]);
 }
 
 void test(void) {
