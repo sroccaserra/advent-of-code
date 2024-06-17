@@ -229,41 +229,36 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
  * Tests *
  *********/
 
+#define TEST_LINES {\
+        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",\
+        "The second floor contains a hydrogen generator.",\
+        "The third floor contains a lithium generator.",\
+        "The fourth floor contains nothing relevant.",\
+    }
+
 void test_elements_are_parsed() {
-    char *lines[] = {
-        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
-        "The second floor contains a hydrogen generator.",
-        "The third floor contains a lithium generator.",
-        "The fourth floor contains nothing relevant.",
-    };
-
+    char *lines[] = TEST_LINES;
     struct state state;
-    init(lines, &state, elements, &nb_elements);
-    assert_equals(4, nb_elements);
 
+    init(lines, &state, elements, &nb_elements);
+
+    assert_equals(4, nb_elements);
     assert_equals("hydr", elements[0].material);
     assert_equals("G", type_name(elements[0]));
-
     assert_equals("hydr", elements[1].material);
     assert_equals("M", type_name(elements[1]));
-
     assert_equals("lith", elements[2].material);
     assert_equals("G", type_name(elements[2]));
-
     assert_equals("lith", elements[3].material);
     assert_equals("M", type_name(elements[3]));
 }
 
 void test_element_positions_are_set() {
-    char *lines[] = {
-        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
-        "The second floor contains a hydrogen generator.",
-        "The third floor contains a lithium generator.",
-        "The fourth floor contains nothing relevant.",
-    };
-
+    char *lines[] = TEST_LINES;
     struct state state;
+
     init(lines, &state, elements, &nb_elements);
+
     assert_equals(1, get_position(&state, 0));
     assert_equals(0, get_position(&state, 1));
     assert_equals(2, get_position(&state, 2));
@@ -271,19 +266,14 @@ void test_element_positions_are_set() {
 }
 
 void test_element_positions_can_be_reset() {
-    char *lines[] = {
-        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
-        "The second floor contains a hydrogen generator.",
-        "The third floor contains a lithium generator.",
-        "The fourth floor contains nothing relevant.",
-    };
-
+    char *lines[] = TEST_LINES;
     struct state state;
     init(lines, &state, elements, &nb_elements);
 
     for (int i = 0 ; i < MAX_ELEMENTS; ++i) {
         set_position(&state, i, 0);
     }
+
     assert_equals(0, get_position(&state, 0));
     assert_equals(0, get_position(&state, 1));
     assert_equals(0, get_position(&state, 2));
@@ -295,11 +285,13 @@ void test_element_positions_can_be_reset() {
     assert_equals(0, state.floors[3]);
 
     set_position(&state, 0, 1);
+
     assert_equals(1, get_position(&state, 0));
     assert_equals(0x001, state.floors[1]);
     assert_equals(0x3fe, state.floors[0]);
 
     set_position(&state, 0, 3);
+
     assert_equals(3, get_position(&state, 0));
     assert_equals(0x001, state.floors[3]);
     assert_equals(0x00, state.floors[1]);
