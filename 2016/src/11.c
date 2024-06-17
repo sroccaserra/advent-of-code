@@ -182,14 +182,11 @@ end:
 }
 
 void parse_input(char* lines[], struct element *elems_by_floor[]) {
-    nb_elements = 0;
-    size_t nb_lines = da_size(lines);
-    for (size_t i = 0; i < nb_lines; ++i) {
+    for (size_t i = 0; i < NB_FLOORS; ++i) {
         char *line = lines[i];
         struct element *elements_at_floor = parse_line(line);
         elems_by_floor[i] = elements_at_floor;
     }
-    assert(nb_elements <= MAX_ELEMENTS);
 }
 
 void init(char* lines[], struct state *state, struct element elements[], size_t *nb_elements) {
@@ -205,6 +202,7 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
             elements[(*nb_elements)++] = elements_at_floor[j];
         }
     }
+    assert(*nb_elements <= MAX_ELEMENTS);
     qsort(elements, *nb_elements, sizeof elements[0], cmp_elements);
 
     // Using the above to build a state
