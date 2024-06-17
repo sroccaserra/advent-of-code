@@ -253,6 +253,22 @@ void test_elements_are_parsed() {
     assert(0 == strcmp("M", type_name(elements[3])));
 }
 
+void test_element_positions_are_set() {
+    char *lines[] = {
+        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
+        "The second floor contains a hydrogen generator.",
+        "The third floor contains a lithium generator.",
+        "The fourth floor contains nothing relevant.",
+    };
+
+    struct state state;
+    init(lines, &state, elements, &nb_elements);
+    assert(1 == get_position(&state, 0));
+    assert(0 == get_position(&state, 1));
+    assert(2 == get_position(&state, 2));
+    assert(0 == get_position(&state, 3));
+}
+
 void test_element_positions_can_be_reset() {
     char *lines[] = {
         "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",
@@ -292,6 +308,7 @@ void test(void) {
     printf("Testing 11...\n");
 
     test_elements_are_parsed();
+    test_element_positions_are_set();
     test_element_positions_can_be_reset();
 
     printf("[OK]\n");
