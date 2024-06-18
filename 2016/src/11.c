@@ -342,12 +342,12 @@ int main(int argc, char **argv) {
     }
 
     char *filename = (argc == 1) ? "input/11" : argv[1];
-    char **lines = get_lines(filename);
-    assert(NB_FLOORS == da_size(lines));
+    char **lines_da = get_lines_da(filename);
+    assert(NB_FLOORS == da_size(lines_da));
 
     struct state state;
-    init(lines, &state, elements, &nb_elements);
-    free_lines(lines);
+    init(lines_da, &state, elements, &nb_elements);
+    free_lines_da(lines_da);
 
     uint64_t result_1 = solve_1(state);
     printf("%016lx\n", result_1);

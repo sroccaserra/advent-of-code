@@ -12,7 +12,7 @@
 
 int get_line(FILE *const file, char **const linep);
 
-char **get_lines(const char *const filename) {
+char **get_lines_da(const char *const filename) {
     errno = 0;
     FILE *const file = fopen(filename, "r");
     assert_msg(file, filename);
@@ -27,7 +27,7 @@ char **get_lines(const char *const filename) {
     return lines;
 }
 
-void free_lines(char *lines[]) {
+void free_lines_da(char *lines[]) {
     size_t nb_lines = da_size(lines);
     for (size_t i = 0; i < nb_lines; ++i) {
         free(lines[i]);
