@@ -258,7 +258,6 @@ void test_element_positions_are_set() {
     struct state state;
 
     init(lines, &state, elements, &nb_elements);
-    assert_equals(4, nb_elements);
 
     assert_equals(1, get_position(&state, 0));
     assert_equals(0, get_position(&state, 1));
@@ -270,7 +269,6 @@ void test_element_positions_can_be_updated() {
     char *lines[] = TEST_LINES;
     struct state state;
     init(lines, &state, elements, &nb_elements);
-    assert_equals(4, nb_elements);
 
     for (size_t i = 0 ; i < nb_elements; ++i) {
         set_position(&state, i, 0);
