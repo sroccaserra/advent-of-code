@@ -76,6 +76,11 @@ int get_line(FILE *const file, char **const linep) {
     return (c == EOF) ? EOF : 0;
 }
 
+/*
+ * Does not work on string literals because of `strtok_r()` tries
+ * to mutate src. Copy src to a mutable `char *` before splitting
+ * if needed.
+ */
 char **split(char *src, const char *delim) {
     char **words = 0;
     char *saveptr = src;
