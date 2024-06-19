@@ -81,7 +81,7 @@ int get_line(FILE *const file, char **const linep) {
  * to mutate src. Copy src to a mutable `char *` before splitting
  * if needed.
  */
-char **split(char *src, const char *delim) {
+char **split_da(char *src, const char *delim) {
     char **words = 0;
     char *saveptr = src;
     char *word = strtok_r(src, delim, &saveptr);

@@ -142,7 +142,7 @@ struct element *parse_line(char *line) {
     char line_buff[MAX_LINE_LENGTH];
     strncpy(line_buff, line, MAX_LINE_LENGTH);
     assert('\0' == line_buff[MAX_LINE_LENGTH-1]);
-    char **words = split(line_buff, " ,.");
+    char **words = split_da(line_buff, " ,.");
     assert(words);
     struct element *result = NULL;
 
