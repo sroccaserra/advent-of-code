@@ -184,7 +184,7 @@ end:
     return result;
 }
 
-void parse_input(char* lines[], struct element *elems_by_floor[]) {
+void parse_elems_by_floor(char* lines[], struct element *elems_by_floor[]) {
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         char *line = lines[i];
         struct element *elements_at_floor = parse_line(line);
@@ -192,12 +192,7 @@ void parse_input(char* lines[], struct element *elems_by_floor[]) {
     }
 }
 
-void init(char* lines[], struct state *state, struct element elements[], size_t *nb_elements) {
-    // Parsing lines as floors
-    struct element *elems_by_floor[NB_FLOORS];
-    parse_input(lines, elems_by_floor);
-
-    // Building an ordered list of elements
+void build_ordered_list_of_elements(struct element *elems_by_floor[], struct element elements[], size_t *nb_elements) {
     *nb_elements = 0;
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         struct element *elements_at_floor = elems_by_floor[i];
@@ -207,8 +202,9 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
     }
     assert(*nb_elements <= MAX_ELEMENTS);
     qsort(elements, *nb_elements, sizeof elements[0], cmp_elements);
+}
 
-    // Using the above to build a state
+void build_state(struct element *elems_by_floor[], struct state *state) {
     *state = (struct state){0};
     for (size_t floor_number = 0; floor_number < NB_FLOORS; ++floor_number) {
         struct element *floor = elems_by_floor[floor_number];
@@ -218,8 +214,15 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
             set_position(state, element_id, floor_number);
         }
     }
+}
 
-    // free elements by floor arrays
+void init(char* lines[], struct state *state, struct element elements[], size_t *nb_elements) {
+    struct element *elems_by_floor[NB_FLOORS];
+    parse_elems_by_floor(lines, elems_by_floor);
+
+    build_ordered_list_of_elements(elems_by_floor, elements, nb_elements);
+    build_state(elems_by_floor, state);
+
     for (size_t i = 0; i < NB_FLOORS; ++i) {
         da_free(elems_by_floor[i]);
     }
