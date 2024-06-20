@@ -128,6 +128,28 @@ void print_state(struct state state) {
  * Solving (TODO) *
  ******************/
 
+/*
+ * Le plan
+ *
+ * Pour pouvoir faire le graph des possibles, on veut pouvoir savoir si un
+ * élément peut aller à l'étage n.
+ *
+ * L'étage "next" est soit l'étage n+1 soit l'étage n-1 ? Même étage possible ?
+ *
+ * Un microchip peut aller à l'étage "next" si, au choix :
+ * - il y a son generator dans l'étage next
+ * - il n'y a pas d'autre generator dans l'étage next
+ *
+ * Un generator peut aller à l'étage "next" si :
+ * - son microchip n'est pas à l'étage prévious ou il n'y a pas d'autre
+ *   generator à previous
+ * - il n'y a pas de microchip incompatible seul à l'étage next
+ *
+ * L'ascenseur peut monter zéro, un ou deux éléments. Est-ce qu'on a besoin de
+ * modéliser l'ascenseur ?
+ *
+ */
+
 uint64_t solve_1(struct state state) {
     print_elements();
     print_state(state);
@@ -228,9 +250,9 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
     }
 }
 
-/*********
- * Tests *
- *********/
+/***********
+ * Testing *
+ ***********/
 
 #define TEST_LINES {                                                                                    \
         "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.", \
@@ -314,27 +336,9 @@ void test(void) {
     printf("[OK]\n");
 }
 
-/*
- * Le plan
- *
- * Pour pouvoir faire le graph des possibles, on veut pouvoir savoir si un
- * élément peut aller à l'étage n.
- *
- * L'étage "next" est soit l'étage n+1 soit l'étage n-1 ? Même étage possible ?
- *
- * Un microchip peut aller à l'étage "next" si, au choix :
- * - il y a son generator dans l'étage next
- * - il n'y a pas d'autre generator dans l'étage next
- *
- * Un generator peut aller à l'étage "next" si :
- * - son microchip n'est pas à l'étage prévious ou il n'y a pas d'autre
- *   generator à previous
- * - il n'y a pas de microchip incompatible seul à l'étage next
- *
- * L'ascenseur peut monter zéro, un ou deux éléments. Est-ce qu'on a besoin de
- * modéliser l'ascenseur ?
- *
- */
+/***********
+ * Running *
+ ***********/
 
 int main(int argc, char **argv) {
     if (NULL != getenv("AOC_TEST")) {
