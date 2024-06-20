@@ -1,3 +1,6 @@
+#ifndef TESTING_H
+#define TESTING_H
+
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
@@ -20,3 +23,5 @@ int equals_str(char *expected, char *actual) {
 
 #define ae_eq(e, a) _Generic((e), int: equals_int, char *: equals_str)(e, a)
 #define assert_equals(e, a) (assert(ae_eq(e, a)))
+
+#endif
