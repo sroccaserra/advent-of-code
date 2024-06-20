@@ -232,11 +232,11 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
  * Tests *
  *********/
 
-#define TEST_LINES {\
-        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.",\
-        "The second floor contains a hydrogen generator.",\
-        "The third floor contains a lithium generator.",\
-        "The fourth floor contains nothing relevant.",\
+#define TEST_LINES {                                                                                    \
+        "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.", \
+        "The second floor contains a hydrogen generator.",                                              \
+        "The third floor contains a lithium generator.",                                                \
+        "The fourth floor contains nothing relevant.",                                                  \
     }
 
 void test_elements_are_parsed_and_assigned() {
