@@ -7,7 +7,7 @@
 
 int equals_int(int expected, int actual) {
     if (expected != actual) {
-        fprintf(stderr, "ASSERTION FAILED!\n⭕ %d\n❌ %d\n", expected, actual);
+        fprintf(stderr, "ASSERTION FAILED!\n👉 %d\n❌ %d\n", expected, actual);
         return 0;
     }
     return 1;
@@ -15,7 +15,7 @@ int equals_int(int expected, int actual) {
 
 int equals_str(char *expected, char *actual) {
     if (0 != strcmp(expected, actual)) {
-        fprintf(stderr, "ASSERTION FAILED!\n⭕ %s\n❌ %s\n", expected, actual);
+        fprintf(stderr, "ASSERTION FAILED!\n👉 %s\n❌ %s\n", expected, actual);
         return 0;
     }
     return 1;

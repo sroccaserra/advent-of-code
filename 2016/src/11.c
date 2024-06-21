@@ -352,7 +352,7 @@ void test(void) {
     test_element_positions_are_set();
     test_element_positions_can_be_updated();
 
-    printf("[OK]\n");
+    printf("✅ OK\n");
 }
 
 /***********
