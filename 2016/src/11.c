@@ -39,10 +39,10 @@ int cmp_elements(const void *a, const void *b) {
     struct element *lhs = (struct element *)a;
     struct element *rhs = (struct element *)b;
     int cmp_m = strncmp(lhs->material, rhs->material, N_CHARS);
-    if (0 == cmp_m) {
-        return rhs->type - lhs->type;
+    if (cmp_m) {
+        return cmp_m;
     }
-    return cmp_m;
+    return rhs->type - lhs->type;
 }
 
 int find_element_id(struct element element) {
