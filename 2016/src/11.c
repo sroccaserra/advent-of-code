@@ -75,8 +75,27 @@ struct state {
     uint64_t positions; // one nibble per element, allows at most 16 elements
 };
 
-int get_position(struct state *state, int element_id) {
+int get_position_from_floors(struct state *state, int element_id) {
+    uint16_t floor_mask = 1<<element_id;
+    int result = -1;
+    for (int i = 0; i < NB_FLOORS; ++i) {
+        if (state->floors[i] & floor_mask) {
+            assert(result == -1);
+            result = i;
+        }
+    }
+    return result;
+}
+
+int get_position_from_positions(struct state *state, int element_id) {
     return state->positions>>(NIBBLE_BITS*element_id) & NIBBLE_MASK;
+}
+
+int get_position(struct state *state, int element_id) {
+    int result_from_positions = get_position_from_positions(state, element_id);
+    int result_from_floors = get_position_from_floors(state, element_id);
+    assert(result_from_positions == result_from_floors);
+    return result_from_positions;
 }
 
 void set_position(struct state *state, int element_id, int floor_number) {
