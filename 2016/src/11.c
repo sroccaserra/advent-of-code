@@ -346,13 +346,13 @@ void test_element_positions_can_be_updated() {
 }
 
 void test(void) {
-    printf("Testing 11...\n");
+    TEST_START("11");
 
     test_elements_are_parsed_and_assigned();
     test_element_positions_are_set();
     test_element_positions_can_be_updated();
 
-    printf("✅ OK\n");
+    TEST_END;
 }
 
 /***********
