@@ -69,6 +69,7 @@ void print_elements(void) {
 
 #define NIBBLE_BITS 4
 #define NIBBLE_MASK 0x0f
+#define floors_as_uint64(floors) (*(uint64_t *)(floors))
 
 struct state {
     uint16_t floors[4];
@@ -148,9 +149,9 @@ void print_state(struct state state) {
     for (int i = NB_FLOORS-1; i >= 0 ; --i) {
         print_floor(&state, i);
     }
-    uint64_t floors_as_int = *(uint64_t*)state.floors;
+    uint64_t floors_value = floors_as_uint64(state.floors);
     for (int i = NB_FLOORS - 1; i >= 0; --i) {
-        printf("%04lx\n", 0xffff & floors_as_int>>(i*16)) ;
+        printf("%04lx\n", 0xffff & floors_value>>(i*16)) ;
     }
     for (size_t i = 0; i<nb_elements; ++i) {
         struct element element = elements[i];
