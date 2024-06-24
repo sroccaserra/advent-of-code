@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <string.h>
 
-#define TEST_START(s) (printf("Testing "s"..."))
+#define TEST_START(s) (printf("Testing "s"..."), fflush(stdout))
 #define TEST_END (printf(" ✅ OK.\n"))
 
 int equals_int(int expected, int actual) {
