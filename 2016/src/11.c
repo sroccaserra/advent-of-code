@@ -75,7 +75,12 @@ struct state {
     uint64_t positions; // one nibble per element, allows at most 16 elements
 };
 
-int get_position_from_floors(struct state *state, int element_id) {
+/*
+ * Two implementations here, by floors and positions.
+ * TODO: choose one.
+ */
+
+static int get_position_from_floors(struct state *state, int element_id) {
     uint16_t floor_mask = 1<<element_id;
     int result = -1;
     for (int i = 0; i < NB_FLOORS; ++i) {
@@ -87,28 +92,39 @@ int get_position_from_floors(struct state *state, int element_id) {
     return result;
 }
 
-int get_position_from_positions(struct state *state, int element_id) {
+static int get_position_from_positions(struct state *state, int element_id) {
     return state->positions>>(NIBBLE_BITS*element_id) & NIBBLE_MASK;
 }
 
-int get_position(struct state *state, int element_id) {
-    int result_from_positions = get_position_from_positions(state, element_id);
-    int result_from_floors = get_position_from_floors(state, element_id);
-    assert(result_from_positions == result_from_floors);
-    return result_from_positions;
+static void set_position_in_positions(struct state *state, int element_id, int floor_number) {
+    int nibble_offset = 4*element_id;
+    uint64_t element_mask = 0xf<<nibble_offset;
+    state->positions &= ~element_mask;
+    state->positions |= floor_number<<nibble_offset;
 }
 
-void set_position(struct state *state, int element_id, int floor_number) {
+static void set_position_in_floors(struct state *state, int element_id, int floor_number) {
     uint16_t floor_mask = 1<<element_id;
     for (int i = 0; i < NB_FLOORS; ++i) {
         state->floors[i] &= ~floor_mask;
     }
     state->floors[floor_number] |= floor_mask;
+}
 
-    int nibble_offset = 4*element_id;
-    uint64_t element_mask = 0xf<<nibble_offset;
-    state->positions &= ~element_mask;
-    state->positions |= floor_number<<nibble_offset;
+/*
+ * Public interface
+ */
+
+int get_position(struct state *state, int element_id) {
+    int result_from_positions = get_position_from_positions(state, element_id);
+    int result_from_floors = get_position_from_floors(state, element_id);
+    assert(result_from_positions == result_from_floors); // check implems coherence
+    return result_from_positions;
+}
+
+void set_position(struct state *state, int element_id, int floor_number) {
+    set_position_in_positions(state, element_id, floor_number);
+    set_position_in_floors(state, element_id, floor_number);
 }
 
 bool is_at_floor(struct state *state, int element_id, int floor_number) {
