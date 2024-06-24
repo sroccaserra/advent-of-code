@@ -76,6 +76,14 @@ struct state {
     uint64_t positions; // one nibble per element, allows at most 16 elements
 };
 
+void init_state(struct state *state) {
+    state->floors[0] = 0x3ff; // All ten possible elements on the first floor
+    state->floors[1] = 0;
+    state->floors[2] = 0;
+    state->floors[3] = 0;
+    state->positions = 0;
+}
+
 /*
  * Two implementations here, by floors and positions.
  * TODO: choose one.
@@ -128,7 +136,15 @@ void set_position(struct state *state, int element_id, int floor_number) {
     set_position_in_floors(state->floors, element_id, floor_number);
 }
 
+
+bool state_equals(struct state *lhs, struct state *rhs) {
+    return
+        (lhs->positions == rhs->positions) &&
+        (floors_as_uint64(lhs->floors) == floors_as_uint64(rhs->floors));
+}
+
 void init_from_positions(struct state *state, uint64_t positions) {
+    init_state(state);
     for (size_t i = 0; i < MAX_ELEMENTS; ++i) {
         int pos = get_position_from_positions(positions, i);
         set_position(state, i, pos);
@@ -286,10 +302,9 @@ void build_ordered_list_of_elements(struct element *elems_by_floor[], struct ele
 }
 
 void build_state(struct element *elems_by_floor[], struct state *state) {
-    *state = (struct state){0};
+    init_state(state);
     for (size_t floor_number = 0; floor_number < NB_FLOORS; ++floor_number) {
         struct element *floor = elems_by_floor[floor_number];
-        state->floors[floor_number] = 0;
         for (size_t j = 0; j < da_size(floor); ++j) {
             int element_id = find_element_id(floor[j]);
             set_position(state, element_id, floor_number);
@@ -297,7 +312,7 @@ void build_state(struct element *elems_by_floor[], struct state *state) {
     }
 }
 
-void init(char* lines[], struct state *state, struct element elements[], size_t *nb_elements) {
+void init_from_lines(char* lines[], struct state *state, struct element elements[], size_t *nb_elements) {
     struct element *elems_by_floor[NB_FLOORS];
     parse_elems_by_floor(lines, elems_by_floor);
 
@@ -346,7 +361,7 @@ void test_elements_are_parsed_and_assigned() {
     char *lines[] = TEST_LINES;
     struct state state;
 
-    init(lines, &state, elements, &nb_elements);
+    init_from_lines(lines, &state, elements, &nb_elements);
 
     assert_equals(4, nb_elements);
     assert_equals("hydr", elements[0].material);
@@ -363,29 +378,24 @@ void test_element_positions_are_set() {
     char *lines[] = TEST_LINES;
     struct state state;
 
-    init(lines, &state, elements, &nb_elements);
+    init_from_lines(lines, &state, elements, &nb_elements);
 
     assert_equals(1, get_position(&state, 0));
     assert_equals(0, get_position(&state, 1));
     assert_equals(2, get_position(&state, 2));
     assert_equals(0, get_position(&state, 3));
+
+    // The rest are set to floor 0
+    for (int i = 4; i < MAX_ELEMENTS; ++i) {
+        assert_equals(0, get_position(&state, i));
+    }
 }
 
 void test_element_positions_can_be_updated() {
-    char *lines[] = TEST_LINES;
     struct state state;
-    init(lines, &state, elements, &nb_elements);
+    init_state(&state);
 
-    for (size_t i = 0 ; i < nb_elements; ++i) {
-        set_position(&state, i, 0);
-    }
-
-    assert_equals(0, get_position(&state, 0));
-    assert_equals(0, get_position(&state, 1));
-    assert_equals(0, get_position(&state, 2));
-    assert_equals(0, get_position(&state, 3));
-
-    assert_equals(0x000f, state.floors[0]);
+    assert_equals(0x03ff, state.floors[0]);
     assert_equals(0x0000, state.floors[1]);
     assert_equals(0x0000, state.floors[2]);
     assert_equals(0x0000, state.floors[3]);
@@ -393,7 +403,7 @@ void test_element_positions_can_be_updated() {
     set_position(&state, 0, 1);
 
     assert_equals(1, get_position(&state, 0));
-    assert_equals(0x000e, state.floors[0]);
+    assert_equals(0x03fe, state.floors[0]);
     assert_equals(0x0001, state.floors[1]);
     assert_equals(0x0000, state.floors[2]);
     assert_equals(0x0000, state.floors[3]);
@@ -401,10 +411,17 @@ void test_element_positions_can_be_updated() {
     set_position(&state, 0, 3);
 
     assert_equals(3, get_position(&state, 0));
-    assert_equals(0x000e, state.floors[0]);
+    assert_equals(0x03fe, state.floors[0]);
     assert_equals(0x0000, state.floors[1]);
     assert_equals(0x0000, state.floors[2]);
     assert_equals(0x0001, state.floors[3]);
+}
+
+
+void test_a_state_is_equal_to_itself() {
+    struct state state;
+    init_state(&state);
+    assert(state_equals(&state, &state));
 }
 
 void test_init_from_positions() {
@@ -430,6 +447,22 @@ void test_init_from_positions() {
     }
 }
 
+void test_init_from_positions_and_from_lines() {
+    char *lines[] = {
+        "The first floor contains a hydr microchip and a hydr generator.",
+        "The second floor contains nothing relevant.",
+        "The third floor contains nothing relevant.",
+        "The fourth floor contains nothing relevant.",
+    };
+    struct state from_lines;
+    struct state from_positions;
+
+    init_from_lines(lines, &from_lines, elements, &nb_elements);
+    init_from_positions(&from_positions, 0x00);
+
+    assert(state_equals(&from_positions, &from_lines));
+}
+
 void test(void) {
     TEST_START("11");
 
@@ -438,6 +471,7 @@ void test(void) {
     test_element_positions_are_set();
     test_element_positions_can_be_updated();
     test_init_from_positions();
+    test_init_from_positions_and_from_lines();
 
     TEST_END;
 }
@@ -457,7 +491,7 @@ int main(int argc, char **argv) {
     assert(NB_FLOORS == da_size(lines_da));
 
     struct state state;
-    init(lines_da, &state, elements, &nb_elements);
+    init_from_lines(lines_da, &state, elements, &nb_elements);
     free_lines_da(lines_da);
 
     uint64_t result_1 = solve_1(state);
