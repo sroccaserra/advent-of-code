@@ -97,11 +97,11 @@ static int get_position_from_floors(uint16_t floors[], int element_id) {
     return result;
 }
 
-static void set_position_in_positions(uint64_t *positions, int element_id, int floor_number) {
+static void set_position_in_positions(uint64_t *positions, int element_id, uint64_t floor_number) {
     int nibble_offset = 4*element_id;
-    uint64_t element_mask = 0xf<<nibble_offset;
+    uint64_t element_mask = 0xfl<<nibble_offset;
     *positions &= ~element_mask;
-    *positions |= floor_number<<nibble_offset;
+    *positions |= ((uint64_t)floor_number)<<nibble_offset;
 }
 
 static void set_position_in_floors(uint16_t floors[], int element_id, int floor_number) {
@@ -119,13 +119,20 @@ static void set_position_in_floors(uint16_t floors[], int element_id, int floor_
 int get_position(struct state *state, int element_id) {
     int result_from_positions = get_position_from_positions(state->positions, element_id);
     int result_from_floors = get_position_from_floors(state->floors, element_id);
-    assert(result_from_positions == result_from_floors); // check implems coherence
+    assert_equals(result_from_positions, result_from_floors); // check implems coherence
     return result_from_positions;
 }
 
 void set_position(struct state *state, int element_id, int floor_number) {
     set_position_in_positions(&state->positions, element_id, floor_number);
     set_position_in_floors(state->floors, element_id, floor_number);
+}
+
+void init_from_positions(struct state *state, uint64_t positions) {
+    for (size_t i = 0; i < MAX_ELEMENTS; ++i) {
+        int pos = get_position_from_positions(positions, i);
+        set_position(state, i, pos);
+    }
 }
 
 bool is_at_floor(struct state *state, int element_id, int floor_number) {
@@ -400,6 +407,29 @@ void test_element_positions_can_be_updated() {
     assert_equals(0x0001, state.floors[3]);
 }
 
+void test_init_from_positions() {
+    struct state state = {0};
+
+    init_from_positions(&state, 0x00);
+    assert_equals(0, get_position(&state, 0));
+    assert_equals(0, get_position(&state, 1));
+    for (int i = 2; i < MAX_ELEMENTS; ++i) {
+        assert_equals(0, get_position(&state, i));
+    }
+
+    init_from_positions(&state, 0x11);
+    assert_equals(1, get_position(&state, 0));
+    assert_equals(1, get_position(&state, 1));
+    for (int i = 2; i< MAX_ELEMENTS; ++i) {
+        assert_equals(0, get_position(&state, i));
+    }
+
+    init_from_positions(&state, 0x1111111111);
+    for (int i = 0; i< MAX_ELEMENTS; ++i) {
+        assert_equals(1, get_position(&state, i));
+    }
+}
+
 void test(void) {
     TEST_START("11");
 
@@ -407,6 +437,7 @@ void test(void) {
     test_elements_are_parsed_and_assigned();
     test_element_positions_are_set();
     test_element_positions_can_be_updated();
+    test_init_from_positions();
 
     TEST_END;
 }
