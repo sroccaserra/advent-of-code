@@ -306,6 +306,28 @@ void init(char* lines[], struct state *state, struct element elements[], size_t 
  * Testing *
  ***********/
 
+void test_shifts_on_uint64_t() {
+    uint64_t vals[] = {
+        2l>>1,       2l<<(4*1-1), 2l<<(4*2-1), 2l<<(4*3-1),
+        2l<<(4*4-1), 2l<<(4*5-1), 2l<<(4*6-1), 2l<<(4*7-1),
+        2l<<(4*8-1), 2l<<(4*9-1),
+    };
+    int nb_vals = sizeof(vals)/sizeof(vals[0]);
+
+    for(int i = 0; i < nb_vals; ++i) {
+        int element_id = i;
+        int floor_number = 1;
+        uint64_t positions = 0;
+
+        int nibble_offset = 4*element_id;
+        uint64_t element_mask = 0xfl<<nibble_offset;
+        positions &= ~element_mask;
+        positions |= ((uint64_t)floor_number)<<nibble_offset;
+
+        assert_equals(vals[i], positions);
+    }
+}
+
 #define TEST_LINES {                                                                                    \
         "The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.", \
         "The second floor contains a hydrogen generator.",                                              \
@@ -381,6 +403,7 @@ void test_element_positions_can_be_updated() {
 void test(void) {
     TEST_START("11");
 
+    test_shifts_on_uint64_t();
     test_elements_are_parsed_and_assigned();
     test_element_positions_are_set();
     test_element_positions_can_be_updated();
