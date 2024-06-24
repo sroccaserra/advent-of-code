@@ -4,9 +4,18 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <stdint.h>
 
 #define TEST_START(s) (printf("Testing "s"..."), fflush(stdout))
 #define TEST_END (printf(" ✅ OK.\n"))
+
+int equals_uint64_t(uint64_t expected, uint64_t actual) {
+    if (expected != actual) {
+        fprintf(stderr, "ASSERTION FAILED!\n👉 %ld\n❌ %ld\n", expected, actual);
+        return 0;
+    }
+    return 1;
+}
 
 int equals_int(int expected, int actual) {
     if (expected != actual) {
@@ -24,7 +33,7 @@ int equals_str(char *expected, char *actual) {
     return 1;
 }
 
-#define ae_eq(e, a) _Generic((e), int: equals_int, char *: equals_str)(e, a)
+#define ae_eq(e, a) _Generic((e), uint64_t: equals_uint64_t, int: equals_int, char *: equals_str)(e, a)
 #define assert_equals(e, a) (assert(ae_eq(e, a)))
 
 int check_null(void* p) {
