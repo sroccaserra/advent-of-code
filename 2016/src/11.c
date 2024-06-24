@@ -165,6 +165,22 @@ void print_state(struct state state) {
  ******************/
 
 /*
+ * La spec
+ *
+ * Within the radiation-shielded part of the facility (in which it's safe to
+ * have these pre-assembly RTGs), there is an elevator that can move between
+ * the four floors. Its capacity rating means it can carry at most yourself and
+ * two RTGs or microchips in any combination. (They're rigged to some heavy
+ * diagnostic equipment - the assembling machine will detach it for you.) As a
+ * security measure, the elevator will only function if it contains at least
+ * one RTG or microchip. The elevator always stops on each floor to recharge,
+ * and this takes long enough that the items within it and the items on that
+ * floor can irradiate each other.  (You can prevent this if a Microchip and
+ * its Generator end up on the same floor in this way, as they can be connected
+ * while the elevator is recharging.)
+ */
+
+/*
  * Le plan
  *
  * Pour pouvoir faire le graph des possibles, on veut pouvoir savoir si un
