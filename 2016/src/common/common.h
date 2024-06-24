@@ -116,4 +116,8 @@ void itoa(long int n, char *s, int base) {
     s[i] = '\0';
     reverse(s);
 }
+
+#define gen_fmt(x) _Generic((x), int: "%d", long int: "%ld", uint64_t: "%ld", char *: "%s", void *: "%p")
+#define print(x) (printf(gen_fmt(x), (x)), printf("\n"))
+
 #endif
