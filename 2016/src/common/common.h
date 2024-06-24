@@ -28,10 +28,7 @@ char **get_lines_da(const char *const filename) {
 }
 
 void free_lines_da(char *lines[]) {
-    size_t nb_lines = da_size(lines);
-    for (size_t i = 0; i < nb_lines; ++i) {
-        free(lines[i]);
-    }
+    da_free_items(lines);
     da_free(lines);
 }
 

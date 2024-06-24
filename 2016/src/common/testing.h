@@ -27,4 +27,14 @@ int equals_str(char *expected, char *actual) {
 #define ae_eq(e, a) _Generic((e), int: equals_int, char *: equals_str)(e, a)
 #define assert_equals(e, a) (assert(ae_eq(e, a)))
 
+int check_null(void* p) {
+    if (NULL != p) {
+        fprintf(stderr, "ASSERTION FAILED!\n👉 %p\n❌ %p\n", NULL, p);
+        return 0;
+    }
+    return 1;
+}
+
+#define assert_null(p) (assert(check_null(p)))
+
 #endif

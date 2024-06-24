@@ -3,8 +3,8 @@
 #include <error.h>
 #include <string.h>
 
-#include "dynarray.h"
 #include "testing.h"
+#include "dynarray.h"
 
 void test_size_of_empty_array(void) {
     int *numbers = NULL;
@@ -14,14 +14,36 @@ void test_size_of_empty_array(void) {
 void test_free_empty_dyn_array(void) {
     int *numbers = NULL;
     da_free(numbers);
-    assert(NULL == numbers);
+    assert_null(numbers);
 }
 
 void test_free_non_empty_dyn_array(void) {
     int *numbers = NULL;
     da_push(numbers, 9);
     da_free(numbers);
-    assert(NULL == numbers);
+    assert_null(numbers);
+}
+
+void test_free_items_of_empty_da(void) {
+    char **buffers = NULL;
+    da_free_items(buffers);
+}
+
+void test_free_items(void) {
+    char **buffers = NULL;
+    char *buffer_1 = malloc(10*sizeof(char));
+    char *buffer_2 = malloc(20*sizeof(char));
+    da_push(buffers, buffer_1);
+    da_push(buffers, buffer_2);
+    assert(buffers[0]);
+    assert(buffers[1]);
+
+    da_free_items(buffers);
+
+    assert_null(buffers[0]);
+    assert_null(buffers[1]);
+
+    da_free(buffers);
 }
 
 void test_push_ten_values(void) {
@@ -41,7 +63,7 @@ void test_string_dynarray(void) {
 
     da_push(strings, "hello");
 
-    assert(0 == strcmp("hello", strings[0]));
+    assert_equals("hello", strings[0]);
     da_free(strings);
 }
 
@@ -52,5 +74,7 @@ int main(void) {
     test_free_non_empty_dyn_array();
     test_push_ten_values();
     test_string_dynarray();
+    test_free_items();
+    test_free_items_of_empty_da();
     TEST_END;
 }

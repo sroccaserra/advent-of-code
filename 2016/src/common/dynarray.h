@@ -16,4 +16,12 @@ struct da_header {
 size_t da_size(const void *const a);
 void *da_grow(void *const a, const size_t elem_size);
 
+#define da_free_items(a) do {                      \
+        const size_t nb_items = da_size(a);        \
+        for (size_t i = 0; i < nb_items; ++i) {    \
+            free((a)[i]);                          \
+            (a)[i] = 0;                            \
+        }                                          \
+    } while(0)
+
 #endif
