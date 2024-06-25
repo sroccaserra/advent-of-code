@@ -138,9 +138,7 @@ void set_position(struct state *state, int element_id, int floor_number) {
 
 
 bool state_equals(struct state *lhs, struct state *rhs) {
-    return
-        (lhs->positions == rhs->positions) &&
-        (floors_as_uint64(lhs->floors) == floors_as_uint64(rhs->floors));
+    return 0 == memcmp(lhs, rhs, sizeof(struct state));
 }
 
 void init_from_positions(struct state *state, uint64_t positions) {
