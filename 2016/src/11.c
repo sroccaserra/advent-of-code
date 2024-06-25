@@ -460,6 +460,51 @@ void test_init_from_positions_and_from_lines() {
     assert(state_equals(&from_positions, &from_lines));
 }
 
+struct state *find_next_states_da(struct state *state) {
+    struct state *result = NULL;
+
+    struct state next_1 = *state;
+    set_position(&next_1, 0, 1);
+    da_push(result, next_1);
+
+    struct state next_2 = *state;
+    set_position(&next_2, 1, 1);
+    da_push(result, next_2);
+
+    struct state next_3 = *state;
+    set_position(&next_3, 0, 1);
+    set_position(&next_3, 1, 1);
+    da_push(result, next_3);
+
+    return result;
+}
+
+void test_simplest_next_state_generation() {
+    char *lines[] = {
+        "The first floor contains a hydr microchip and a hydr generator.",
+        "The second floor contains nothing relevant.",
+        "The third floor contains nothing relevant.",
+        "The fourth floor contains nothing relevant.",
+    };
+    struct state state;
+    init_from_lines(lines, &state, elements, &nb_elements);
+    struct state expected;
+
+    struct state *ns_da = find_next_states_da(&state);
+
+    assert_equals(3, da_size(ns_da));
+    init_from_positions(&expected, 0x01);
+    assert(state_equals(&expected, &ns_da[0]));
+
+    init_from_positions(&expected, 0x10);
+    assert(state_equals(&expected, &ns_da[1]));
+
+    init_from_positions(&expected, 0x11);
+    assert(state_equals(&expected, &ns_da[2]));
+
+    da_free(ns_da);
+}
+
 void test(void) {
     TEST_START("11");
 
@@ -469,6 +514,7 @@ void test(void) {
     test_element_positions_can_be_updated();
     test_init_from_positions();
     test_init_from_positions_and_from_lines();
+    test_simplest_next_state_generation();
 
     TEST_END;
 }
