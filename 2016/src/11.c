@@ -228,7 +228,7 @@ void print_state(struct state state) {
 uint64_t solve_1(struct state state) {
     print_elements();
     print_state(state);
-    return *(uint64_t*)state.floors;
+    return floors_as_uint64(state.floors);
 }
 
 /***********
@@ -330,9 +330,8 @@ void init_from_lines(char* lines[], struct state *state, struct element elements
 
 void test_shifts_on_uint64_t() {
     uint64_t vals[] = {
-        2l>>1,       2l<<(4*1-1), 2l<<(4*2-1), 2l<<(4*3-1),
-        2l<<(4*4-1), 2l<<(4*5-1), 2l<<(4*6-1), 2l<<(4*7-1),
-        2l<<(4*8-1), 2l<<(4*9-1),
+        1l<<(4*0), 1l<<(4*1), 1l<<(4*2), 1l<<(4*3), 1l<<(4*4),
+        1l<<(4*5), 1l<<(4*6), 1l<<(4*7), 1l<<(4*8), 1l<<(4*9),
     };
     int nb_vals = sizeof(vals)/sizeof(vals[0]);
 
