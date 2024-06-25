@@ -153,6 +153,25 @@ bool is_at_floor(struct state *state, int element_id, int floor_number) {
     return floor_number == get_position(state, element_id);
 }
 
+struct state *find_next_states_da(struct state *state) {
+    struct state *result = NULL;
+
+    struct state next_1 = *state;
+    set_position(&next_1, 0, 1);
+    da_push(result, next_1);
+
+    struct state next_2 = *state;
+    set_position(&next_2, 1, 1);
+    da_push(result, next_2);
+
+    struct state next_3 = *state;
+    set_position(&next_3, 0, 1);
+    set_position(&next_3, 1, 1);
+    da_push(result, next_3);
+
+    return result;
+}
+
 void print_floor(struct state *state, int floor_number) {
     printf("F%d ",floor_number+1);
     for (size_t i = 0; i < nb_elements; ++i) {
@@ -458,25 +477,6 @@ void test_init_from_positions_and_from_lines() {
     init_from_positions(&from_positions, 0x00);
 
     assert(state_equals(&from_positions, &from_lines));
-}
-
-struct state *find_next_states_da(struct state *state) {
-    struct state *result = NULL;
-
-    struct state next_1 = *state;
-    set_position(&next_1, 0, 1);
-    da_push(result, next_1);
-
-    struct state next_2 = *state;
-    set_position(&next_2, 1, 1);
-    da_push(result, next_2);
-
-    struct state next_3 = *state;
-    set_position(&next_3, 0, 1);
-    set_position(&next_3, 1, 1);
-    da_push(result, next_3);
-
-    return result;
 }
 
 void test_simplest_next_state_generation() {
