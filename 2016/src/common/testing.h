@@ -14,7 +14,7 @@
         int64_t: "%ld", \
         int: "%d", \
         void *: "%p", \
-        char *: "%s") \
+        char *: "%s")
 
 #define gen_print_failure(e, a) ( \
         fprintf(stderr, "ASSERTION FAILED!\n👉 "), \
