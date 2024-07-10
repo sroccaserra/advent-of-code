@@ -10,6 +10,33 @@
 
 #define assert_msg(val, msg) (val ? (void)0 : (perror(msg), assert(val)))
 
+#define check_errno(str) do { \
+        if(errno) {           \
+            perror(str);      \
+            exit(1);          \
+        }                     \
+    } while(0)
+
+long slurp(char *filename, char **ptr) {
+    errno = 0;
+    FILE *file = fopen(filename, "r");
+    check_errno(filename);
+    assert(file);
+    fseek(file, 0, SEEK_END);
+    long size = ftell(file);
+    rewind(file);
+
+    char *text = malloc(size + 1);
+    errno = 0;
+    fread(text, size, 1, file);
+    check_errno(NULL);
+    fclose(file);
+    text[size] = '\0';
+
+    *ptr = text;
+    return size;
+}
+
 int get_line(FILE *const file, char **const linep);
 
 char **get_lines_da(const char *const filename) {
