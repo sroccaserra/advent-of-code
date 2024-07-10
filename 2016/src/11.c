@@ -4,8 +4,10 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "common/arena.h"
 #include "common/common.h"
-#include "common/dynarray.h"
+#include "common/text.h"
+
 #include "common/testing.h"
 
 #define MAX_LINE_LENGTH 256
@@ -507,7 +509,6 @@ void test_simplest_next_state_generation() {
 
 void test(void) {
     TEST_START("11");
-
     test_shifts_on_uint64_t();
     test_elements_are_parsed_and_assigned();
     test_element_positions_are_set();
@@ -515,7 +516,6 @@ void test(void) {
     test_init_from_positions();
     test_init_from_positions_and_from_lines();
     test_simplest_next_state_generation();
-
     TEST_END;
 }
 
@@ -529,13 +529,16 @@ int main(int argc, char **argv) {
         return 0;
     }
 
+    struct arena arena = arena_alloc(512);
     char *filename = (argc == 1) ? "input/11" : argv[1];
-    char **lines_da = get_lines_da(filename);
-    assert(NB_FLOORS == da_size(lines_da));
+
+    char **lines = NULL;
+    long nb_lines = get_lines(&arena, filename, &lines);
+    assert(NB_FLOORS == nb_lines);
 
     struct state state;
-    init_from_lines(lines_da, &state, elements, &nb_elements);
-    free_lines_da(lines_da);
+    init_from_lines(lines, &state, elements, &nb_elements);
+    arena_free(&arena);
 
     uint64_t result_1 = solve_1(state);
     printf("%016lx\n", result_1);

@@ -76,4 +76,17 @@ int split_lines(struct arena *a, char *text, char **lines[]) {
     return nb_items;
 }
 
+/*************
+ * Get lines *
+ *************/
+
+long get_lines(struct arena *a, char *filename, char **lines[]) {
+    char *text = NULL;
+    slurp(a, filename, &text);
+    assert(text);
+    long nb_lines = split_lines(a, text, lines);
+    assert(lines);
+    return nb_lines;
+}
+
 #endif
