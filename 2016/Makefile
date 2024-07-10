@@ -49,10 +49,10 @@ build/common/%.o: src/common/%.c
 
 .PHONY: test
 test: export AOC_TEST=1
-test: 11 build/common/dynarray_test
+test: build/11-run build/common/dynarray_test-run
 
-.PHONY: %_test
-%_test: build/%_test
+.PHONY: %-run
+%-run: %
 	@$<
 
 .PRECIOUS: build/%_test
