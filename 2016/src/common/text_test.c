@@ -47,35 +47,32 @@ void test_split() {
     assert_equals("abc", items[0]);
     assert_equals("de", items[1]);
 
-    // sep at the beginning generates empty item
+    // sep at the beginning don't generates items
     char sep_at_the_beginning[] = ",abc,de";
     items = NULL;
     nb_items = split(&a, sep_at_the_beginning, ",", &items);
 
-    assert_equals(3, nb_items);
-    assert_equals("", items[0]);
-    assert_equals("abc", items[1]);
-    assert_equals("de", items[2]);
+    assert_equals(2, nb_items);
+    assert_equals("abc", items[0]);
+    assert_equals("de", items[1]);
 
-    // sep at the end generates empty item
+    // sep at the end don't generate items
     char sep_at_the_end[] = "abc,de,";
     items = NULL;
     nb_items = split(&a, sep_at_the_end, ",", &items);
 
-    assert_equals(3, nb_items);
+    assert_equals(2, nb_items);
     assert_equals("abc", items[0]);
     assert_equals("de", items[1]);
-    assert_equals("", items[2]);
 
-    // two seps generate empty item
+    // consecutive seps don't generate items
     char two_seps[] = "abc,,de";
     items = NULL;
     nb_items = split(&a, two_seps, ",", &items);
 
-    assert_equals(3, nb_items);
+    assert_equals(2, nb_items);
     assert_equals("abc", items[0]);
-    assert_equals("", items[1]);
-    assert_equals("de", items[2]);
+    assert_equals("de", items[1]);
 
     arena_free(&a);
 }

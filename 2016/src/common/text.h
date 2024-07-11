@@ -51,13 +51,13 @@ int split(struct arena *a, char *text, const char *sep, char **items[]) {
     size_t item_size = sizeof(items[0]);
 
     char *pos = text;
+    pos += strspn(pos, sep);
     if ('\0' == *pos) {
         *items = NULL;
         return nb_items;
     }
 
     *items = arena_push(a, item_size*capacity);
-    char *psep = NULL;
 
     while (1) {
         if (capacity <= nb_items) {
@@ -65,9 +65,14 @@ int split(struct arena *a, char *text, const char *sep, char **items[]) {
             capacity += capacity;
         }
         (*items)[nb_items++] = pos;
-        if (0 != (psep = strpbrk(pos, sep))) {
-            *psep = '\0';
-            pos = psep + 1;
+        char *found = strpbrk(pos, sep);
+        if (found) {
+            char *first = found;
+            pos = found + strspn(found, sep);
+            *first = '\0';
+            if ('\0' == *pos) {
+                break;
+            }
         } else {
             break;
         }
