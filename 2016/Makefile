@@ -56,5 +56,5 @@ test: build/11-run build/common/dynarray_test-run build/common/text_test-run
 	@$<
 
 .PRECIOUS: build/%_test
-build/%_test: src/%_test.c $(COMMON_OBJ_FILES_NO_TEST) | build
-	gcc $(CFLAGS) $^ $(LDLIBS) -o $@
+build/%_test: src/%_test.c src/%.h $(COMMON_OBJ_FILES_NO_TEST) | build
+	gcc $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o $@
