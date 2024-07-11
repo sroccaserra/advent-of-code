@@ -16,6 +16,70 @@ void test_slurp() {
     arena_free(&arena);
 }
 
+void test_split() {
+    struct arena a = arena_alloc(128);
+    char **items;
+    int nb_items;
+
+    // empty text
+    char empty[] = "";
+    items = NULL;
+    nb_items = split(&a, empty, ",", &items);
+
+    assert_equals(0, nb_items);
+    assert_null(items);
+
+    // no sep, not empty
+    char one_item[] = "abc";
+    items = NULL;
+    nb_items = split(&a, one_item, ",", &items);
+
+    assert_equals(1, nb_items);
+    assert_equals("abc", items[0]);
+
+
+    // two items
+    char two_items[] = "abc,de";
+    items = NULL;
+    nb_items = split(&a, two_items, ",", &items);
+
+    assert_equals(2, nb_items);
+    assert_equals("abc", items[0]);
+    assert_equals("de", items[1]);
+
+    // sep at the beginning generates empty item
+    char sep_at_the_beginning[] = ",abc,de";
+    items = NULL;
+    nb_items = split(&a, sep_at_the_beginning, ",", &items);
+
+    assert_equals(3, nb_items);
+    assert_equals("", items[0]);
+    assert_equals("abc", items[1]);
+    assert_equals("de", items[2]);
+
+    // sep at the end generates empty item
+    char sep_at_the_end[] = "abc,de,";
+    items = NULL;
+    nb_items = split(&a, sep_at_the_end, ",", &items);
+
+    assert_equals(3, nb_items);
+    assert_equals("abc", items[0]);
+    assert_equals("de", items[1]);
+    assert_equals("", items[2]);
+
+    // two seps generate empty item
+    char two_seps[] = "abc,,de";
+    items = NULL;
+    nb_items = split(&a, two_seps, ",", &items);
+
+    assert_equals(3, nb_items);
+    assert_equals("abc", items[0]);
+    assert_equals("", items[1]);
+    assert_equals("de", items[2]);
+
+    arena_free(&a);
+}
+
 void test_split_zero_lines() {
     struct arena arena = arena_alloc(64);
     char text[] = "";
@@ -88,6 +152,7 @@ void test_split_two_lines_without_last_eol() {
 int main() {
     TEST_START("text");
     test_slurp();
+    test_split();
     test_split_zero_lines();
     test_split_one_line();
     test_split_one_line_without_eol();

@@ -38,9 +38,51 @@ long slurp(struct arena *a, char *filename, char **ptext) {
     return size;
 }
 
-/***************
- * Split Lines *
- ***************/
+/********************************************************
+ * Split                                                *
+ *                                                      *
+ * Note: this function is destructive, like strtok_r(). *
+ ********************************************************/
+
+int split(struct arena *a, char *text, const char *sep, char **items[]) {
+    assert(text);
+    int nb_items = 0;
+    int capacity = 1;
+    size_t item_size = sizeof(items[0]);
+
+    char *pos = text;
+    if ('\0' == *pos) {
+        *items = NULL;
+        return nb_items;
+    }
+
+    *items = arena_push(a, item_size*capacity);
+    char *psep = NULL;
+
+    while (1) {
+        if (capacity <= nb_items) {
+            arena_push(a, item_size*capacity);
+            capacity += capacity;
+        }
+        (*items)[nb_items++] = pos;
+        if (0 != (psep = strpbrk(pos, sep))) {
+            *psep = '\0';
+            pos = psep + 1;
+        } else {
+            break;
+        }
+    }
+    int excess = (capacity - nb_items)*item_size;
+    arena_pop(a, excess);
+
+    return nb_items;
+}
+
+/***********************************************************
+ * Split Lines                                             *
+ *                                                         *
+ * Note: this function is destructive, because strtok_r(). *
+ ***********************************************************/
 
 int split_lines(struct arena *a, char *text, char **lines[]) {
     if ('\0' == text[0]) {
