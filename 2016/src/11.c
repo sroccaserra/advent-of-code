@@ -258,7 +258,10 @@ struct element *parse_line(char *line) {
     char line_buff[MAX_LINE_LENGTH];
     strncpy(line_buff, line, MAX_LINE_LENGTH);
     assert('\0' == line_buff[MAX_LINE_LENGTH-1]);
-    char **words = split_da(line_buff, " ,.");
+
+    struct arena a = arena_alloc(256);
+    char **words = NULL;
+    size_t nb_words = split(&a, line_buff, " ,.", &words);
     assert(words);
     struct element *result = NULL;
 
@@ -275,7 +278,6 @@ struct element *parse_line(char *line) {
     }
     int word_position = 0;
     struct element e;
-    size_t nb_words = da_size(words);
     for (;i < nb_words; ++i) {
         word = words[i];
         if (0 == strcmp("and", word)) {
@@ -296,7 +298,7 @@ struct element *parse_line(char *line) {
         ++word_position;
     }
 end:
-    da_free(words);
+    arena_free(&a);
     return result;
 }
 
