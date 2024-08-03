@@ -10,14 +10,14 @@ struct arena {
     size_t size;
 };
 
-struct arena arena_alloc(size_t size) {
+struct arena arena_init(size_t size) {
     assert(size);
     char *mem = malloc(size);
     assert(mem);
     return (struct arena){.mem = mem, .size = size};
 }
 
-void arena_free(struct arena *a) {
+void arena_discard(struct arena *a) {
     free(a->mem);
     *a = (struct arena){0};
 }

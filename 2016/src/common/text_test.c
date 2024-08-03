@@ -5,7 +5,7 @@
 
 void test_slurp() {
     long file_size = 414;
-    struct arena arena = arena_alloc(file_size + 1);
+    struct arena arena = arena_init(file_size + 1);
 
     char *text = NULL;
     long size = slurp(&arena, "input/11", &text);
@@ -13,11 +13,11 @@ void test_slurp() {
     assert_equals(file_size, size);
     assert_equals(file_size + 1, arena_used(&arena));
 
-    arena_free(&arena);
+    arena_discard(&arena);
 }
 
 void test_split() {
-    struct arena a = arena_alloc(128);
+    struct arena a = arena_init(128);
     char **items;
     int nb_items;
 
@@ -74,11 +74,11 @@ void test_split() {
     assert_equals("abc", items[0]);
     assert_equals("de", items[1]);
 
-    arena_free(&a);
+    arena_discard(&a);
 }
 
 void test_split_zero_lines() {
-    struct arena arena = arena_alloc(64);
+    struct arena arena = arena_init(64);
     char text[] = "";
 
     char **lines = NULL;
@@ -87,11 +87,11 @@ void test_split_zero_lines() {
     assert_equals(0, nb_lines);
     assert_null(lines);
 
-    arena_free(&arena);
+    arena_discard(&arena);
 }
 
 void test_split_one_line() {
-    struct arena arena = arena_alloc(64);
+    struct arena arena = arena_init(64);
     char text[] = "one line\n";
 
     char **lines = NULL;
@@ -100,11 +100,11 @@ void test_split_one_line() {
     assert_equals(1, nb_lines);
     assert_equals("one line", lines[0]);
 
-    arena_free(&arena);
+    arena_discard(&arena);
 }
 
 void test_split_one_line_without_eol() {
-    struct arena arena = arena_alloc(64);
+    struct arena arena = arena_init(64);
     char text[] = "one line";
 
     char **lines = NULL;
@@ -113,11 +113,11 @@ void test_split_one_line_without_eol() {
     assert_equals(1, nb_lines);
     assert_equals("one line", lines[0]);
 
-    arena_free(&arena);
+    arena_discard(&arena);
 }
 
 void test_split_two_lines() {
-    struct arena arena = arena_alloc(64);
+    struct arena arena = arena_init(64);
     char text[] = "two\nlines\n";
 
     char **lines = NULL;
@@ -128,11 +128,11 @@ void test_split_two_lines() {
     assert_equals("lines", lines[1]);
     assert_equals(nb_lines*sizeof(lines[0]), arena_used(&arena));
 
-    arena_free(&arena);
+    arena_discard(&arena);
 }
 
 void test_split_two_lines_without_last_eol() {
-    struct arena arena = arena_alloc(64);
+    struct arena arena = arena_init(64);
     char text[] = "two\nlines";
 
     char **lines = NULL;
@@ -143,7 +143,7 @@ void test_split_two_lines_without_last_eol() {
     assert_equals("lines", lines[1]);
     assert_equals(nb_lines*sizeof(lines[0]), arena_used(&arena));
 
-    arena_free(&arena);
+    arena_discard(&arena);
 }
 
 int main() {

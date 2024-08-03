@@ -259,7 +259,7 @@ struct element *parse_line(char *line) {
     strncpy(line_buff, line, MAX_LINE_LENGTH);
     assert('\0' == line_buff[MAX_LINE_LENGTH-1]);
 
-    struct arena a = arena_alloc(256);
+    struct arena a = arena_init(256);
     char **words = NULL;
     size_t nb_words = split(&a, line_buff, " ,.", &words);
     assert(words);
@@ -298,7 +298,7 @@ struct element *parse_line(char *line) {
         ++word_position;
     }
 end:
-    arena_free(&a);
+    arena_discard(&a);
     return result;
 }
 
@@ -531,7 +531,7 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    struct arena arena = arena_alloc(512);
+    struct arena arena = arena_init(512);
     char *filename = (argc == 1) ? "input/11" : argv[1];
 
     char **lines = NULL;
@@ -540,7 +540,7 @@ int main(int argc, char **argv) {
 
     struct state state;
     init_from_lines(lines, &state, elements, &nb_elements);
-    arena_free(&arena);
+    arena_discard(&arena);
 
     uint64_t result_1 = solve_1(state);
     printf("%016lx\n", result_1);
