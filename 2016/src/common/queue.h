@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "arena.h"
 
@@ -28,12 +28,16 @@ size_t queue_size(struct queue *self) {
 }
 
 void queue_append(struct queue *self, void *value) {
+    assert(self->size < self->capacity);
+
     int index = (self->begin + self->size) % self->capacity;
     ++(self->size);
     self->data[index] = value;
 }
 
 void *queue_remove(struct queue *self) {
+    assert(0 < self->size);
+
     void *result = self->data[self->begin];
     self->begin = (self->begin + 1)%self->capacity;
     --(self->size);

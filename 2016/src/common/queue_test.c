@@ -1,6 +1,7 @@
-#include "testing.h"
-#include "queue.h"
 #include "arena.h"
+#include "queue.h"
+
+#include "testing.h"
 
 /*
  * TODO:
