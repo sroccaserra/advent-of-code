@@ -49,7 +49,7 @@ build/common/%.o: src/common/%.c
 
 .PHONY: test
 test: export AOC_TEST=1
-test: build/11-run build/common/dynarray_test-run build/common/text_test-run
+test: build/11-run build/common/dynarray_test-run build/common/queue_test-run build/common/text_test-run
 
 .PHONY: %-run
 %-run: %
