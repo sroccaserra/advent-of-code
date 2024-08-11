@@ -147,7 +147,7 @@ void test_split_two_lines_without_last_eol() {
 }
 
 int main() {
-    TEST_START("text");
+    TEST_BEGIN("text");
     test_slurp();
     test_split();
     test_split_zero_lines();

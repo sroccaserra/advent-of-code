@@ -68,7 +68,7 @@ void test_string_dynarray(void) {
 }
 
 int main(void) {
-    TEST_START("dynarray");
+    TEST_BEGIN("dynarray");
     test_size_of_empty_array();
     test_free_empty_dyn_array();
     test_free_non_empty_dyn_array();

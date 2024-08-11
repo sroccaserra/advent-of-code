@@ -510,7 +510,7 @@ void test_simplest_next_state_generation() {
 }
 
 void test(void) {
-    TEST_START("11");
+    TEST_BEGIN("11");
     test_shifts_on_uint64_t();
     test_elements_are_parsed_and_assigned();
     test_element_positions_are_set();
