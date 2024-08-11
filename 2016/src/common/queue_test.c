@@ -20,7 +20,7 @@
 
 void test_size_of_empty_queue_is_zero() {
     struct arena a = arena_init(128);
-    struct queue *q = queue_init(&a, 128 - sizeof(struct queue));
+    struct queue *q = queue_init(&a, 1);
 
     size_t result = queue_size(q);
 
@@ -30,7 +30,7 @@ void test_size_of_empty_queue_is_zero() {
 
 void test_appending_one_value_increments_size() {
     struct arena a = arena_init(128);
-    struct queue *q = queue_init(&a, 64);
+    struct queue *q = queue_init(&a, 1);
 
     queue_append(q, "yellow");
     size_t result = queue_size(q);
@@ -41,7 +41,7 @@ void test_appending_one_value_increments_size() {
 
 void test_removing_a_value() {
     struct arena a = arena_init(128);
-    struct queue *q = queue_init(&a, 64);
+    struct queue *q = queue_init(&a, 2);
 
     queue_append(q, "yellow");
     char *result = queue_remove(q);
@@ -51,10 +51,24 @@ void test_removing_a_value() {
     arena_discard(&a);
 }
 
+void test_appending_two_values_and_remove_one() {
+    struct arena a = arena_init(128);
+    struct queue *q = queue_init(&a, 2);
+
+    queue_append(q, "hellow");
+    queue_append(q, "yellow");
+    char *result = queue_remove(q);
+
+    assert_equals("hellow", result);
+    assert_equals(1, queue_size(q));
+    arena_discard(&a);
+}
+
 int main() {
     TEST_BEGIN("queue");
     test_size_of_empty_queue_is_zero();
     test_appending_one_value_increments_size();
     test_removing_a_value();
+    test_appending_two_values_and_remove_one();
     TEST_END;
 }
