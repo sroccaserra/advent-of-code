@@ -7,8 +7,8 @@
 
 struct queue {
     int begin;
-    int end;
-    size_t capacity;
+    int size;
+    int capacity;
     void **data;
 };
 
@@ -16,7 +16,7 @@ struct queue *queue_init(struct arena *a, size_t capacity) {
     struct queue *result = arena_push(a, sizeof(struct queue));
 
     result->begin = 0;
-    result->end = 0;
+    result->size = 0;
     result->capacity = capacity;
     result->data = arena_push(a, capacity*sizeof(void *));
 
@@ -24,15 +24,20 @@ struct queue *queue_init(struct arena *a, size_t capacity) {
 }
 
 size_t queue_size(struct queue *self) {
-    return self->end - self->begin;
+    return self->size;
 }
 
 void queue_append(struct queue *self, void *value) {
-    self->data[self->end++] = value;
+    int index = (self->begin + self->size) % self->capacity;
+    ++(self->size);
+    self->data[index] = value;
 }
 
 void *queue_remove(struct queue *self) {
-    return self->data[self->begin++];
+    void *result = self->data[self->begin];
+    self->begin = (self->begin + 1)%self->capacity;
+    --(self->size);
+    return result;
 }
 
 #endif
