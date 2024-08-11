@@ -3,6 +3,13 @@
 #include "arena.h"
 #include "queue.h"
 
+struct queue {
+    int begin;
+    int size;
+    int capacity;
+    void **data;
+};
+
 struct queue *queue_init(struct arena *a, size_t capacity) {
     struct queue *result = arena_push(a, sizeof(struct queue));
 
@@ -12,6 +19,10 @@ struct queue *queue_init(struct arena *a, size_t capacity) {
     result->data = arena_push(a, capacity*sizeof(void *));
 
     return result;
+}
+
+size_t queue_struct_size() {
+    return sizeof(struct queue);
 }
 
 size_t queue_size(struct queue *self) {

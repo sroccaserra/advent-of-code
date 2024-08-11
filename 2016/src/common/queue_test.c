@@ -65,7 +65,7 @@ void test_appending_two_values_and_remove_one() {
 }
 
 void test_circular_behavior_of_end() {
-    struct arena a = arena_init(sizeof(struct queue) + 3*sizeof(void *));
+    struct arena a = arena_init(queue_struct_size() + 3*sizeof(void *));
     struct queue *q = queue_init(&a, 3);
 
     queue_append(q, "one");
@@ -81,10 +81,10 @@ void test_circular_behavior_of_end() {
 }
 
 void test_circular_behavior_of_begin() {
-    struct arena a = arena_init(sizeof(struct queue) + 3*sizeof(void *));
+    struct arena a = arena_init(queue_struct_size() + 3*sizeof(void *));
     struct queue *q = queue_init(&a, 3);
 
-    // ...
+                                    // ...
     queue_append(q, "one");         // 1..
     queue_append(q, "two");         // 12.
     queue_append(q, "three");       // 123
