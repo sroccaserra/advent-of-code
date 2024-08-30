@@ -2,11 +2,6 @@
 #include "arena.h"
 #include "astring.h"
 
-#define assert_string_equals(expected, actual) { \
-    assert_equals(expected.size, actual.size); \
-    assert_equals(cstr(expected), cstr(actual)); \
-}
-
 void test_make_astring() {
     struct arena a = arena_init(128);
     struct astring *s = astring_init(&a, "hello");
