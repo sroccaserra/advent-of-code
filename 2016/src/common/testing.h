@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define TEST_BEGIN(s) (fprintf(stderr, "Testing "s"..."), fflush(stderr))
-#define TEST_END (fprintf(stderr, " ✅ OK.\n"))
+#define TEST_BEGIN(s) (fprintf(stderr, s"..."), fflush(stderr))
+#define TEST_END (fprintf(stderr, " ✅\n"))
 
 #define gen_format(e) _Generic((e), \
         uint64_t: "%lu", \

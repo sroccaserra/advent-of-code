@@ -13,6 +13,7 @@ struct arena {
 struct arena arena_init(size_t capacity);
 void arena_discard(struct arena *a);
 
+#define arena_pointer(a) ((void *)((a)->mem + (a)->used))
 void *arena_push(struct arena *a, size_t size);
 void arena_pop(struct arena *a, size_t size);
 size_t arena_used(struct arena *a);

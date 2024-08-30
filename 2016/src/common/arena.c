@@ -15,8 +15,6 @@ void arena_discard(struct arena *a) {
     *a = (struct arena){0};
 }
 
-#define arena_pointer(a) ((void *)((a)->mem + (a)->used))
-
 void *arena_push(struct arena *a, size_t size) {
     assert(a->used + size <= a->capacity);
 

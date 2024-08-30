@@ -52,13 +52,6 @@ void itoa(long int n, char *s, int base) {
     reverse(s);
 }
 
-#define gen_format(e) _Generic((e), \
-        uint64_t: "%lu", \
-        int64_t: "%ld", \
-        int: "%d", \
-        void *: "%p", \
-        char *: "%s")
-
-#define print(x) (printf(gen_format(x), (x)), printf("\n"))
+#define print(fmt, ...) printf(fmt"\n", __VA_ARGS__)
 
 #endif
