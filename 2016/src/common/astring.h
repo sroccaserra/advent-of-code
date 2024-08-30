@@ -73,11 +73,9 @@ struct astring_list* astring_split(struct arena *a, char *cstr, char *sep) {
     }
 
     result->items = arena_pointer(a);
-    int i = 0;
     while ('\0' != *cursor) {
         int size = strcspn(cursor, sep);
-        arena_push(a, sizeof(struct astring));
-        astring_set_cstr_ln(&result->items[i++], cursor, size);
+        astring_init_ln(a, cursor, size);
         ++result->size;
         cursor += size;
         cursor += strspn(cursor, sep);
