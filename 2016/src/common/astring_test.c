@@ -68,6 +68,26 @@ void test_split_a_cstring_with_two_seps() {
     arena_discard(&a);
 }
 
+void test_convert_to_c_string() {
+    struct arena a = arena_init(128);
+    struct astring *s = astring_init(&a, "hello");
+
+    char *result = astring_to_cstr(&a, s);
+
+    assert_equals("hello", result);
+    arena_discard(&a);
+}
+
+void test_convert_to_c_string_with_more_data() {
+    struct arena a = arena_init(128);
+    struct astring *s = astring_init_ln(&a, "hello, world", 5);
+
+    char *result = astring_to_cstr(&a, s);
+
+    assert_equals("hello", result);
+    arena_discard(&a);
+}
+
 int main() {
     TEST_BEGIN("astring");
     test_make_astring();
@@ -75,5 +95,7 @@ int main() {
     test_split_a_cstring_with_missing_sep();
     test_split_a_cstring_with_a_sep();
     test_split_a_cstring_with_two_seps();
+    test_convert_to_c_string();
+    test_convert_to_c_string_with_more_data();
     TEST_END;
 }

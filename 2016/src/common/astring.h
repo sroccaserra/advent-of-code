@@ -27,6 +27,13 @@ struct astring *astring_init(struct arena *a, char *cstr) {
     return result;
 }
 
+struct astring *astring_init_ln(struct arena *a, char *cstr, int size) {
+    struct astring *result = arena_push(a, sizeof(struct astring));
+    result->size = size;
+    result->items = cstr;
+    return result;
+}
+
 void astring_set_cstr(struct astring *self, char *cstr) {
     self->size = strlen(cstr);
     self->items = cstr;
@@ -40,6 +47,16 @@ void astring_set_cstr_ln(struct astring *self, char *cstr, int size) {
 bool astring_is_same(struct astring *self, char *cstr) {
     return 0 == strncmp(self->items, cstr, self->size);
 }
+
+char *astring_to_cstr(struct arena *a, struct astring *self) {
+    int size = self->size;
+    char *result = arena_push(a, size + 1);
+    strncpy(result, self->items, size);
+    result[size] = '\0';
+    return result;
+}
+
+// astring_list
 
 struct astring_list {
     int size;
