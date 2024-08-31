@@ -10,7 +10,7 @@ struct arena {
     char *mem;
 };
 
-struct arena arena_init(size_t capacity);
+struct arena *arena_init(size_t capacity);
 void arena_discard(struct arena *a);
 
 #define arena_pointer(a) ((void *)((a)->mem + (a)->used))

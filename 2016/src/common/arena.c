@@ -3,16 +3,20 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct arena arena_init(size_t capacity) {
+struct arena *arena_init(size_t capacity) {
     assert(capacity);
     char *mem = malloc(capacity);
     assert(mem);
-    return (struct arena){.mem = mem, .capacity = capacity};
+    struct arena *result = malloc(sizeof(struct arena));
+    assert(result);
+    *result = (struct arena){.mem = mem, .capacity = capacity};
+    return result;
 }
 
 void arena_discard(struct arena *a) {
     free(a->mem);
     *a = (struct arena){0};
+    free(a);
 }
 
 void *arena_push(struct arena *a, size_t size) {
