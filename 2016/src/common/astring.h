@@ -56,6 +56,12 @@ char *astring_to_cstr(struct arena *a, struct astring *self) {
     return result;
 }
 
+int astring_sprint(struct astring *self, char *buffer) {
+    int size = self->size;
+    strncpy(buffer, self->items, size);
+    return size;
+}
+
 // astring_list
 
 struct astring_list {
@@ -63,7 +69,7 @@ struct astring_list {
     struct astring *items;
 };
 
-struct astring_list* astring_split(struct arena *a, char *cstr, char *sep) {
+struct astring_list* astring_split(struct arena *a, char *cstr, const char *sep) {
     struct astring_list *result = arena_push(a, sizeof(struct astring_list));
     *result = (struct astring_list){0};
 
