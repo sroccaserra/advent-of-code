@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct arena {
     size_t capacity;
@@ -11,11 +12,12 @@ struct arena {
 
 struct arena *arena_init(size_t capacity) {
     assert(capacity);
-    char *mem = malloc(capacity);
-    assert(mem);
     struct arena *result = malloc(sizeof(struct arena));
     assert(result);
-    *result = (struct arena){.mem = mem, .capacity = capacity};
+    result->mem = malloc(capacity);
+    assert(result->mem);
+    result->used = 0;
+    result->capacity = capacity;
     return result;
 }
 
@@ -49,4 +51,10 @@ void arena_pop(struct arena *a, size_t size) {
 
 size_t arena_used(struct arena *a) {
     return a->used;
+}
+
+void arena_append(struct arena *a, const char *s, int size) {
+        char *pos = arena_top(a);
+        arena_push(a, size);
+        strncpy(pos, s, size);
 }
