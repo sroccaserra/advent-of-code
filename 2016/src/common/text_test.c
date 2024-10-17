@@ -3,7 +3,7 @@
 
 #include "testing.h"
 
-void test_slurp() {
+void test_slurp(void) {
     long file_size = 414;
     struct arena *arena = arena_init(file_size + 1);
 
@@ -16,7 +16,7 @@ void test_slurp() {
     arena_discard(arena);
 }
 
-void test_split() {
+void test_split(void) {
     struct arena *a = arena_init(128);
     char **items;
     int nb_items;
@@ -77,7 +77,7 @@ void test_split() {
     arena_discard(a);
 }
 
-void test_split_zero_lines() {
+void test_split_zero_lines(void) {
     struct arena *arena = arena_init(64);
     char text[] = "";
 
@@ -90,7 +90,7 @@ void test_split_zero_lines() {
     arena_discard(arena);
 }
 
-void test_split_one_line() {
+void test_split_one_line(void) {
     struct arena *arena = arena_init(64);
     char text[] = "one line\n";
 
@@ -103,7 +103,7 @@ void test_split_one_line() {
     arena_discard(arena);
 }
 
-void test_split_one_line_without_eol() {
+void test_split_one_line_without_eol(void) {
     struct arena *arena = arena_init(64);
     char text[] = "one line";
 
@@ -116,7 +116,7 @@ void test_split_one_line_without_eol() {
     arena_discard(arena);
 }
 
-void test_split_two_lines() {
+void test_split_two_lines(void) {
     struct arena *arena = arena_init(64);
     char text[] = "two\nlines\n";
 
@@ -131,7 +131,7 @@ void test_split_two_lines() {
     arena_discard(arena);
 }
 
-void test_split_two_lines_without_last_eol() {
+void test_split_two_lines_without_last_eol(void) {
     struct arena *arena = arena_init(64);
     char text[] = "two\nlines";
 
@@ -146,7 +146,7 @@ void test_split_two_lines_without_last_eol() {
     arena_discard(arena);
 }
 
-int main() {
+int main(void) {
     TEST_BEGIN("text");
     test_slurp();
     test_split();

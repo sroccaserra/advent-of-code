@@ -18,7 +18,7 @@
  * - let's make it work with an arena, and not implement growth
  */
 
-void test_size_of_empty_queue_is_zero() {
+void test_size_of_empty_queue_is_zero(void) {
     struct arena *a = arena_init(128);
     struct queue *q = queue_init(a, 1);
 
@@ -28,7 +28,7 @@ void test_size_of_empty_queue_is_zero() {
     arena_discard(a);
 }
 
-void test_appending_one_value_increments_size() {
+void test_appending_one_value_increments_size(void) {
     struct arena *a = arena_init(128);
     struct queue *q = queue_init(a, 1);
 
@@ -39,7 +39,7 @@ void test_appending_one_value_increments_size() {
     arena_discard(a);
 }
 
-void test_removing_a_value() {
+void test_removing_a_value(void) {
     struct arena *a = arena_init(128);
     struct queue *q = queue_init(a, 2);
 
@@ -51,7 +51,7 @@ void test_removing_a_value() {
     arena_discard(a);
 }
 
-void test_appending_two_values_and_remove_one() {
+void test_appending_two_values_and_remove_one(void) {
     struct arena *a = arena_init(128);
     struct queue *q = queue_init(a, 2);
 
@@ -64,7 +64,7 @@ void test_appending_two_values_and_remove_one() {
     arena_discard(a);
 }
 
-void test_circular_behavior_of_end() {
+void test_circular_behavior_of_end(void) {
     struct arena *a = arena_init(queue_struct_size() + 3*sizeof(void *));
     struct queue *q = queue_init(a, 3);
 
@@ -80,7 +80,7 @@ void test_circular_behavior_of_end() {
     arena_discard(a);
 }
 
-void test_circular_behavior_of_begin() {
+void test_circular_behavior_of_begin(void) {
     struct arena *a = arena_init(queue_struct_size() + 3*sizeof(void *));
     struct queue *q = queue_init(a, 3);
 
@@ -101,7 +101,7 @@ void test_circular_behavior_of_begin() {
     arena_discard(a);
 }
 
-int main() {
+int main(void) {
     TEST_BEGIN("queue");
     test_size_of_empty_queue_is_zero();
     test_appending_one_value_increments_size();

@@ -349,7 +349,7 @@ void init_from_lines(char* lines[], struct state *state, struct element elements
  * Testing *
  ***********/
 
-void test_shifts_on_uint64_t() {
+void test_shifts_on_uint64_t(void) {
     uint64_t vals[] = {
         1l<<(4*0), 1l<<(4*1), 1l<<(4*2), 1l<<(4*3), 1l<<(4*4),
         1l<<(4*5), 1l<<(4*6), 1l<<(4*7), 1l<<(4*8), 1l<<(4*9),
@@ -377,7 +377,7 @@ void test_shifts_on_uint64_t() {
         "The fourth floor contains nothing relevant.",                                                  \
     }
 
-void test_elements_are_parsed_and_assigned() {
+void test_elements_are_parsed_and_assigned(void) {
     char *lines[] = TEST_LINES;
     struct state state;
 
@@ -394,7 +394,7 @@ void test_elements_are_parsed_and_assigned() {
     assert_equals("M", type_name(elements[3]));
 }
 
-void test_element_positions_are_set() {
+void test_element_positions_are_set(void) {
     char *lines[] = TEST_LINES;
     struct state state;
 
@@ -411,7 +411,7 @@ void test_element_positions_are_set() {
     }
 }
 
-void test_element_positions_can_be_updated() {
+void test_element_positions_can_be_updated(void) {
     struct state state;
     init_state(&state);
 
@@ -438,13 +438,13 @@ void test_element_positions_can_be_updated() {
 }
 
 
-void test_a_state_is_equal_to_itself() {
+void test_a_state_is_equal_to_itself(void) {
     struct state state;
     init_state(&state);
     assert(state_equals(&state, &state));
 }
 
-void test_init_from_positions() {
+void test_init_from_positions(void) {
     struct state state = {0};
 
     init_from_positions(&state, 0x00);
@@ -467,7 +467,7 @@ void test_init_from_positions() {
     }
 }
 
-void test_init_from_positions_and_from_lines() {
+void test_init_from_positions_and_from_lines(void) {
     char *lines[] = {
         "The first floor contains a hydr microchip and a hydr generator.",
         "The second floor contains nothing relevant.",
@@ -483,7 +483,7 @@ void test_init_from_positions_and_from_lines() {
     assert(state_equals(&from_positions, &from_lines));
 }
 
-void test_simplest_next_state_generation() {
+void test_simplest_next_state_generation(void) {
     char *lines[] = {
         "The first floor contains a hydr microchip and a hydr generator.",
         "The second floor contains nothing relevant.",

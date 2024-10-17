@@ -2,7 +2,7 @@
 #include "arena.h"
 #include "astring.h"
 
-void test_make_astring() {
+void test_make_astring(void) {
     struct arena *a = arena_init(128);
     struct astring *s = astring_init(a, "hello");
     assert_equals(5, s->size);
@@ -10,7 +10,7 @@ void test_make_astring() {
     arena_discard(a);
 }
 
-void test_split_an_empty_cstring() {
+void test_split_an_empty_cstring(void) {
     struct arena *a = arena_init(128);
     struct astring_list *astrings = astring_split(a, "", " ");
     assert_equals(0, astrings->size);
@@ -18,7 +18,7 @@ void test_split_an_empty_cstring() {
     arena_discard(a);
 }
 
-void test_split_a_cstring_with_missing_sep() {
+void test_split_a_cstring_with_missing_sep(void) {
     struct arena *a = arena_init(128);
     struct astring_list *result = astring_split(a, "bob", " ");
     assert_equals(1, result->size);
@@ -27,7 +27,7 @@ void test_split_a_cstring_with_missing_sep() {
     arena_discard(a);
 }
 
-void test_split_a_cstring_with_a_sep() {
+void test_split_a_cstring_with_a_sep(void) {
     struct arena *a = arena_init(128);
     struct astring_list *astrings = astring_split(a, "bob alice", " ");
     assert_equals(2, astrings->size);
@@ -43,7 +43,7 @@ void test_split_a_cstring_with_a_sep() {
     arena_discard(a);
 }
 
-void test_split_a_cstring_with_two_seps() {
+void test_split_a_cstring_with_two_seps(void) {
     struct arena *a = arena_init(128);
     struct astring_list *astrings = astring_split(a, "bob alice mary", " ");
     assert_equals(3, astrings->size);
@@ -63,7 +63,7 @@ void test_split_a_cstring_with_two_seps() {
     arena_discard(a);
 }
 
-void test_convert_to_c_string() {
+void test_convert_to_c_string(void) {
     struct arena *a = arena_init(128);
     struct astring *s = astring_init(a, "hello");
 
@@ -73,7 +73,7 @@ void test_convert_to_c_string() {
     arena_discard(a);
 }
 
-void test_convert_to_c_string_with_more_data() {
+void test_convert_to_c_string_with_more_data(void) {
     struct arena *a = arena_init(128);
     struct astring *s = astring_init_ln(a, "hello, world", 5);
 
@@ -83,7 +83,7 @@ void test_convert_to_c_string_with_more_data() {
     arena_discard(a);
 }
 
-void test_print_to_buffer() {
+void test_print_to_buffer(void) {
     struct arena *a = arena_init(128);
     struct astring *s = astring_init_ln(a, "hello, world", 5);
 
@@ -96,7 +96,7 @@ void test_print_to_buffer() {
     arena_discard(a);
 }
 
-int main() {
+int main(void) {
     TEST_BEGIN("astring");
     test_make_astring();
     test_split_an_empty_cstring();
