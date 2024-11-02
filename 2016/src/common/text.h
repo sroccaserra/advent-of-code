@@ -18,7 +18,7 @@
         }                     \
     } while (0)
 
-long slurp(struct arena *a, char *filename, char **ptext) {
+long slurp_filename(struct arena *a, char *filename, char **ptext) {
     errno = 0;
     FILE *file = fopen(filename, "r");
     check_errno(filename);
@@ -97,7 +97,7 @@ int split_lines(struct arena *a, char *text, char **lines[]) {
 
 long get_lines(struct arena *a, char *filename, char **lines[]) {
     char *text = NULL;
-    slurp(a, filename, &text);
+    slurp_filename(a, filename, &text);
     assert(text);
     long nb_lines = split_lines(a, text, lines);
     assert(lines);

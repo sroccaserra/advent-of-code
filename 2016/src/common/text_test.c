@@ -3,12 +3,12 @@
 
 #include "testing.h"
 
-void test_slurp(void) {
+void test_slurp_filename(void) {
     long file_size = 414;
     struct arena *arena = arena_init(file_size + 1);
 
     char *text = NULL;
-    long size = slurp(arena, "input/11", &text);
+    long size = slurp_filename(arena, "input/11", &text);
 
     assert_equals(file_size, size);
     assert_equals(file_size + 1, arena_used(arena));
@@ -148,7 +148,7 @@ void test_split_two_lines_without_last_eol(void) {
 
 int main(void) {
     TEST_BEGIN("text");
-    test_slurp();
+    test_slurp_filename();
     test_split();
     test_split_zero_lines();
     test_split_one_line();
