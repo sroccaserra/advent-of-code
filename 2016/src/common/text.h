@@ -3,6 +3,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stddef.h>
 #include <string.h>
 
 #include "arena.h"
@@ -17,6 +18,32 @@
             exit(1);          \
         }                     \
     } while (0)
+
+long slurp(struct arena *a, FILE *file, char **ptext) {
+    assert(file);
+    long size = 0;
+    int chunk_size = 256;
+    char *start = arena_top(a);
+    char *buffer = arena_push(a, chunk_size);
+    char *buffer_pos = buffer;
+    int read_size = 0;
+
+    errno = 0;
+    while (0 != (read_size = fread(buffer_pos, 1, chunk_size, file))) {
+        check_errno(NULL);
+        size += read_size;
+        buffer_pos += read_size;
+        arena_push(a, chunk_size);
+    }
+
+    fclose(file);
+    buffer[size] = '\0';
+    ptrdiff_t excess = ((char *)arena_top(a) - start) - (size + 1);
+    arena_pop(a, excess);
+
+    *ptext = buffer;
+    return size;
+}
 
 long slurp_filename(struct arena *a, char *filename, char **ptext) {
     errno = 0;
