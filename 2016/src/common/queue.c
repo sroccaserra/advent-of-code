@@ -21,7 +21,7 @@ struct queue *queue_init(struct arena *a, size_t capacity) {
     return result;
 }
 
-size_t queue_struct_size() {
+size_t queue_struct_size(void) {
     return sizeof(struct queue);
 }
 
